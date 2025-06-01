@@ -7,7 +7,8 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      margin: 0; padding: 1rem;
+      margin: 0; 
+      padding: 1rem;
       background: #fdfdfd;
       color: #333;
       text-align: center;
@@ -18,27 +19,45 @@
     }
     #info {
       margin-top: 1rem;
+      text-align: center; /* Centra texto e imagen */
     }
-    img {
+    #info img {
       max-width: 200px;
       border-radius: 8px;
       margin-top: 1rem;
+      display: inline-block;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: #000;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
     }
   </style>
+
   <!-- Librería html5-qrcode -->
-  <script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 <body>
+
   <h1>Escáner QR - VogueCrest</h1>
+
   <div id="reader"></div>
+
   <div id="info">
-    <h2 id="nombre"></h2>
-    <p id="descripcion"></p>
-    <img id="imagen" src="" alt="" style="display:none;" />
+    <p>Escanea un código QR para ver la información de la prenda.</p>
   </div>
 
+  <button id="startScan">Iniciar Escaneo</button>
+  <button id="stopScan" style="display:none;">Detener Escaneo</button>
+
   <script>
-    // Productos de ejemplo: Debe ser igual a tu catálogo
     const productos = [
       {
         nombre: "Camisa Clásica",
@@ -60,77 +79,91 @@
       }
     ];
 
-    const infoNombre = document.getElementById('nombre');
-    const infoDescripcion = document.getElementById('descripcion');
-    const infoImagen = document.getElementById('imagen');
+    const infoDiv = document.getElementById('info');
+    let html5QrcodeScanner;
+    let scanning = false;
 
-    function mostrarProducto(codigo) {
+    function mostrarProductoPorCodigo(codigo) {
       const producto = productos.find(p => p.codigo === codigo);
       if (producto) {
-        infoNombre.textContent = producto.nombre;
-        infoDescripcion.textContent = producto.descripcion;
-        infoImagen.src = producto.imagen;
-        infoImagen.style.display = 'block';
+        infoDiv.innerHTML = `
+          <h2>${producto.nombre}</h2>
+          <img src="${producto.imagen}" alt="${producto.nombre}" />
+          <p>${producto.descripcion}</p>
+        `;
       } else {
-        infoNombre.textContent = 'Producto no encontrado';
-        infoDescripcion.textContent = '';
-        infoImagen.style.display = 'none';
-      }
-    }
-
-    function extraerCodigoDeUrl(url) {
-      try {
-        const urlObj = new URL(url);
-        return urlObj.searchParams.get('codigo');
-      } catch (e) {
-        return null;
+        infoDiv.innerHTML = `<p>Producto no encontrado para el código: <b>${codigo}</b></p>`;
       }
     }
 
     function onScanSuccess(decodedText, decodedResult) {
-      // decodedText es el texto del QR (URL)
-      const codigo = extraerCodigoDeUrl(decodedText);
-      if (codigo) {
-        mostrarProducto(codigo);
-        html5QrcodeScanner.stop().then(() => {
-          console.log("Escaneo detenido.");
-        });
-      } else {
-        alert('QR no contiene código válido');
+      // Se detiene escaneo tras detectar
+      html5QrcodeScanner.stop().then(() => {
+        scanning = false;
+        document.getElementById('startScan').style.display = 'inline-block';
+        document.getElementById('stopScan').style.display = 'none';
+      }).catch(err => {
+        console.error('Error deteniendo escaneo', err);
+      });
+
+      // Extraemos solo el código (asumimos url con ?codigo=XX)
+      try {
+        const url = new URL(decodedText);
+        const codigo = url.searchParams.get('codigo');
+        if (codigo) {
+          mostrarProductoPorCodigo(codigo);
+        } else {
+          infoDiv.innerHTML = `<p>Código QR no válido.</p>`;
+        }
+      } catch {
+        // Si no es URL válida, mostramos el texto
+        infoDiv.innerHTML = `<p>Texto leído: ${decodedText}</p>`;
       }
     }
 
     function onScanFailure(error) {
-      // No mostrar nada para evitar spam en consola
+      // No hacemos nada si no lee (por ejemplo, solo mostramos en consola)
+      // console.warn(`Escaneo fallido: ${error}`);
     }
 
-    // Inicializamos el escáner con la cámara trasera
-    const html5QrcodeScanner = new Html5Qrcode("reader");
-
-    Html5Qrcode.getCameras().then(devices => {
-      if (devices && devices.length) {
-        // Buscar cámara trasera: por lo general la que tiene 'back' en label o la última
-        let cameraId = devices[0].id; // default
-        for (const device of devices) {
-          if (device.label.toLowerCase().includes('back')) {
-            cameraId = device.id;
-            break;
-          }
-        }
-        // Iniciar escáner con cámara trasera
+    document.getElementById('startScan').addEventListener('click', () => {
+      if (!scanning) {
+        html5QrcodeScanner = new Html5Qrcode("reader");
+        const config = { 
+          fps: 10, 
+          qrbox: 250,
+          // Cámara trasera preferida
+          experimentalFeatures: { useBarCodeDetectorIfSupported: true },
+          facingMode: { exact: "environment" }
+        };
         html5QrcodeScanner.start(
-          cameraId,
-          { fps: 10, qrbox: 250 },
+          { facingMode: { exact: "environment" } },
+          config,
           onScanSuccess,
           onScanFailure
-        ).catch(err => {
-          alert('Error al iniciar la cámara: ' + err);
+        ).then(() => {
+          scanning = true;
+          document.getElementById('startScan').style.display = 'none';
+          document.getElementById('stopScan').style.display = 'inline-block';
+          infoDiv.innerHTML = '<p>Escaneando...</p>';
+        }).catch(err => {
+          alert('Error al iniciar cámara: ' + err);
         });
-      } else {
-        alert('No se detectó ninguna cámara.');
       }
-    }).catch(err => {
-      alert('Error al obtener cámaras: ' + err);
+    });
+
+    document.getElementById('stopScan').addEventListener('click', () => {
+      if (scanning) {
+        html5QrcodeScanner.stop().then(() => {
+          scanning = false;
+          document.getElementById('startScan').style.display = 'inline-block';
+          document.getElementById('stopScan').style.display = 'none';
+          infoDiv.innerHTML = '<p>Escaneo detenido.</p>';
+          document.getElementById('reader').innerHTML = '';
+        }).catch(err => {
+          alert('Error al detener la cámara: ' + err);
+        });
+      }
     });
   </script>
 </body>
