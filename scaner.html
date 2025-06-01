@@ -3,192 +3,413 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Scanner QR</title>
+  <title>VogueCrest - Escáner QR</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
   <style>
-    body {
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
-      margin: 0; padding: 1rem;
-      background: #fdfdfd;
-      color: #333;
+      background: #fefefe;
+      color: #111;
+    }
+
+    header {
+      background-color: #111;
+      color: white;
+      padding: 1rem 1rem 0.5rem;
+      text-align: center;
+      position: relative;
+      z-index: 1200;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .logo-container img {
+      height: 32px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      text-decoration: underline;
+      background-color: #333;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 2rem;
+      position: absolute;
+      top: 50%;
+      right: 0.8rem;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 1300;
+      padding: 0;
+      line-height: 1;
+    }
+
+    main {
+      padding: 2rem 1rem 6rem;
+      max-width: 600px;
+      margin: 0 auto;
       text-align: center;
     }
+
+    button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      margin: 1rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
     #video {
       width: 100%;
       max-width: 400px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      margin-top: 1rem;
     }
+
     #output {
       margin-top: 1rem;
-      border: 1px solid #ccc;
       padding: 1rem;
-      border-radius: 8px;
       background: #fff;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      color: #000;
     }
+
     #output img {
       max-width: 100%;
       border-radius: 8px;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
     }
+
     #fileInput {
       margin-top: 1rem;
     }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Footer igual que en inicio.html */
+    .footer-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: #000;
+      color: white;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      border-top: 1px solid #222;
+      z-index: 1100;
+    }
+
+    .footer-nav a {
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .footer-nav a i {
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+
+    .footer-nav a:hover,
+    .footer-nav a.active {
+      color: #8c6300;
+    }
+
+    /* RESPONSIVE: menú superior hamburguesa */
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        background-color: #111;
+        padding: 0.5rem 0;
+        position: absolute;
+        top: 58px;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        border-top: 1px solid #333;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      nav a {
+        padding: 0.8rem 0;
+        font-size: 1.1rem;
+      }
+    }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 </head>
 <body>
 
-  <h1>Escanea un código QR</h1>
+<header>
+  <div class="logo-container">
+    <img src="ChatGPT Image 1 jun 2025, 12_05_00.png" alt="VogueCrest Logo" />
+    <h1>Escáner QR</h1>
+    <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMenu()">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
+  <nav>
+    <ul id="navLinks">
+      <li><a href="inicio.html">Inicio</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="scaner.html" class="active">Escáner</a></li>
+      <li><a href="drops.html">Drops</a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <video id="video" autoplay></video>
-
-  <p>O selecciona una imagen con código QR:</p>
+<main>
+  <button id="startScanBtn">Iniciar Cámara (Trasera)</button>
+  <button id="stopScanBtn" style="display:none;">Detener Cámara</button><br />
   <input type="file" accept="image/*" id="fileInput" />
 
+  <video id="video" playsinline></video>
+
   <div id="output">
-    <h2>Información del Producto</h2>
-    <div id="productoInfo">Esperando escaneo...</div>
+    <p>Escanea un código QR o sube una imagen.</p>
   </div>
+</main>
 
-  <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
-  <script>
-    // Productos ejemplo
-    const productos = [
-      {
-        nombre: "Camisa Clásica",
-        codigo: "VC-001",
-        descripcion: "100% algodón, color blanco, talla M-L disponibles.",
-        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
-      },
-      {
-        nombre: "Camisa Urbana",
-        codigo: "VC-002",
-        descripcion: "Diseño casual con estampado minimalista.",
-        imagen: "descarga.jpg"
-      },
-      {
-        nombre: "Camisa Oversized",
-        codigo: "VC-003",
-        descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
-        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
+<footer class="footer-nav">
+  <a href="inicio.html" class="active">
+    <i class="bi bi-house-door"></i>
+    Inicio
+  </a>
+  <a href="catalogo.html">
+    <i class="bi bi-bag"></i>
+    Catálogo
+  </a>
+  <a href="scaner.html">
+    <i class="bi bi-qr-code-scan"></i>
+    Escáner
+  </a>
+  <a href="drops.html">
+    <i class="bi bi-fire"></i>    Drops
+  </a>
+  <a href="perfil.html">
+    <i class="bi bi-person"></i>
+    Perfil
+  </a>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const navLinks = document.getElementById('navLinks');
+    navLinks.classList.toggle('active');
+  }
+
+  const productos = [
+    {
+      nombre: "Camisa Clásica",
+      codigo: "VC-001",
+      descripcion: "100% algodón, color blanco, tallas M-L disponibles.",
+      imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
+      precio: 25.0,
+    },
+    {
+      nombre: "Camisa Urbana",
+      codigo: "VC-002",
+      descripcion: "Diseño casual con estampado minimalista.",
+      imagen: "descarga.jpg",
+      precio: 30.5,
+    },
+    {
+      nombre: "Camisa Oversized",
+      codigo: "VC-003",
+      descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
+      imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
+      precio: 28.75,
+    },
+  ];
+
+  const video = document.getElementById("video");
+  const output = document.getElementById("output");
+  const startBtn = document.getElementById("startScanBtn");
+  const stopBtn = document.getElementById("stopScanBtn");
+  const fileInput = document.getElementById("fileInput");
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  let scanning = false;
+
+  function mostrarProductoPorCodigo(codigo) {
+    const producto = productos.find((p) => p.codigo === codigo);
+    if (!producto) {
+      output.innerHTML = `<p class="error">No se encontró producto con el código: <b>${codigo}</b></p>`;
+      return;
+    }
+    output.innerHTML = `
+      <h2>${producto.nombre}</h2>
+      <img src="${producto.imagen}" alt="${producto.nombre}" />
+      <p>${producto.descripcion}</p>
+      <p><strong>Precio:</strong> $${producto.precio.toFixed(2)}</p>
+      <p><strong>Código:</strong> ${producto.codigo}</p>
+    `;
+  }
+
+  function procesarTextoQR(texto) {
+    let codigo = null;
+    try {
+      const url = new URL(texto, window.location.origin);
+      codigo = url.searchParams.get("codigo");
+    } catch {
+      if (texto.startsWith("VC-")) {
+        codigo = texto.trim();
       }
-    ];
+    }
+    if (!codigo) {
+      output.innerHTML = `<p class="error">Código QR no válido o sin información de producto.</p>`;
+      return;
+    }
+    mostrarProductoPorCodigo(codigo);
+  }
 
-    const video = document.getElementById('video');
-    const output = document.getElementById('productoInfo');
-    const fileInput = document.getElementById('fileInput');
+  function tick() {
+    if (video.readyState === video.HAVE_ENOUGH_DATA && scanning) {
+      canvas.height = video.videoHeight;
+      canvas.width = video.videoWidth;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+        scanning = false;
+        stopCamera();
+        procesarTextoQR(code.data);
+        return;
+      }
+    }
+    if (scanning) {
+      requestAnimationFrame(tick);
+    }
+  }
 
-    // Canvas para análisis QR (del video)
-    const canvasElement = document.createElement('canvas');
-    const canvas = canvasElement.getContext('2d');
-
-    let scanning = false;
-
-    // Acceder a cámara trasera
-    navigator.mediaDevices.getUserMedia({
-      video: { facingMode: "environment" }
-    }).then(stream => {
+  async function startCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: "environment" } },
+      });
       video.srcObject = stream;
-      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+      video.setAttribute("playsinline", true);
       video.play();
       scanning = true;
+      output.innerHTML = `<p>Escaneando...</p>`;
       tick();
-    }).catch(err => {
-      output.innerHTML = "No se pudo acceder a la cámara: " + err;
-    });
-
-    function tick() {
-      if (video.readyState === video.HAVE_ENOUGH_DATA && scanning) {
-        canvasElement.height = video.videoHeight;
-        canvasElement.width = video.videoWidth;
-        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-        const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-        const code = jsQR(imageData.data, imageData.width, imageData.height, {
-          inversionAttempts: "attemptBoth",
-        });
-        if (code) {
-          scanning = false;
-          mostrarProductoDesdeURL(code.data);
-          // Detener cámara para no seguir escaneando
-          video.srcObject.getTracks().forEach(track => track.stop());
-        }
-      }
-      if (scanning) {
-        requestAnimationFrame(tick);
-      }
+      startBtn.style.display = "none";
+      stopBtn.style.display = "inline-block";
+    } catch (error) {
+      output.innerHTML = `<p class="error">No se pudo acceder a la cámara: ${error.message}</p>`;
     }
+  }
 
-    // Escanear QR desde imagen subida
-    fileInput.addEventListener('change', e => {
-      if (!e.target.files.length) return;
-      const file = e.target.files[0];
-      const img = new Image();
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        img.onload = () => {
-          // dibujar imagen en canvas para analizar
-          canvasElement.width = img.width;
-          canvasElement.height = img.height;
-          canvas.drawImage(img, 0, 0, canvasElement.width, canvasElement.height);
-          const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-          const code = jsQR(imageData.data, imageData.width, imageData.height, {
-            inversionAttempts: "attemptBoth",
-          });
-          if (code) {
-            mostrarProductoDesdeURL(code.data);
-          } else {
-            output.innerHTML = "No se encontró código QR válido en la imagen.";
-          }
-        };
-        img.onerror = () => {
-          output.innerHTML = "Error al cargar la imagen.";
-        };
-        img.src = reader.result;
-      };
-
-      reader.readAsDataURL(file);
-    });
-
-    // Extrae código VC-XXX de la URL y muestra info
-    function mostrarProductoDesdeURL(url) {
-      // Intentamos extraer el parámetro codigo, soportando URLs tipo:
-      // https://tusitio.com/producto.html?codigo=VC-001
-      let codigo = null;
-
-      try {
-        const urlObj = new URL(url, window.location.origin);
-        codigo = urlObj.searchParams.get('codigo');
-      } catch {
-        // Si no es una URL completa, tratar como texto plano (ej. solo VC-001)
-        if (url.startsWith('VC-')) {
-          codigo = url;
-        }
-      }
-
-      if (!codigo) {
-        output.innerHTML = "Código QR no válido o no contiene código de producto.";
-        return;
-      }
-
-      const producto = productos.find(p => p.codigo === codigo);
-
-      if (!producto) {
-        output.innerHTML = `No se encontró información para el código: <strong>${codigo}</strong>`;
-        return;
-      }
-
-      // Mostrar info y imagen centrada
-      output.innerHTML = `
-        <img src="${producto.imagen}" alt="${producto.nombre}" />
-        <h3>${producto.nombre}</h3>
-        <p>${producto.descripcion}</p>
-        <small><strong>Código:</strong> ${producto.codigo}</small>
-      `;
+  function stopCamera() {
+    scanning = false;
+    const stream = video.srcObject;
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
     }
-  </script>
+    video.srcObject = null;
+    startBtn.style.display = "inline-block";
+    stopBtn.style.display = "none";
+  }
+
+  startBtn.addEventListener("click", startCamera);
+  stopBtn.addEventListener("click", () => {
+    stopCamera();
+    output.innerHTML = `<p>Escaneo detenido.</p>`;
+  });
+
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const img = new Image();
+    img.onload = () => {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height);
+      if (code) {
+        procesarTextoQR(code.data);
+      } else {
+        output.innerHTML = `<p class="error">No se encontró código QR en la imagen.</p>`;
+      }
+    };
+    img.onerror = () => {
+      output.innerHTML = `<p class="error">Error al cargar la imagen.</p>`;
+    };
+    img.src = URL.createObjectURL(file);
+  });
+</script>
 
 </body>
 </html>

@@ -2,220 +2,530 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VogueCrest - Catálogo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
   <style>
     body {
+      background-color: #000;
+      color: #fff;
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 1rem;
-      background: #fdfdfd;
-      color: #333;
+      padding-top: 70px; /* espacio para header fijo */
     }
-    header {
-      background-color: #111;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      position: sticky;
+    header#header-fijo {
+      position: fixed;
       top: 0;
-      z-index: 1000;
-    }
-    nav ul {
+      left: 0; right: 0;
+      height: 60px;
+      background-color: #111;
+      border-bottom: 1px solid #222;
       display: flex;
-      justify-content: center;
-      list-style: none;
-      padding: 0;
-      margin-top: 0.5rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      z-index: 1200;
     }
-    nav li {
-      margin: 0 1rem;
-    }
-    nav a {
-      color: white;
+    #logo-header {
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f8c630;
+      font-weight: 700;
+      font-size: 22px;
       text-decoration: none;
+    }
+    #logo-header img {
+      height: 40px;
+      border-radius: 6px;
+    }
+    #carrito-header {
+      position: relative;
+      cursor: pointer;
+      color: #f8c630;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+    }
+    #contador-carrito {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      background: #f00;
+      color: #fff;
+      font-size: 12px;
       font-weight: bold;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     main {
-      max-width: 700px;
-      margin: 2rem auto;
+      max-width: 900px;
+      margin: 0 auto 80px auto;
+      padding: 10px 15px;
     }
     .producto {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      margin-bottom: 2rem;
+      background-color: #111;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      padding: 15px;
+      box-shadow: 0 0 10px #222;
       text-align: center;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
     .producto img {
       max-width: 100%;
-      height: auto;
       border-radius: 8px;
+      margin-bottom: 10px;
+      height: 220px;
+      object-fit: cover;
     }
-    button {
-      background-color: #000;
-      color: white;
+    .producto h3 {
+      margin: 0.4rem 0;
+      font-weight: 700;
+      font-size: 1.3rem;
+    }
+    .descripcion {
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      color: #ddd;
+    }
+    .precio {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #f8c630;
+      margin-bottom: 0.8rem;
+    }
+    button.agregar-carrito, button.mostrar-qr {
+      background-color: #f8c630;
       border: none;
-      padding: 0.5rem 1rem;
-      margin-top: 0.5rem;
-      border-radius: 4px;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin: 5px;
+      min-width: 130px;
+    }
+    button.agregar-carrito:hover, button.mostrar-qr:hover {
+      background-color: #c7a600;
+    }
+    /* Texto QR info */
+    .texto-qr-info {
+      color: #f8c630;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+    }
+    /* Carrito desplegable */
+    #carrito-desplegable {
+      position: fixed;
+      top: 60px;
+      right: 0;
+      width: 320px;
+      max-height: 70vh;
+      background-color: #111;
+      border-left: 1px solid #222;
+      box-shadow: -2px 0 8px #000;
+      padding: 20px;
+      overflow-y: auto;
+      display: none;
+      z-index: 1300;
+      color: #fff;
+    }
+    #carrito-desplegable h4 {
+      margin-top: 0;
+      border-bottom: 1px solid #444;
+      padding-bottom: 10px;
+    }
+    #listaCarrito li {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      border-bottom: 1px solid #222;
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #listaCarrito li button {
+      background: transparent;
+      border: none;
+      color: #f00;
+      font-size: 16px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #444;
+    #totalPrecio {
+      font-weight: 700;
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #f8c630;
+      text-align: right;
     }
-    #listaProductos {
-      margin-top: 1rem;
-    }
-    #carrito {
-      border: 1px solid #ccc;
-      padding: 1rem;
+    #vaciar-btn {
+      background: #f00;
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
       border-radius: 8px;
-      margin-top: 1rem;
-      background-color: #f8f8f8;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #vaciar-btn:hover {
+      background: #b30000;
+    }
+    footer {
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #000;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+    .bottom-nav a {
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: none;
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .bottom-nav i {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .modal-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1400;
+      padding: 20px;
+    }
+    .modal-bg.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #111;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 280px;
+      width: 90%;
+      color: #fff;
+      box-shadow: 0 0 20px #f8c630;
+      position: relative;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    .modal-content h5 {
+      margin-bottom: 15px;
+    }
+    .modal-close {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 22px;
+      color: #f8c630;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    @media (max-width: 480px) {
+      #logo-header {
+        font-size: 18px;
+      }
+      #carrito-header {
+        font-size: 24px;
+      }
+      main {
+        padding: 10px 8px;
+      }
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-<header>
-  <h1>VogueCrest - Catálogo</h1>
-  <nav>
-    <ul>
-      <li><a href="catalogo.html">Catálogo</a></li>
-      <li><a href="scaner.html">QR</a></li>
-      <li><a href="perfil.html">Perfil</a></li>
-      <li><a href="drops.html">Drops</a></li>
-    </ul>
-  </nav>
-</header>
+  <header id="header-fijo">
+    <a href="inicio.html" id="logo-header" aria-label="Volver a página principal">
+      <img src="ChatGPT Image 1 jun 2025, 12_05_00.png" alt="Logo VogueCrest" />
+      VOGUECREST
+    </a>
+    <div id="carrito-header" aria-label="Ver carrito de compras" role="button" tabindex="0">
+      <i class="bi bi-bag"></i>
+      <div id="contador-carrito" aria-live="polite" aria-atomic="true">0</div>
+    </div>
+  </header>
 
-<main>
-  <section id="catalogo">
-    <h2>Catálogo de Prendas</h2>
-    <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
-    <div id="listaProductos"></div>
-  </section>
+  <main>
+    <h1 style="text-align:center; margin-bottom: 1.5rem;">Catálogo de Prendas</h1>
 
-  <section id="carrito">
+    <div id="listaProductos">
+      <!-- Productos insertados por JS -->
+    </div>
+  </main>
+
+  <aside id="carrito-desplegable" aria-label="Carrito de compras">
     <h4>Carrito de Compras</h4>
     <ul id="listaCarrito"></ul>
-    <p id="totalProductos">Total de productos: 0</p>
-    <button onclick="vaciarCarrito()">Vaciar Carrito</button>
-  </section>
-</main>
+    <p id="totalPrecio">Total: $0.00</p>
+    <button id="vaciar-btn">Vaciar Carrito</button>
+  </aside>
 
-<script>
-  const productos = [
-    {
-      nombre: "Camisa Clásica",
-      codigo: "VC-001",
-      descripcion: "100% algodón, color blanco, talla M-L disponibles.",
-      imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
-    },
-    {
-      nombre: "Camisa Urbana",
-      codigo: "VC-002",
-      descripcion: "Diseño casual con estampado minimalista.",
-      imagen: "descarga.jpg"
-    },
-    {
-      nombre: "Camisa Oversized",
-      codigo: "VC-003",
-      descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
-      imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
-    }
-  ];
+  <div class="modal-bg" id="modal-qr" role="dialog" aria-modal="true" aria-labelledby="modal-qr-title" aria-describedby="modal-qr-desc">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Cerrar ventana QR">&times;</button>
+      <h5 id="modal-qr-title">Código QR del producto</h5>
+      <div id="qr-code" aria-describedby="modal-qr-desc"></div>
+      <p id="modal-qr-desc" style="margin-top: 15px; font-size: 0.9rem; color:#ccc;">
+        Escanea el código QR para ver el producto en línea.
+      </p>
+    </div>
+  </div>
 
-  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  
+  <footer class="footer-voguecrest" style="background-color:#111; color:#fff; padding:20px 0; margin-top:40px; text-align:center;">
+  <div style="max-width:900px; margin:0 auto; display:flex; justify-content:center; gap:40px; flex-wrap:wrap; font-size:14px;">
+    <a href="inicio.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Página de inicio">
+      <i class="bi bi-house-door-fill" style="font-size:18px;"></i> Inicio
+    </a>
+    <a href="drops.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Página de drops">
+      <i class="bi bi-bag-fill" style="font-size:18px;"></i> Drops
+    </a>
+    <a href="catalogo.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Página de catálogo">
+      <i class="bi bi-card-list" style="font-size:18px;"></i> Catálogo
+    </a>
+    <a href="carrito.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Carrito de compras">
+      <i class="bi bi-bag-check-fill" style="font-size:18px;"></i> Carrito
+    </a>
+  </div>
+  <p style="margin-top:15px; font-size:13px; color:#aaa;">© 2025 VogueCrest. Todos los derechos reservados.</p>
+</footer>
+  
 
-  function mostrarProductos() {
-    const contenedor = document.getElementById('listaProductos');
-    contenedor.innerHTML = '';
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    productos.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'producto';
-      div.innerHTML = `
-        <img src="${p.imagen}" alt="${p.nombre}" />
-        <h3>${p.nombre}</h3>
-        <p>${p.descripcion}</p>
-        <div id="qr-${p.codigo}" style="display: flex; justify-content: center; margin: 1rem auto;"></div>
-        <button onclick="agregarAlCarrito('${p.nombre}')">Agregar al carrito</button>
-      `;
-      contenedor.appendChild(div);
+  <script>
+    // Datos productos (usar tus imágenes reales)
+    const productos = [
+      {
+        id: 1,
+        nombre: "Playera Oversized Blanco",
+        descripcion: "Playera amplia con diseño moderno y cómoda para el verano.",
+        precio: 520,
+        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
+        url: "https://example.com/producto/1"
+      },
+      {
+        id: 2,
+        nombre: "Playera Cebra",
+        descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
+        precio: 620,
+        imagen: "descarga.jpg",
+        url: "https://example.com/producto/2"
+      },
+      {
+        id: 3,
+        nombre: "Playera Semi Oversized Negra",
+        descripcion: "Playera semi oversized color negro, elegante y versátil.",
+        precio: 570,
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
+        url: "https://example.com/producto/3"
+      }
+    ];
 
-      // Generar QR con enlace al detalle, URL que el scanner entiende
-      new QRCode(document.getElementById(`qr-${p.codigo}`), {
-        text: `${location.origin}/producto.html?codigo=${p.codigo}`,
-        width: 100,
-        height: 100
+    const listaProductos = document.getElementById('listaProductos');
+    const contadorCarrito = document.getElementById('contador-carrito');
+    const carritoDesplegable = document.getElementById('carrito-desplegable');
+    const listaCarrito = document.getElementById('listaCarrito');
+    const totalPrecio = document.getElementById('totalPrecio');
+    const vaciarBtn = document.getElementById('vaciar-btn');
+
+    // Modal QR elementos
+    const modalQr = document.getElementById('modal-qr');
+    const qrCodeDiv = document.getElementById('qr-code');
+    const modalCloseBtn = modalQr.querySelector('.modal-close');
+
+    // Carrito en localStorage o vacío
+    let carrito = JSON.parse(localStorage.getItem('carritoVogueCrest')) || [];
+
+    // Mostrar productos
+    function mostrarProductos() {
+      listaProductos.innerHTML = "";
+      productos.forEach(producto => {
+        // Crear contenedor producto
+        const divProducto = document.createElement('div');
+        divProducto.classList.add('producto');
+
+        divProducto.innerHTML = `
+          <img src="${producto.imagen}" alt="Imagen de ${producto.nombre}" loading="lazy" />
+          <h3>${producto.nombre}</h3>
+          <p class="descripcion">${producto.descripcion}</p>
+          <p class="precio">$${producto.precio.toFixed(2)}</p>
+          <button class="agregar-carrito" data-id="${producto.id}">Agregar al carrito</button>
+          <button class="mostrar-qr" data-id="${producto.id}">Mostrar QR</button>
+          <p class="texto-qr-info" id="texto-qr-${producto.id}">📲 Escanea para ver la información de la prenda</p>
+        `;
+
+        listaProductos.appendChild(divProducto);
+
+        // Ocultar texto QR info inicialmente
+        const textoQrInfo = divProducto.querySelector('.texto-qr-info');
+        textoQrInfo.style.display = "none";
       });
-    });
-  }
-
-  function agregarAlCarrito(productoNombre) {
-    const existente = carrito.find(p => p.nombre === productoNombre);
-    if (existente) {
-      existente.cantidad++;
-    } else {
-      carrito.push({ nombre: productoNombre, cantidad: 1 });
     }
-    guardarCarrito();
-    actualizarCarrito();
-    alert(productoNombre + " fue agregado al carrito.");
-  }
 
-  function guardarCarrito() {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-  }
+    // Actualizar contador carrito
+    function actualizarContador() {
+      contadorCarrito.textContent = carrito.length;
+    }
 
-  function actualizarCarrito() {
-    const lista = document.getElementById('listaCarrito');
-    lista.innerHTML = '';
-    if (carrito.length === 0) {
-      lista.innerHTML = '<li>No hay productos en el carrito.</li>';
-    } else {
-      carrito.forEach(p => {
+    // Mostrar carrito desplegable
+    const carritoHeader = document.getElementById('carrito-header');
+    carritoHeader.addEventListener('click', () => {
+      if (carritoDesplegable.style.display === 'block') {
+        carritoDesplegable.style.display = 'none';
+      } else {
+        carritoDesplegable.style.display = 'block';
+      }
+    });
+
+    // Mostrar productos en carrito
+    function mostrarCarrito() {
+      listaCarrito.innerHTML = '';
+      let total = 0;
+      carrito.forEach(item => {
+        const producto = productos.find(p => p.id === item.id);
+        total += producto.precio * item.cantidad;
         const li = document.createElement('li');
-        li.textContent = `${p.nombre} - Cantidad: ${p.cantidad}`;
-        lista.appendChild(li);
+        li.innerHTML = `
+          ${producto.nombre} x${item.cantidad} - $${(producto.precio * item.cantidad).toFixed(2)}
+          <button class="eliminar-item" data-id="${producto.id}" aria-label="Eliminar ${producto.nombre} del carrito">&times;</button>
+        `;
+        listaCarrito.appendChild(li);
       });
+      totalPrecio.textContent = `Total: $${total.toFixed(2)}`;
     }
-    const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
-    document.getElementById('totalProductos').textContent = `Total de productos: ${total}`;
-  }
 
-  function vaciarCarrito() {
-    if (carrito.length === 0) {
-      alert("El carrito ya está vacío.");
-      return;
+    // Guardar carrito en localStorage
+    function guardarCarrito() {
+      localStorage.setItem('carritoVogueCrest', JSON.stringify(carrito));
     }
-    if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
-      carrito = [];
-      guardarCarrito();
-      actualizarCarrito();
-      alert("Carrito vaciado.");
-    }
-  }
 
-  function buscarPrendas() {
-    const filtro = document.getElementById('buscador').value.toLowerCase();
-    const productosDiv = document.querySelectorAll('.producto');
-    productosDiv.forEach(p => {
-      const nombre = p.querySelector('h3').textContent.toLowerCase();
-      p.style.display = nombre.includes(filtro) ? 'block' : 'none';
+    // Añadir producto al carrito
+    listaProductos.addEventListener('click', (e) => {
+      if (e.target.classList.contains('agregar-carrito')) {
+        const id = parseInt(e.target.dataset.id);
+        const productoEnCarrito = carrito.find(item => item.id === id);
+        if (productoEnCarrito) {
+          productoEnCarrito.cantidad++;
+        } else {
+          carrito.push({ id: id, cantidad: 1 });
+        }
+        actualizarContador();
+        mostrarCarrito();
+        guardarCarrito();
+      }
     });
-  }
 
-  window.onload = () => {
+    // Eliminar producto del carrito
+    listaCarrito.addEventListener('click', (e) => {
+      if (e.target.classList.contains('eliminar-item')) {
+        const id = parseInt(e.target.dataset.id);
+        carrito = carrito.filter(item => item.id !== id);
+        actualizarContador();
+        mostrarCarrito();
+        guardarCarrito();
+      }
+    });
+
+    // Vaciar carrito
+    vaciarBtn.addEventListener('click', () => {
+      carrito = [];
+      actualizarContador();
+      mostrarCarrito();
+      guardarCarrito();
+    });
+
+    // Mostrar QR y texto "Escanea..."
+    listaProductos.addEventListener('click', (e) => {
+      if (e.target.classList.contains('mostrar-qr')) {
+        const id = parseInt(e.target.dataset.id);
+        const producto = productos.find(p => p.id === id);
+        if (!producto) return;
+
+        // Generar QR del url
+        qrCodeDiv.innerHTML = "";
+        QRCode.toCanvas(producto.url, { width: 200 }, (error, canvas) => {
+          if (error) console.error(error);
+          else qrCodeDiv.appendChild(canvas);
+        });
+
+        // Mostrar modal
+        modalQr.classList.add('active');
+
+        // Mostrar el texto "Escanea para ver la información" SOLO para ese producto
+        // Primero ocultamos todos los textos
+        document.querySelectorAll('.texto-qr-info').forEach(el => el.style.display = 'none');
+        // Luego mostramos solo el texto del producto actual
+        const textoQr = document.getElementById(`texto-qr-${id}`);
+        if(textoQr) textoQr.style.display = 'block';
+      }
+    });
+
+    // Cerrar modal QR y ocultar textos
+    modalCloseBtn.addEventListener('click', () => {
+      modalQr.classList.remove('active');
+      // Ocultar todos textos QR info
+      document.querySelectorAll('.texto-qr-info').forEach(el => el.style.display = 'none');
+    });
+
+    // Cerrar modal al hacer clic fuera contenido
+    modalQr.addEventListener('click', (e) => {
+      if(e.target === modalQr) {
+        modalCloseBtn.click();
+      }
+    });
+
+    // Inicializar
     mostrarProductos();
-    actualizarCarrito();
-  };
-</script>
-
+    actualizarContador();
+    mostrarCarrito();
+  </script>
 </body>
 </html>

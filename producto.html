@@ -3,80 +3,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Detalle de Producto - VogueCrest</title>
+  <title>Detalle del Producto</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
-      background: #fdfdfd;
+      background: #f8f9fa;
       color: #333;
-      max-width: 600px;
-      margin: auto;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      font-family: 'Segoe UI', sans-serif;
     }
-    img {
-      max-width: 100%;
+    .producto-img {
+      max-height: 350px;
+      object-fit: contain;
       border-radius: 8px;
     }
-    h1, h2 {
-      text-align: center;
-    }
-    .info-producto {
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    button {
-      display: block;
-      margin: 2rem auto;
-      background-color: #000;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #444;
-    }
-    p.error {
-      color: red;
-      text-align: center;
-      font-weight: bold;
+    .precio {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #000;
     }
   </style>
 </head>
 <body>
-  <h1>Detalle del Producto</h1>
-  <div id="contenido"></div>
-  <button onclick="window.location.href='index.html'">Volver al Catálogo</button>
+
+  <div class="container max-w-lg bg-white p-4 rounded shadow-sm">
+    <h1 class="text-center mb-4">Detalle del Producto</h1>
+    <div id="contenido"></div>
+    <div class="d-flex justify-content-center mt-4">
+      <button id="volverBtn" class="btn btn-dark">Volver al Catálogo</button>
+    </div>
+  </div>
 
   <script>
-    // Mismos productos (podrías cargar desde un JSON o API en producción)
     const productos = [
       {
         nombre: "Camisa Clásica",
         codigo: "VC-001",
         descripcion: "100% algodón, color blanco, talla M-L disponibles.",
-        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
+        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
+        precio: 25.00
       },
       {
         nombre: "Camisa Urbana",
         codigo: "VC-002",
         descripcion: "Diseño casual con estampado minimalista.",
-        imagen: "descarga.jpg"
+        imagen: "descarga.jpg",
+        precio: 30.50
       },
       {
         nombre: "Camisa Oversized",
         codigo: "VC-003",
         descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
-        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
+        precio: 28.75
       }
     ];
 
-    // Función para obtener parámetro de URL
     function getParametroUrl(nombre) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(nombre);
@@ -87,28 +70,36 @@
       const contenido = document.getElementById('contenido');
 
       if (!codigo) {
-        contenido.innerHTML = `<p class="error">No se proporcionó un código de producto.</p>`;
+        contenido.innerHTML = `<div class="alert alert-danger text-center" role="alert">No se proporcionó un código de producto.</div>`;
         return;
       }
 
       const producto = productos.find(p => p.codigo === codigo);
 
       if (!producto) {
-        contenido.innerHTML = `<p class="error">Producto no encontrado.</p>`;
+        contenido.innerHTML = `<div class="alert alert-danger text-center" role="alert">Producto no encontrado.</div>`;
         return;
       }
 
       contenido.innerHTML = `
-        <div class="info-producto">
-          <h2>${producto.nombre}</h2>
-          <img src="${producto.imagen}" alt="${producto.nombre}" />
+        <div class="text-center">
+          <h2 class="mb-3">${producto.nombre}</h2>
+          <img src="${producto.imagen}" alt="Imagen del producto ${producto.nombre}" class="img-fluid producto-img mb-3" />
+          <p class="precio">$${producto.precio.toFixed(2)}</p>
           <p>${producto.descripcion}</p>
           <p><strong>Código:</strong> ${producto.codigo}</p>
         </div>
       `;
     }
 
-    window.onload = mostrarProducto;
+    window.onload = () => {
+      mostrarProducto();
+      document.getElementById('volverBtn').addEventListener('click', () => {
+        window.location.href = 'catalogo.html';
+      });
+    };
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
