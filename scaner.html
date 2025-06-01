@@ -2,197 +2,220 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Escáner QR - VogueCrest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VogueCrest - Catálogo</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      margin: 0; 
+      margin: 0;
       padding: 1rem;
       background: #fdfdfd;
       color: #333;
+    }
+    header {
+      background-color: #111;
+      color: white;
+      padding: 1rem;
       text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    #reader {
-      width: 300px;
-      margin: 1rem auto;
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin-top: 0.5rem;
     }
-    #info {
-      margin-top: 1rem;
-      text-align: center; /* Centra texto e imagen */
+    nav li {
+      margin: 0 1rem;
     }
-    #info img {
-      max-width: 200px;
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    main {
+      max-width: 700px;
+      margin: 2rem auto;
+    }
+    .producto {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
       border-radius: 8px;
-      margin-top: 1rem;
-      display: inline-block;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    button, input[type="file"] {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
+    .producto img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    button {
       background-color: #000;
       color: white;
       border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 0.5rem;
       border-radius: 4px;
       cursor: pointer;
     }
-    button:hover, input[type="file"]:hover {
+    button:hover {
       background-color: #444;
     }
-    input[type="file"] {
-      padding: 0.3rem;
-      background-color: #111;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      border: none;
+    #listaProductos {
+      margin-top: 1rem;
+    }
+    #carrito {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      background-color: #f8f8f8;
     }
   </style>
-
-  <!-- Librería html5-qrcode -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-  <h1>Escáner QR - VogueCrest</h1>
+<header>
+  <h1>VogueCrest - Catálogo</h1>
+  <nav>
+    <ul>
+      <li><a href="catalogo.html">Catálogo</a></li>
+      <li><a href="scaner.html">QR</a></li>
+      <li><a href="perfil.html">Perfil</a></li>
+      <li><a href="drops.html">Drops</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <div id="reader"></div>
+<main>
+  <section id="catalogo">
+    <h2>Catálogo de Prendas</h2>
+    <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
+    <div id="listaProductos"></div>
+  </section>
 
-  <div>
-    <button id="startScan">Iniciar Escaneo</button>
-    <button id="stopScan" style="display:none;">Detener Escaneo</button>
-  </div>
+  <section id="carrito">
+    <h4>Carrito de Compras</h4>
+    <ul id="listaCarrito"></ul>
+    <p id="totalProductos">Total de productos: 0</p>
+    <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+  </section>
+</main>
 
-  <div>
-    <input type="file" id="fileInput" accept="image/*" />
-  </div>
-
-  <div id="info">
-    <p>Escanea un código QR para ver la información de la prenda.</p>
-  </div>
-
-  <script>
-    const productos = [
-      {
-        nombre: "Camisa Clásica",
-        codigo: "VC-001",
-        descripcion: "100% algodón, color blanco, talla M-L disponibles.",
-        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
-      },
-      {
-        nombre: "Camisa Urbana",
-        codigo: "VC-002",
-        descripcion: "Diseño casual con estampado minimalista.",
-        imagen: "descarga.jpg"
-      },
-      {
-        nombre: "Camisa Oversized",
-        codigo: "VC-003",
-        descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
-        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
-      }
-    ];
-
-    const infoDiv = document.getElementById('info');
-    let html5QrcodeScanner;
-    let scanning = false;
-
-    function mostrarProductoPorCodigo(codigo) {
-      const producto = productos.find(p => p.codigo === codigo);
-      if (producto) {
-        infoDiv.innerHTML = `
-          <h2>${producto.nombre}</h2>
-          <img src="${producto.imagen}" alt="${producto.nombre}" />
-          <p>${producto.descripcion}</p>
-        `;
-      } else {
-        infoDiv.innerHTML = `<p>Producto no encontrado para el código: <b>${codigo}</b></p>`;
-      }
+<script>
+  const productos = [
+    {
+      nombre: "Camisa Clásica",
+      codigo: "VC-001",
+      descripcion: "100% algodón, color blanco, talla M-L disponibles.",
+      imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
+    },
+    {
+      nombre: "Camisa Urbana",
+      codigo: "VC-002",
+      descripcion: "Diseño casual con estampado minimalista.",
+      imagen: "descarga.jpg"
+    },
+    {
+      nombre: "Camisa Oversized",
+      codigo: "VC-003",
+      descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
+      imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
     }
+  ];
 
-    function procesarTextoQR(decodedText) {
-      try {
-        const url = new URL(decodedText);
-        const codigo = url.searchParams.get('codigo');
-        if (codigo) {
-          mostrarProductoPorCodigo(codigo);
-        } else {
-          infoDiv.innerHTML = `<p>Código QR no válido.</p>`;
-        }
-      } catch {
-        infoDiv.innerHTML = `<p>Texto leído: ${decodedText}</p>`;
-      }
-    }
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-    function onScanSuccess(decodedText, decodedResult) {
-      html5QrcodeScanner.stop().then(() => {
-        scanning = false;
-        document.getElementById('startScan').style.display = 'inline-block';
-        document.getElementById('stopScan').style.display = 'none';
-      }).catch(err => {
-        console.error('Error deteniendo escaneo', err);
+  function mostrarProductos() {
+    const contenedor = document.getElementById('listaProductos');
+    contenedor.innerHTML = '';
+
+    productos.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'producto';
+      div.innerHTML = `
+        <img src="${p.imagen}" alt="${p.nombre}" />
+        <h3>${p.nombre}</h3>
+        <p>${p.descripcion}</p>
+        <div id="qr-${p.codigo}" style="display: flex; justify-content: center; margin: 1rem auto;"></div>
+        <button onclick="agregarAlCarrito('${p.nombre}')">Agregar al carrito</button>
+      `;
+      contenedor.appendChild(div);
+
+      // Generar QR con enlace al detalle, URL que el scanner entiende
+      new QRCode(document.getElementById(`qr-${p.codigo}`), {
+        text: `${location.origin}/producto.html?codigo=${p.codigo}`,
+        width: 100,
+        height: 100
       });
+    });
+  }
 
-      procesarTextoQR(decodedText);
+  function agregarAlCarrito(productoNombre) {
+    const existente = carrito.find(p => p.nombre === productoNombre);
+    if (existente) {
+      existente.cantidad++;
+    } else {
+      carrito.push({ nombre: productoNombre, cantidad: 1 });
     }
+    guardarCarrito();
+    actualizarCarrito();
+    alert(productoNombre + " fue agregado al carrito.");
+  }
 
-    function onScanFailure(error) {
-      // Solo ignora errores de lectura continua
+  function guardarCarrito() {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }
+
+  function actualizarCarrito() {
+    const lista = document.getElementById('listaCarrito');
+    lista.innerHTML = '';
+    if (carrito.length === 0) {
+      lista.innerHTML = '<li>No hay productos en el carrito.</li>';
+    } else {
+      carrito.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = `${p.nombre} - Cantidad: ${p.cantidad}`;
+        lista.appendChild(li);
+      });
     }
+    const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
+    document.getElementById('totalProductos').textContent = `Total de productos: ${total}`;
+  }
 
-    document.getElementById('startScan').addEventListener('click', () => {
-      if (!scanning) {
-        html5QrcodeScanner = new Html5Qrcode("reader");
-        const config = { 
-          fps: 10, 
-          qrbox: 250,
-          facingMode: { exact: "environment" }
-        };
-        html5QrcodeScanner.start(
-          { facingMode: { exact: "environment" } },
-          config,
-          onScanSuccess,
-          onScanFailure
-        ).then(() => {
-          scanning = true;
-          document.getElementById('startScan').style.display = 'none';
-          document.getElementById('stopScan').style.display = 'inline-block';
-          infoDiv.innerHTML = '<p>Escaneando...</p>';
-        }).catch(err => {
-          alert('Error al iniciar cámara: ' + err);
-        });
-      }
+  function vaciarCarrito() {
+    if (carrito.length === 0) {
+      alert("El carrito ya está vacío.");
+      return;
+    }
+    if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+      carrito = [];
+      guardarCarrito();
+      actualizarCarrito();
+      alert("Carrito vaciado.");
+    }
+  }
+
+  function buscarPrendas() {
+    const filtro = document.getElementById('buscador').value.toLowerCase();
+    const productosDiv = document.querySelectorAll('.producto');
+    productosDiv.forEach(p => {
+      const nombre = p.querySelector('h3').textContent.toLowerCase();
+      p.style.display = nombre.includes(filtro) ? 'block' : 'none';
     });
+  }
 
-    document.getElementById('stopScan').addEventListener('click', () => {
-      if (scanning) {
-        html5QrcodeScanner.stop().then(() => {
-          scanning = false;
-          document.getElementById('startScan').style.display = 'inline-block';
-          document.getElementById('stopScan').style.display = 'none';
-          infoDiv.innerHTML = '<p>Escaneo detenido.</p>';
-          document.getElementById('reader').innerHTML = '';
-        }).catch(err => {
-          alert('Error al detener la cámara: ' + err);
-        });
-      }
-    });
+  window.onload = () => {
+    mostrarProductos();
+    actualizarCarrito();
+  };
+</script>
 
-    // Escanear desde imagen subida
-    document.getElementById('fileInput').addEventListener('change', event => {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const html5QrCode = new Html5Qrcode(/* element id not needed here */);
-
-      html5QrCode.scanFile(file, true)
-        .then(decodedText => {
-          procesarTextoQR(decodedText);
-        })
-        .catch(err => {
-          infoDiv.innerHTML = `<p>No se pudo leer el código QR de la imagen.</p>`;
-        });
-    });
-  </script>
 </body>
 </html>
