@@ -27,7 +27,7 @@
       margin-top: 1rem;
       display: inline-block;
     }
-    button {
+    button, input[type="file"] {
       margin-top: 1rem;
       padding: 0.5rem 1rem;
       background-color: #000;
@@ -36,8 +36,16 @@
       border-radius: 4px;
       cursor: pointer;
     }
-    button:hover {
+    button:hover, input[type="file"]:hover {
       background-color: #444;
+    }
+    input[type="file"] {
+      padding: 0.3rem;
+      background-color: #111;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
     }
   </style>
 
@@ -50,12 +58,18 @@
 
   <div id="reader"></div>
 
+  <div>
+    <button id="startScan">Iniciar Escaneo</button>
+    <button id="stopScan" style="display:none;">Detener Escaneo</button>
+  </div>
+
+  <div>
+    <input type="file" id="fileInput" accept="image/*" />
+  </div>
+
   <div id="info">
     <p>Escanea un código QR para ver la información de la prenda.</p>
   </div>
-
-  <button id="startScan">Iniciar Escaneo</button>
-  <button id="stopScan" style="display:none;">Detener Escaneo</button>
 
   <script>
     const productos = [
@@ -96,17 +110,7 @@
       }
     }
 
-    function onScanSuccess(decodedText, decodedResult) {
-      // Se detiene escaneo tras detectar
-      html5QrcodeScanner.stop().then(() => {
-        scanning = false;
-        document.getElementById('startScan').style.display = 'inline-block';
-        document.getElementById('stopScan').style.display = 'none';
-      }).catch(err => {
-        console.error('Error deteniendo escaneo', err);
-      });
-
-      // Extraemos solo el código (asumimos url con ?codigo=XX)
+    function procesarTextoQR(decodedText) {
       try {
         const url = new URL(decodedText);
         const codigo = url.searchParams.get('codigo');
@@ -116,14 +120,24 @@
           infoDiv.innerHTML = `<p>Código QR no válido.</p>`;
         }
       } catch {
-        // Si no es URL válida, mostramos el texto
         infoDiv.innerHTML = `<p>Texto leído: ${decodedText}</p>`;
       }
     }
 
+    function onScanSuccess(decodedText, decodedResult) {
+      html5QrcodeScanner.stop().then(() => {
+        scanning = false;
+        document.getElementById('startScan').style.display = 'inline-block';
+        document.getElementById('stopScan').style.display = 'none';
+      }).catch(err => {
+        console.error('Error deteniendo escaneo', err);
+      });
+
+      procesarTextoQR(decodedText);
+    }
+
     function onScanFailure(error) {
-      // No hacemos nada si no lee (por ejemplo, solo mostramos en consola)
-      // console.warn(`Escaneo fallido: ${error}`);
+      // Solo ignora errores de lectura continua
     }
 
     document.getElementById('startScan').addEventListener('click', () => {
@@ -132,8 +146,6 @@
         const config = { 
           fps: 10, 
           qrbox: 250,
-          // Cámara trasera preferida
-          experimentalFeatures: { useBarCodeDetectorIfSupported: true },
           facingMode: { exact: "environment" }
         };
         html5QrcodeScanner.start(
@@ -164,6 +176,22 @@
           alert('Error al detener la cámara: ' + err);
         });
       }
+    });
+
+    // Escanear desde imagen subida
+    document.getElementById('fileInput').addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const html5QrCode = new Html5Qrcode(/* element id not needed here */);
+
+      html5QrCode.scanFile(file, true)
+        .then(decodedText => {
+          procesarTextoQR(decodedText);
+        })
+        .catch(err => {
+          infoDiv.innerHTML = `<p>No se pudo leer el código QR de la imagen.</p>`;
+        });
     });
   </script>
 </body>
