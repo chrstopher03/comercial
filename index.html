@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VogueCrest</title>
   <style>
+    
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
@@ -39,10 +40,15 @@
     main {
       padding: 2rem;
     }
+    section {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 2rem;
+    }
     .producto {
       border: 1px solid #ccc;
       padding: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
       text-align: center;
       border-radius: 8px;
       background: #fff;
@@ -53,10 +59,24 @@
       height: auto;
       border-radius: 8px;
     }
-    .qr {
+    button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
+    #carrito {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
       margin-top: 1rem;
-      display: flex;
-      justify-content: center;
+      background-color: #f8f8f8;
     }
     footer {
       background-color: #111;
@@ -67,23 +87,54 @@
   </style>
 </head>
 <body>
-
+    
   <header>
     <h1>VogueCrest</h1>
     <nav>
       <ul>
-        <li><a href="#">Catálogo</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
         <li><a href="scaner.html">QR</a></li>
-        <li><a href="#">Perfil</a></li>
-        <li><a href="#">Drops</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+        <li><a href="drops.html">Drops</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
+    <section id="login">
+      <h2>Iniciar Sesión</h2>
+      <input type="text" id="nombreUsuario" placeholder="Ingresa tu nombre" />
+      <button onclick="iniciarSesion()">Entrar</button>
+    </section>
+
     <section id="catalogo">
       <h2>Catálogo de Prendas</h2>
+      <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
       <div id="listaProductos"></div>
+    </section>
+
+    <section id="qr">
+      <h2>Escanear Código QR</h2>
+      <input type="text" id="codigoQR" placeholder="Ingresa código QR" />
+      <button onclick="buscarQR()">Buscar</button>
+      <div id="infoQR"></div>
+    </section>
+
+    <section id="perfil">
+      <h2>Mi Perfil</h2>
+      <p id="nombrePerfil">Nombre: -</p>
+      
+      <div id="carrito">
+        <h4>Carrito de Compras</h4>
+        <ul id="listaCarrito"></ul>
+        <p id="totalProductos">Total de productos: 0</p>
+        <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+      </div>
+    </section>
+
+    <section id="drops">
+      <h2>Drops Exclusivos</h2>
+      <p>¡Próxima colección en: <span id="countdown"></span></p>
     </section>
   </main>
 
@@ -92,6 +143,7 @@
   </footer>
 
   <script>
+    // Lista de productos con datos, incluyendo código para QR
     const productos = [
       {
         nombre: "Camisa Clásica",
@@ -113,30 +165,157 @@
       }
     ];
 
-    function generarQR(codigo) {
-      const url = window.location.origin + "/producto.html?codigo=" + encodeURIComponent(codigo);
-      return `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(url)}&size=150x150`;
-    }
+    // Carrito desde localStorage o vacío
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
+    // Mostrar productos en catálogo
     function mostrarProductos() {
-      const contenedor = document.getElementById("listaProductos");
-      contenedor.innerHTML = "";
+      const contenedor = document.getElementById('listaProductos');
+      contenedor.innerHTML = '';
+
       productos.forEach(p => {
-        const div = document.createElement("div");
-        div.className = "producto";
+        const div = document.createElement('div');
+        div.className = 'producto';
         div.innerHTML = `
           <img src="${p.imagen}" alt="${p.nombre}" />
           <h3>${p.nombre}</h3>
-          <p>${p.descripcion}</p>
-          <div class="qr">
-            <img src="${generarQR(p.codigo)}" alt="QR de ${p.nombre}" />
-          </div>
+          <p>Código QR: ${p.codigo}</p>
+          <button onclick="verDetalle('${p.codigo}')">Ver Detalles</button>
+          <button onclick="agregarAlCarrito('${p.nombre}')">Agregar al carrito</button>
         `;
         contenedor.appendChild(div);
       });
     }
 
-    window.onload = mostrarProductos;
+    // Iniciar sesión y guardar nombre usuario en localStorage
+    function iniciarSesion() {
+      const nombre = document.getElementById('nombreUsuario').value.trim();
+      if (nombre) {
+        localStorage.setItem('usuario', nombre);
+        document.getElementById('nombrePerfil').textContent = 'Nombre: ' + nombre;
+        alert('Bienvenido/a, ' + nombre);
+      } else {
+        alert('Por favor ingresa un nombre válido.');
+      }
+    }
+
+    // Ver detalles simple (puedes mejorar para mostrar modal o sección)
+    function verDetalle(codigo) {
+      const producto = productos.find(p => p.codigo === codigo);
+      if (producto) {
+        alert(`Detalles:\n${producto.nombre}\n${producto.descripcion}`);
+      } else {
+        alert('Producto no encontrado.');
+      }
+    }
+
+    // Buscar producto por código QR
+    function buscarQR() {
+      const codigo = document.getElementById('codigoQR').value.trim();
+      const infoQR = document.getElementById('infoQR');
+      const producto = productos.find(p => p.codigo === codigo);
+
+      if (producto) {
+        infoQR.innerHTML = `
+          <h4>${producto.nombre}</h4>
+          <p>${producto.descripcion}</p>
+          <img src="${producto.imagen}" alt="${producto.nombre}" style="max-width:150px; border-radius:8px;" />
+          <button onclick="agregarAlCarrito('${producto.nombre}')">Agregar al carrito</button>
+        `;
+      } else {
+        infoQR.innerHTML = '<p style="color:red;">Código no encontrado.</p>';
+      }
+    }
+
+    // Agregar producto al carrito (controlando cantidades)
+    function agregarAlCarrito(productoNombre) {
+      const existente = carrito.find(p => p.nombre === productoNombre);
+      if (existente) {
+        existente.cantidad++;
+      } else {
+        carrito.push({ nombre: productoNombre, cantidad: 1 });
+      }
+      guardarCarrito();
+      actualizarCarrito();
+      alert(productoNombre + " fue agregado al carrito.");
+    }
+
+    // Guardar carrito en localStorage
+    function guardarCarrito() {
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+    }
+
+    // Actualizar carrito en pantalla (lista y total)
+    function actualizarCarrito() {
+      const lista = document.getElementById('listaCarrito');
+      lista.innerHTML = '';
+      if (carrito.length === 0) {
+        lista.innerHTML = '<li>No hay productos en el carrito.</li>';
+      } else {
+        carrito.forEach(p => {
+          const li = document.createElement('li');
+          li.textContent = `${p.nombre} - Cantidad: ${p.cantidad}`;
+          lista.appendChild(li);
+        });
+      }
+      const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
+      document.getElementById('totalProductos').textContent = `Total de productos: ${total}`;
+    }
+
+    // Vaciar carrito y limpiar localStorage
+    function vaciarCarrito() {
+      if (carrito.length === 0) {
+        alert("El carrito ya está vacío.");
+        return;
+      }
+      if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+        carrito = [];
+        guardarCarrito();
+        actualizarCarrito();
+        alert("Carrito vaciado.");
+      }
+    }
+
+    // Buscar prendas en catálogo por nombre
+    function buscarPrendas() {
+      const filtro = document.getElementById('buscador').value.toLowerCase();
+      const productosDiv = document.querySelectorAll('.producto');
+      productosDiv.forEach(p => {
+        const nombre = p.querySelector('h3').textContent.toLowerCase();
+        p.style.display = nombre.includes(filtro) ? 'block' : 'none';
+      });
+    }
+
+    // Countdown para Drops Exclusivos
+    const fechaLanzamiento = new Date();
+    fechaLanzamiento.setDate(fechaLanzamiento.getDate() + 5);
+
+    function actualizarCountdown() {
+      const ahora = new Date();
+      const diff = fechaLanzamiento - ahora;
+      if (diff <= 0) {
+        document.getElementById('countdown').textContent = '¡Ya disponible!';
+        return;
+      }
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      document.getElementById('countdown').textContent = `${dias}d ${horas}h ${mins}m ${secs}s`;
+    }
+
+    // Carga inicial al abrir la página
+    window.onload = () => {
+      const usuario = localStorage.getItem('usuario');
+      if (usuario) {
+        document.getElementById('nombrePerfil').textContent = 'Nombre: ' + usuario;
+      }
+      mostrarProductos();
+      actualizarCarrito();
+      actualizarCountdown();
+      setInterval(actualizarCountdown, 1000);
+    };
+    
   </script>
 </body>
 </html>

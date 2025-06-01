@@ -3,41 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catálogo - VogueCrest</title>
+  <title>VogueCrest - Catálogo</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding: 0 1rem;
       background: #fdfdfd;
       color: #333;
     }
-    header, footer {
+    header {
       background-color: #111;
       color: white;
-      text-align: center;
       padding: 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0 0;
+    }
+    nav li {
+      margin: 0 1rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
     }
     main {
-      flex: 1;
-      padding: 2rem;
+      padding: 2rem 0;
       max-width: 900px;
-      margin: auto;
+      margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
     }
     #buscador {
+      display: block;
+      margin: 0 auto 2rem auto;
+      padding: 0.5rem;
       width: 100%;
-      padding: 0.7rem;
+      max-width: 400px;
       font-size: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
       border: 1px solid #ccc;
+      border-radius: 4px;
     }
     .producto {
       border: 1px solid #ccc;
       padding: 1rem;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem;
       text-align: center;
       border-radius: 8px;
       background: #fff;
@@ -47,15 +68,25 @@
       max-width: 100%;
       height: auto;
       border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .producto h3 {
+      margin: 0.5rem 0;
+    }
+    .qr-container {
+      margin: 1rem auto;
+      display: flex;
+      justify-content: center;
     }
     button {
       background-color: #000;
       color: white;
       border: none;
       padding: 0.5rem 1rem;
-      margin: 0.5rem 0.3rem 0 0.3rem;
       border-radius: 4px;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
     }
     button:hover {
       background-color: #444;
@@ -64,121 +95,170 @@
       border: 1px solid #ccc;
       padding: 1rem;
       border-radius: 8px;
-      margin-top: 2rem;
       background-color: #f8f8f8;
-      max-width: 300px;
-      margin-left: auto;
-      margin-right: auto;
+      max-width: 400px;
+      margin: 2rem auto 0 auto;
+    }
+    #carrito h4 {
+      margin-top: 0;
     }
     #carrito ul {
       list-style: none;
       padding-left: 0;
+      max-height: 150px;
+      overflow-y: auto;
     }
-    nav {
-      margin-bottom: 1rem;
+    footer {
+      background-color: #111;
+      color: white;
       text-align: center;
-    }
-    nav a {
-      color: #111;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-    nav a:hover {
-      text-decoration: underline;
+      padding: 1rem;
+      margin-top: 3rem;
     }
   </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-<header>
-    
-  <h1>Catálogo VogueCrest</h1>
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="perfil.html">Perfil</a>
-    <a href="drops.html">Drops</a>
-  </nav>
-</header>
+  <header>
+    <h1>VogueCrest</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
+        <li><a href="scaner.html">QR</a></li>
+        <li><a href="perfil.html">Perfil</a></li>
+        <li><a href="drops.html">Drops</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<main>
-  <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
+  <main>
+    <h2>Catálogo de Prendas</h2>
+    <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
 
-  <div id="listaProductos">
-    <div class="producto" data-nombre="Camisa Clásica" data-codigo="VC-001">
-      <img src="40e21d0f9d59cead97a303e2d3bc74d0.jpg" alt="Camisa Clásica" />
-      <h3>Camisa Clásica</h3>
-      <p>Código QR: VC-001</p>
-      <button onclick="verDetalle('VC-001')">Ver Detalles</button>
-      <button onclick="agregarAlCarrito('Camisa Clásica')">Agregar al carrito</button>
-    </div>
-    <div class="producto" data-nombre="Camisa Oversized" data-codigo="VC-002">
-      <img src="descarga.jpg" alt="Camisa Oversized" />
-      <h3>Camisa Oversized</h3>
-      <p>Código QR: VC-002</p>
-      <button onclick="verDetalle('VC-002')">Ver Detalles</button>
-      <button onclick="agregarAlCarrito('Camisa Oversized')">Agregar al carrito</button>
-    </div>
-    <div class="producto" data-nombre="T-shirt Rugby" data-codigo="VC-003">
-      <img src="Semi Oversized Summer Rugby T-shirt_Black.jpg" alt="T-shirt Rugby" />
-      <h3>T-shirt Rugby</h3>
-      <p>Código QR: VC-003</p>
-      <button onclick="verDetalle('VC-003')">Ver Detalles</button>
-      <button onclick="agregarAlCarrito('T-shirt Rugby')">Agregar al carrito</button>
-    </div>
-  </div>
+    <div id="listaProductos"></div>
 
-  <section id="carrito">
-    <h4>Carrito de Compras</h4>
-    <ul id="listaCarrito"></ul>
-  </section>
-</main>
+    <section id="carrito">
+      <h4>Carrito de Compras</h4>
+      <ul id="listaCarrito"></ul>
+      <p id="totalProductos">Total de productos: 0</p>
+      <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+    </section>
+  </main>
 
-<footer>
-  <p>&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
-</footer>
+  <footer>
+    <p>&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
+  </footer>
 
-<script>
-  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  <script>
+    const productos = [
+      {
+        nombre: "Camisa Clásica",
+        codigo: "VC-001",
+        descripcion: "100% algodón, color blanco, talla M-L disponibles.",
+        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
+      },
+      {
+        nombre: "Camisa Urbana",
+        codigo: "VC-002",
+        descripcion: "Diseño casual con estampado minimalista.",
+        imagen: "descarga.jpg"
+      },
+      {
+        nombre: "Camisa Oversized",
+        codigo: "VC-003",
+        descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
+      }
+    ];
 
-  function verDetalle(codigo) {
-    alert("Mostrando detalles de la prenda con código: " + codigo);
-  }
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-  function agregarAlCarrito(producto) {
-    carrito.push(producto);
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-    actualizarCarrito();
-    alert(producto + " fue agregado al carrito.");
-  }
+    function mostrarProductos() {
+      const contenedor = document.getElementById('listaProductos');
+      contenedor.innerHTML = '';
 
-  function actualizarCarrito() {
-    const lista = document.getElementById('listaCarrito');
-    lista.innerHTML = '';
-    if (carrito.length === 0) {
-      lista.innerHTML = '<li>No hay productos en el carrito.</li>';
-    } else {
-      carrito.forEach(p => {
-        const li = document.createElement('li');
-        li.textContent = p;
-        lista.appendChild(li);
+      productos.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'producto';
+        div.innerHTML = `
+          <img src="${p.imagen}" alt="${p.nombre}" />
+          <h3>${p.nombre}</h3>
+          <p>${p.descripcion}</p>
+          <div id="qr-${p.codigo}" class="qr-container"></div>
+          <button onclick="agregarAlCarrito('${p.nombre}')">Agregar al carrito</button>
+        `;
+        contenedor.appendChild(div);
+
+        new QRCode(document.getElementById(`qr-${p.codigo}`), {
+          text: `https://voguecrest.com/producto.html?codigo=${p.codigo}`,
+          width: 120,
+          height: 120
+        });
       });
     }
-  }
 
-  function buscarPrendas() {
-    const filtro = document.getElementById('buscador').value.toLowerCase();
-    const productos = document.querySelectorAll('.producto');
-    productos.forEach(p => {
-      const nombre = p.getAttribute('data-nombre').toLowerCase();
-      p.style.display = nombre.includes(filtro) ? 'block' : 'none';
-    });
-  }
+    function agregarAlCarrito(productoNombre) {
+      const existente = carrito.find(p => p.nombre === productoNombre);
+      if (existente) {
+        existente.cantidad++;
+      } else {
+        carrito.push({ nombre: productoNombre, cantidad: 1 });
+      }
+      guardarCarrito();
+      actualizarCarrito();
+      alert(productoNombre + " fue agregado al carrito.");
+    }
 
-  // Cargar carrito al iniciar página
-  window.onload = actualizarCarrito;
-</script>
+    function guardarCarrito() {
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+    }
+
+    function actualizarCarrito() {
+      const lista = document.getElementById('listaCarrito');
+      lista.innerHTML = '';
+      if (carrito.length === 0) {
+        lista.innerHTML = '<li>No hay productos en el carrito.</li>';
+      } else {
+        carrito.forEach(p => {
+          const li = document.createElement('li');
+          li.textContent = `${p.nombre} - Cantidad: ${p.cantidad}`;
+          lista.appendChild(li);
+        });
+      }
+      const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
+      document.getElementById('totalProductos').textContent = `Total de productos: ${total}`;
+    }
+
+    function vaciarCarrito() {
+      if (carrito.length === 0) {
+        alert("El carrito ya está vacío.");
+        return;
+      }
+      if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
+        carrito = [];
+        guardarCarrito();
+        actualizarCarrito();
+        alert("Carrito vaciado.");
+      }
+    }
+
+    function buscarPrendas() {
+      const filtro = document.getElementById('buscador').value.toLowerCase();
+      const productosDiv = document.querySelectorAll('.producto');
+      productosDiv.forEach(p => {
+        const nombre = p.querySelector('h3').textContent.toLowerCase();
+        p.style.display = nombre.includes(filtro) ? 'block' : 'none';
+      });
+    }
+
+    window.onload = () => {
+      mostrarProductos();
+      actualizarCarrito();
+    };
+  </script>
 
 </body>
 </html>

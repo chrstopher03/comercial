@@ -2,104 +2,113 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Detalle del Producto</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalle de Producto - VogueCrest</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
       padding: 2rem;
-      background-color: #fafafa;
+      background: #fdfdfd;
       color: #333;
-    }
-    .producto {
       max-width: 600px;
       margin: auto;
-      padding: 2rem;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
     }
-    .producto img {
+    img {
       max-width: 100%;
       border-radius: 8px;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+    h1, h2 {
+      text-align: center;
     }
-    p {
-      font-size: 1.1rem;
-      margin: 1rem 0;
-    }
-    a {
-      display: inline-block;
+    .info-producto {
       margin-top: 1rem;
-      text-decoration: none;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    button {
+      display: block;
+      margin: 2rem auto;
+      background-color: #000;
       color: white;
-      background-color: black;
+      border: none;
       padding: 0.5rem 1rem;
       border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
+    p.error {
+      color: red;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-
-  <div class="producto" id="detalleProducto">
-    <h1>Cargando producto...</h1>
-  </div>
+  <h1>Detalle del Producto</h1>
+  <div id="contenido"></div>
+  <button onclick="window.location.href='index.html'">Volver al Catálogo</button>
 
   <script>
+    // Mismos productos (podrías cargar desde un JSON o API en producción)
     const productos = [
       {
-        codigo: "VC-001",
         nombre: "Camisa Clásica",
+        codigo: "VC-001",
         descripcion: "100% algodón, color blanco, talla M-L disponibles.",
         imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
       },
       {
-        codigo: "VC-002",
         nombre: "Camisa Urbana",
+        codigo: "VC-002",
         descripcion: "Diseño casual con estampado minimalista.",
         imagen: "descarga.jpg"
       },
       {
-        codigo: "VC-003",
         nombre: "Camisa Oversized",
+        codigo: "VC-003",
         descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
         imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
       }
     ];
 
-    function getCodigoDesdeURL() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get("codigo");
+    // Función para obtener parámetro de URL
+    function getParametroUrl(nombre) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(nombre);
     }
 
     function mostrarProducto() {
-      const codigo = getCodigoDesdeURL();
-      const producto = productos.find(p => p.codigo === codigo);
-      const contenedor = document.getElementById('detalleProducto');
+      const codigo = getParametroUrl('codigo');
+      const contenido = document.getElementById('contenido');
 
-      if (producto) {
-        contenedor.innerHTML = `
-          <img src="${producto.imagen}" alt="${producto.nombre}" />
-          <h1>${producto.nombre}</h1>
-          <p><strong>Código:</strong> ${producto.codigo}</p>
-          <p>${producto.descripcion}</p>
-          <a href="index.html">← Volver al catálogo</a>
-        `;
-      } else {
-        contenedor.innerHTML = `
-          <h1>Producto no encontrado</h1>
-          <p>El código <strong>${codigo}</strong> no corresponde a ningún producto.</p>
-          <a href="index.html">← Volver al catálogo</a>
-        `;
+      if (!codigo) {
+        contenido.innerHTML = `<p class="error">No se proporcionó un código de producto.</p>`;
+        return;
       }
+
+      const producto = productos.find(p => p.codigo === codigo);
+
+      if (!producto) {
+        contenido.innerHTML = `<p class="error">Producto no encontrado.</p>`;
+        return;
+      }
+
+      contenido.innerHTML = `
+        <div class="info-producto">
+          <h2>${producto.nombre}</h2>
+          <img src="${producto.imagen}" alt="${producto.nombre}" />
+          <p>${producto.descripcion}</p>
+          <p><strong>Código:</strong> ${producto.codigo}</p>
+        </div>
+      `;
     }
 
-    mostrarProducto();
+    window.onload = mostrarProducto;
   </script>
 </body>
 </html>
