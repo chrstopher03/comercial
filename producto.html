@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detalle del Producto</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background-color: #fafafa;
+      color: #333;
+    }
+    .producto {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .producto img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1.1rem;
+      margin: 1rem 0;
+    }
+    a {
+      display: inline-block;
+      margin-top: 1rem;
+      text-decoration: none;
+      color: white;
+      background-color: black;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="producto" id="detalleProducto">
+    <h1>Cargando producto...</h1>
+  </div>
+
+  <script>
+    const productos = [
+      {
+        codigo: "VC-001",
+        nombre: "Camisa Clásica",
+        descripcion: "100% algodón, color blanco, talla M-L disponibles.",
+        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
+      },
+      {
+        codigo: "VC-002",
+        nombre: "Camisa Urbana",
+        descripcion: "Diseño casual con estampado minimalista.",
+        imagen: "descarga.jpg"
+      },
+      {
+        codigo: "VC-003",
+        nombre: "Camisa Oversized",
+        descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
+      }
+    ];
+
+    function getCodigoDesdeURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("codigo");
+    }
+
+    function mostrarProducto() {
+      const codigo = getCodigoDesdeURL();
+      const producto = productos.find(p => p.codigo === codigo);
+      const contenedor = document.getElementById('detalleProducto');
+
+      if (producto) {
+        contenedor.innerHTML = `
+          <img src="${producto.imagen}" alt="${producto.nombre}" />
+          <h1>${producto.nombre}</h1>
+          <p><strong>Código:</strong> ${producto.codigo}</p>
+          <p>${producto.descripcion}</p>
+          <a href="index.html">← Volver al catálogo</a>
+        `;
+      } else {
+        contenedor.innerHTML = `
+          <h1>Producto no encontrado</h1>
+          <p>El código <strong>${codigo}</strong> no corresponde a ningún producto.</p>
+          <a href="index.html">← Volver al catálogo</a>
+        `;
+      }
+    }
+
+    mostrarProducto();
+  </script>
+</body>
+</html>

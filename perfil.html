@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Perfil - VogueCrest</title>
+  <style>
+   body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #fdfdfd;
+  color: #333;
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+header, footer {
+  background-color: #111;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+
+    h2 {
+      margin-top: 0;
+    }
+
+    #listaCarrito li {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    a {
+      color: #fff;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mi Perfil</h1>
+    <a href="index.html">← Volver al inicio</a>
+  </header>
+
+  <main>
+    <h2>Bienvenido/a, <span id="nombrePerfil">Usuario</span></h2>
+
+    <h3>Carrito de Compras</h3>
+    <ul id="listaCarrito"></ul>
+
+    <button onclick="vaciarCarrito()">Vaciar Carrito</button>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function cargarPerfil() {
+      const nombre = localStorage.getItem('usuario') || 'Invitado';
+      document.getElementById('nombrePerfil').textContent = nombre;
+
+      const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      const lista = document.getElementById('listaCarrito');
+      lista.innerHTML = '';
+
+      if (carrito.length === 0) {
+        lista.innerHTML = '<li>No hay productos en el carrito.</li>';
+      } else {
+        carrito.forEach(p => {
+          const li = document.createElement('li');
+          li.textContent = p;
+          lista.appendChild(li);
+        });
+      }
+    }
+
+    function vaciarCarrito() {
+      localStorage.removeItem('carrito');
+      cargarPerfil();
+      alert("Carrito vaciado.");
+    }
+
+    window.onload = cargarPerfil;
+  </script>
+</body>
+</html>

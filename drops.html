@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Drops Exclusivos - VogueCrest</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #fff, #f3f3f3);
+      color: #333;
+    }
+
+    header, footer {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    header a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: #fff;
+      text-decoration: underline;
+      font-size: 0.9rem;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .drop {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .productos-drop {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .producto {
+      width: 280px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .producto:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+
+    .producto img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+
+    .producto h3 {
+      margin: 1rem 0 0.5rem;
+    }
+
+    .producto p {
+      margin: 0 1rem 1rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Drops Exclusivos</h1>
+    <a href="index.html">← Volver a inicio</a>
+  </header>
+
+  <section class="drop">
+    <h2>Colección Limitada: Junio 2025</h2>
+    <p>¡Productos únicos y solo disponibles por tiempo limitado!</p>
+
+    <div class="productos-drop">
+      <div class="producto">
+        <img src="drop1.jpg" alt="Chaqueta Edición Especial" />
+        <h3>Chaqueta Neo Vintage</h3>
+        <p>Solo 50 unidades disponibles</p>
+        <button onclick="agregarAlCarrito('Chaqueta Neo Vintage')">Agregar al carrito</button>
+      </div>
+
+      <div class="producto">
+        <img src="drop2.jpg" alt="Pantalón Oversized" />
+        <h3>Pantalón Oversized</h3>
+        <p>Disponible en S, M y L</p>
+        <button onclick="agregarAlCarrito('Pantalón Oversized')">Agregar al carrito</button>
+      </div>
+
+      <div class="producto">
+        <img src="drop3.jpg" alt="Blazer Techwear" />
+        <h3>Blazer Techwear</h3>
+        <p>Diseño exclusivo para VogueCrest</p>
+        <button onclick="agregarAlCarrito('Blazer Techwear')">Agregar al carrito</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function agregarAlCarrito(producto) {
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      carrito.push(producto);
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      alert(producto + " fue agregado al carrito.");
+    }
+  </script>
+</body>
+</html>

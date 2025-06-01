@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Catálogo - VogueCrest</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fdfdfd;
+      color: #333;
+    }
+    header, footer {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    #buscador {
+      width: 100%;
+      padding: 0.7rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .producto {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .producto img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0.3rem 0 0.3rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
+    #carrito {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+      background-color: #f8f8f8;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    #carrito ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    nav {
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: #111;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+    
+  <h1>Catálogo VogueCrest</h1>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="perfil.html">Perfil</a>
+    <a href="drops.html">Drops</a>
+  </nav>
+</header>
+
+<main>
+  <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
+
+  <div id="listaProductos">
+    <div class="producto" data-nombre="Camisa Clásica" data-codigo="VC-001">
+      <img src="40e21d0f9d59cead97a303e2d3bc74d0.jpg" alt="Camisa Clásica" />
+      <h3>Camisa Clásica</h3>
+      <p>Código QR: VC-001</p>
+      <button onclick="verDetalle('VC-001')">Ver Detalles</button>
+      <button onclick="agregarAlCarrito('Camisa Clásica')">Agregar al carrito</button>
+    </div>
+    <div class="producto" data-nombre="Camisa Oversized" data-codigo="VC-002">
+      <img src="descarga.jpg" alt="Camisa Oversized" />
+      <h3>Camisa Oversized</h3>
+      <p>Código QR: VC-002</p>
+      <button onclick="verDetalle('VC-002')">Ver Detalles</button>
+      <button onclick="agregarAlCarrito('Camisa Oversized')">Agregar al carrito</button>
+    </div>
+    <div class="producto" data-nombre="T-shirt Rugby" data-codigo="VC-003">
+      <img src="Semi Oversized Summer Rugby T-shirt_Black.jpg" alt="T-shirt Rugby" />
+      <h3>T-shirt Rugby</h3>
+      <p>Código QR: VC-003</p>
+      <button onclick="verDetalle('VC-003')">Ver Detalles</button>
+      <button onclick="agregarAlCarrito('T-shirt Rugby')">Agregar al carrito</button>
+    </div>
+  </div>
+
+  <section id="carrito">
+    <h4>Carrito de Compras</h4>
+    <ul id="listaCarrito"></ul>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  function verDetalle(codigo) {
+    alert("Mostrando detalles de la prenda con código: " + codigo);
+  }
+
+  function agregarAlCarrito(producto) {
+    carrito.push(producto);
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    actualizarCarrito();
+    alert(producto + " fue agregado al carrito.");
+  }
+
+  function actualizarCarrito() {
+    const lista = document.getElementById('listaCarrito');
+    lista.innerHTML = '';
+    if (carrito.length === 0) {
+      lista.innerHTML = '<li>No hay productos en el carrito.</li>';
+    } else {
+      carrito.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p;
+        lista.appendChild(li);
+      });
+    }
+  }
+
+  function buscarPrendas() {
+    const filtro = document.getElementById('buscador').value.toLowerCase();
+    const productos = document.querySelectorAll('.producto');
+    productos.forEach(p => {
+      const nombre = p.getAttribute('data-nombre').toLowerCase();
+      p.style.display = nombre.includes(filtro) ? 'block' : 'none';
+    });
+  }
+
+  // Cargar carrito al iniciar página
+  window.onload = actualizarCarrito;
+</script>
+
+</body>
+</html>
