@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VogueCrest QR</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 1rem;
+      background: #f4f4f4;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    #reader {
+      width: 300px;
+      margin: auto;
+    }
+    #resultado {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 1.2rem;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>VogueCrest</h1>
+  <h2>Escáner de Código QR</h2>
+
+  <div id="reader"></div>
+  <div id="resultado">Esperando escaneo...</div>
+
+  <footer>&copy; 2025 VogueCrest</footer>
+
+  <script>
+    const resultado = document.getElementById("resultado");
+
+    function onScanSuccess(decodedText, decodedResult) {
+      // Detener el escáner tras la primera lectura
+      html5QrcodeScanner.clear().then(() => {
+        resultado.innerHTML = `<strong>QR Detectado:</strong> ${decodedText}`;
+        if (decodedText === "VC-001") {
+          resultado.innerHTML += "<br><em>Camisa Clásica - 100% algodón, blanco, tallas M-L</em>";
+        } else {
+          resultado.innerHTML += "<br><span style='color:red'>Producto no reconocido</span>";
+        }
+      }).catch(error => {
+        resultado.innerText = "Error al detener escáner.";
+      });
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader", { fps: 10, qrbox: 250 });
+    html5QrcodeScanner.render(onScanSuccess);
+  </script>
+</body>
+</html>

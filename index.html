@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VogueCrest</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fdfdfd;
+      color: #333;
+    }
+    header {
+      background-color: #111;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+    nav li {
+      margin: 0 1rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    main {
+      padding: 2rem;
+    }
+    section {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 2rem;
+    }
+    .producto {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .producto img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #444;
+    }
+    #carrito {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      background-color: #f8f8f8;
+    }
+    footer {
+      background-color: #111;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VogueCrest</h1>
+    <nav>
+      <ul>
+        <li><a href="#catalogo">Catálogo</a></li>
+        <li><a href="scaner.html">QR</a></li>
+        <li><a href="#perfil">Perfil</a></li>
+        <li><a href="#drops">Drops</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="login">
+      <h2>Iniciar Sesión</h2>
+      <input type="text" id="nombreUsuario" placeholder="Ingresa tu nombre" />
+      <button onclick="iniciarSesion()">Entrar</button>
+    </section>
+
+    <section id="catalogo">
+      <h2>Catálogo de Prendas</h2>
+      <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
+      <div id="listaProductos">
+        <div class="producto">
+          <img src="40e21d0f9d59cead97a303e2d3bc74d0.jpg" alt="Camisa Clásica" />
+          <h3>Camisa Clásica</h3>
+          <p>Código QR: VC-001</p>
+          <button onclick="verDetalle('VC-001')">Ver Detalles</button>
+          <button onclick="agregarAlCarrito('Camisa Clásica')">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+          <img src="descarga.jpg" alt="Camisa Clásica" />
+          <h3>Camisa Clásica</h3>
+          <p>Código QR: VC-001</p>
+          <button onclick="verDetalle('VC-001')">Ver Detalles</button>
+          <button onclick="agregarAlCarrito('Camisa Clásica')">Agregar al carrito</button>
+        </div>
+        <div class="producto">
+          <img src="Semi Oversized Summer Rugby T-shirt_Black.jpg" alt="Camisa Clásica" />
+          <h3>Camisa Clásica</h3>
+          <p>Código QR: VC-001</p>
+          <button onclick="verDetalle('VC-001')">Ver Detalles</button>
+          <button onclick="agregarAlCarrito('Camisa Clásica')">Agregar al carrito</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="qr">
+      <h2>Escanear Código QR</h2>
+      <input type="text" id="codigoQR" placeholder="Ingresa código QR" />
+      <button onclick="buscarQR()">Buscar</button>
+      <div id="infoQR"></div>
+    </section>
+
+    <section id="perfil">
+      <h2>Mi Perfil</h2>
+      <p id="nombrePerfil">Nombre: -</p>
+      <div id="carrito">
+        <h4>Carrito de Compras</h4>
+        <ul id="listaCarrito"></ul>
+      </div>
+    </section>
+
+    <section id="drops">
+      <h2>Drops Exclusivos</h2>
+      <p>¡Próxima colección en: <span id="countdown"></span></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    let carrito = [];
+
+    function iniciarSesion() {
+      const nombre = document.getElementById('nombreUsuario').value;
+      if (nombre.trim()) {
+        document.getElementById('nombrePerfil').textContent = 'Nombre: ' + nombre;
+        alert('Bienvenido/a, ' + nombre);
+      }
+    }
+
+    function verDetalle(codigo) {
+      alert("Mostrando detalles de la prenda con código: " + codigo);
+    }
+
+    function buscarQR() {
+      const codigo = document.getElementById('codigoQR').value;
+      const infoQR = document.getElementById('infoQR');
+      if (codigo === 'VC-001') {
+        infoQR.innerHTML = '<h4>Camisa Clásica</h4><p>100% algodón, color blanco, talla M-L disponibles.</p>';
+      } else {
+        infoQR.innerHTML = '<p>Código no encontrado.</p>';
+      }
+    }
+
+    function agregarAlCarrito(producto) {
+      carrito.push(producto);
+      actualizarCarrito();
+      alert(producto + " fue agregado al carrito.");
+    }
+
+    function actualizarCarrito() {
+      const lista = document.getElementById('listaCarrito');
+      lista.innerHTML = '';
+      carrito.forEach(p => {
+        const li = document.createElement('li');
+        li.textContent = p;
+        lista.appendChild(li);
+      });
+    }
+
+    function buscarPrendas() {
+      const filtro = document.getElementById('buscador').value.toLowerCase();
+      const productos = document.querySelectorAll('.producto');
+      productos.forEach(p => {
+        const nombre = p.querySelector('h3').textContent.toLowerCase();
+        p.style.display = nombre.includes(filtro) ? 'block' : 'none';
+      });
+    }
+
+    const fechaLanzamiento = new Date();
+    fechaLanzamiento.setDate(fechaLanzamiento.getDate() + 5);
+
+    function actualizarCountdown() {
+      const ahora = new Date();
+      const diff = fechaLanzamiento - ahora;
+      if (diff <= 0) {
+        document.getElementById('countdown').textContent = '¡Ya disponible!';
+        return;
+      }
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+      document.getElementById('countdown').textContent = `${dias}d ${horas}h ${mins}m ${secs}s`;
+    }
+    setInterval(actualizarCountdown, 1000);
+  </script>
+</body>
+</html>
