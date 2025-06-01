@@ -2,220 +2,193 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VogueCrest - Catálogo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VogueCrest - Scanner QR</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 1rem;
+      margin: 0; padding: 1rem;
       background: #fdfdfd;
       color: #333;
-    }
-    header {
-      background-color: #111;
-      color: white;
-      padding: 1rem;
       text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
     }
-    nav ul {
-      display: flex;
-      justify-content: center;
-      list-style: none;
-      padding: 0;
-      margin-top: 0.5rem;
+    #video {
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
     }
-    nav li {
-      margin: 0 1rem;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    main {
-      max-width: 700px;
-      margin: 2rem auto;
-    }
-    .producto {
+    #output {
+      margin-top: 1rem;
       border: 1px solid #ccc;
       padding: 1rem;
-      margin-bottom: 2rem;
-      text-align: center;
       border-radius: 8px;
       background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .producto img {
+    #output img {
       max-width: 100%;
-      height: auto;
       border-radius: 8px;
+      margin-bottom: 1rem;
     }
-    button {
-      background-color: #000;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      margin-top: 0.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #444;
-    }
-    #listaProductos {
+    #fileInput {
       margin-top: 1rem;
-    }
-    #carrito {
-      border: 1px solid #ccc;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-      background-color: #f8f8f8;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
-<header>
-  <h1>VogueCrest - Catálogo</h1>
-  <nav>
-    <ul>
-      <li><a href="catalogo.html">Catálogo</a></li>
-      <li><a href="scaner.html">QR</a></li>
-      <li><a href="perfil.html">Perfil</a></li>
-      <li><a href="drops.html">Drops</a></li>
-    </ul>
-  </nav>
-</header>
+  <h1>Escanea un código QR</h1>
 
-<main>
-  <section id="catalogo">
-    <h2>Catálogo de Prendas</h2>
-    <input type="text" id="buscador" placeholder="Buscar prenda..." oninput="buscarPrendas()" />
-    <div id="listaProductos"></div>
-  </section>
+  <video id="video" autoplay></video>
 
-  <section id="carrito">
-    <h4>Carrito de Compras</h4>
-    <ul id="listaCarrito"></ul>
-    <p id="totalProductos">Total de productos: 0</p>
-    <button onclick="vaciarCarrito()">Vaciar Carrito</button>
-  </section>
-</main>
+  <p>O selecciona una imagen con código QR:</p>
+  <input type="file" accept="image/*" id="fileInput" />
 
-<script>
-  const productos = [
-    {
-      nombre: "Camisa Clásica",
-      codigo: "VC-001",
-      descripcion: "100% algodón, color blanco, talla M-L disponibles.",
-      imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
-    },
-    {
-      nombre: "Camisa Urbana",
-      codigo: "VC-002",
-      descripcion: "Diseño casual con estampado minimalista.",
-      imagen: "descarga.jpg"
-    },
-    {
-      nombre: "Camisa Oversized",
-      codigo: "VC-003",
-      descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
-      imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
+  <div id="output">
+    <h2>Información del Producto</h2>
+    <div id="productoInfo">Esperando escaneo...</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+  <script>
+    // Productos ejemplo
+    const productos = [
+      {
+        nombre: "Camisa Clásica",
+        codigo: "VC-001",
+        descripcion: "100% algodón, color blanco, talla M-L disponibles.",
+        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg"
+      },
+      {
+        nombre: "Camisa Urbana",
+        codigo: "VC-002",
+        descripcion: "Diseño casual con estampado minimalista.",
+        imagen: "descarga.jpg"
+      },
+      {
+        nombre: "Camisa Oversized",
+        codigo: "VC-003",
+        descripcion: "Estilo moderno, corte relajado, ideal para el verano.",
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg"
+      }
+    ];
+
+    const video = document.getElementById('video');
+    const output = document.getElementById('productoInfo');
+    const fileInput = document.getElementById('fileInput');
+
+    // Canvas para análisis QR (del video)
+    const canvasElement = document.createElement('canvas');
+    const canvas = canvasElement.getContext('2d');
+
+    let scanning = false;
+
+    // Acceder a cámara trasera
+    navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" }
+    }).then(stream => {
+      video.srcObject = stream;
+      video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+      video.play();
+      scanning = true;
+      tick();
+    }).catch(err => {
+      output.innerHTML = "No se pudo acceder a la cámara: " + err;
+    });
+
+    function tick() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA && scanning) {
+        canvasElement.height = video.videoHeight;
+        canvasElement.width = video.videoWidth;
+        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+        const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: "attemptBoth",
+        });
+        if (code) {
+          scanning = false;
+          mostrarProductoDesdeURL(code.data);
+          // Detener cámara para no seguir escaneando
+          video.srcObject.getTracks().forEach(track => track.stop());
+        }
+      }
+      if (scanning) {
+        requestAnimationFrame(tick);
+      }
     }
-  ];
 
-  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    // Escanear QR desde imagen subida
+    fileInput.addEventListener('change', e => {
+      if (!e.target.files.length) return;
+      const file = e.target.files[0];
+      const img = new Image();
+      const reader = new FileReader();
 
-  function mostrarProductos() {
-    const contenedor = document.getElementById('listaProductos');
-    contenedor.innerHTML = '';
+      reader.onload = () => {
+        img.onload = () => {
+          // dibujar imagen en canvas para analizar
+          canvasElement.width = img.width;
+          canvasElement.height = img.height;
+          canvas.drawImage(img, 0, 0, canvasElement.width, canvasElement.height);
+          const imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
+          const code = jsQR(imageData.data, imageData.width, imageData.height, {
+            inversionAttempts: "attemptBoth",
+          });
+          if (code) {
+            mostrarProductoDesdeURL(code.data);
+          } else {
+            output.innerHTML = "No se encontró código QR válido en la imagen.";
+          }
+        };
+        img.onerror = () => {
+          output.innerHTML = "Error al cargar la imagen.";
+        };
+        img.src = reader.result;
+      };
 
-    productos.forEach(p => {
-      const div = document.createElement('div');
-      div.className = 'producto';
-      div.innerHTML = `
-        <img src="${p.imagen}" alt="${p.nombre}" />
-        <h3>${p.nombre}</h3>
-        <p>${p.descripcion}</p>
-        <div id="qr-${p.codigo}" style="display: flex; justify-content: center; margin: 1rem auto;"></div>
-        <button onclick="agregarAlCarrito('${p.nombre}')">Agregar al carrito</button>
+      reader.readAsDataURL(file);
+    });
+
+    // Extrae código VC-XXX de la URL y muestra info
+    function mostrarProductoDesdeURL(url) {
+      // Intentamos extraer el parámetro codigo, soportando URLs tipo:
+      // https://tusitio.com/producto.html?codigo=VC-001
+      let codigo = null;
+
+      try {
+        const urlObj = new URL(url, window.location.origin);
+        codigo = urlObj.searchParams.get('codigo');
+      } catch {
+        // Si no es una URL completa, tratar como texto plano (ej. solo VC-001)
+        if (url.startsWith('VC-')) {
+          codigo = url;
+        }
+      }
+
+      if (!codigo) {
+        output.innerHTML = "Código QR no válido o no contiene código de producto.";
+        return;
+      }
+
+      const producto = productos.find(p => p.codigo === codigo);
+
+      if (!producto) {
+        output.innerHTML = `No se encontró información para el código: <strong>${codigo}</strong>`;
+        return;
+      }
+
+      // Mostrar info y imagen centrada
+      output.innerHTML = `
+        <img src="${producto.imagen}" alt="${producto.nombre}" />
+        <h3>${producto.nombre}</h3>
+        <p>${producto.descripcion}</p>
+        <small><strong>Código:</strong> ${producto.codigo}</small>
       `;
-      contenedor.appendChild(div);
-
-      // Generar QR con enlace al detalle, URL que el scanner entiende
-      new QRCode(document.getElementById(`qr-${p.codigo}`), {
-        text: `${location.origin}/producto.html?codigo=${p.codigo}`,
-        width: 100,
-        height: 100
-      });
-    });
-  }
-
-  function agregarAlCarrito(productoNombre) {
-    const existente = carrito.find(p => p.nombre === productoNombre);
-    if (existente) {
-      existente.cantidad++;
-    } else {
-      carrito.push({ nombre: productoNombre, cantidad: 1 });
     }
-    guardarCarrito();
-    actualizarCarrito();
-    alert(productoNombre + " fue agregado al carrito.");
-  }
-
-  function guardarCarrito() {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
-  }
-
-  function actualizarCarrito() {
-    const lista = document.getElementById('listaCarrito');
-    lista.innerHTML = '';
-    if (carrito.length === 0) {
-      lista.innerHTML = '<li>No hay productos en el carrito.</li>';
-    } else {
-      carrito.forEach(p => {
-        const li = document.createElement('li');
-        li.textContent = `${p.nombre} - Cantidad: ${p.cantidad}`;
-        lista.appendChild(li);
-      });
-    }
-    const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
-    document.getElementById('totalProductos').textContent = `Total de productos: ${total}`;
-  }
-
-  function vaciarCarrito() {
-    if (carrito.length === 0) {
-      alert("El carrito ya está vacío.");
-      return;
-    }
-    if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
-      carrito = [];
-      guardarCarrito();
-      actualizarCarrito();
-      alert("Carrito vaciado.");
-    }
-  }
-
-  function buscarPrendas() {
-    const filtro = document.getElementById('buscador').value.toLowerCase();
-    const productosDiv = document.querySelectorAll('.producto');
-    productosDiv.forEach(p => {
-      const nombre = p.querySelector('h3').textContent.toLowerCase();
-      p.style.display = nombre.includes(filtro) ? 'block' : 'none';
-    });
-  }
-
-  window.onload = () => {
-    mostrarProductos();
-    actualizarCarrito();
-  };
-</script>
+  </script>
 
 </body>
 </html>
