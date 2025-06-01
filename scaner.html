@@ -3,82 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Escáner QR</title>
+  <title>Escáner QR - VogueCrest</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 1rem;
+      margin: 0; padding: 1rem;
       background: #fdfdfd;
       color: #333;
       text-align: center;
     }
-    header {
-      background-color: #111;
-      color: white;
-      padding: 1rem;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      margin-bottom: 1rem;
+    #reader {
+      width: 300px;
+      margin: 1rem auto;
     }
-    #preview {
-      width: 320px;
-      height: 240px;
-      margin: 0 auto 1rem auto;
-      border: 2px solid #333;
-      border-radius: 8px;
-    }
-    #resultado {
-      margin-top: 1rem;
-      border: 1px solid #ccc;
-      padding: 1rem;
-      border-radius: 8px;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    #resultado img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      background-color: #000;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    #info {
       margin-top: 1rem;
     }
-    button:hover {
-      background-color: #444;
+    img {
+      max-width: 200px;
+      border-radius: 8px;
+      margin-top: 1rem;
     }
   </style>
+  <!-- Librería html5-qrcode -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.7/html5-qrcode.min.js"></script>
 </head>
 <body>
-
-  <header>
-    <h1>Escáner QR - VogueCrest</h1>
-    <nav>
-      <a href="index.html" style="color:white; text-decoration:none;">Inicio</a> |
-      <a href="catalogo.html" style="color:white; text-decoration:none;">Catálogo</a> |
-      <a href="scaner.html" style="color:white; text-decoration:none;">Escáner QR</a>
-    </nav>
-  </header>
-
-  <video id="preview" playsinline></video>
-
-  <div id="resultado">
-    <p>Escanea un código QR para ver la información de la prenda.</p>
+  <h1>Escáner QR - VogueCrest</h1>
+  <div id="reader"></div>
+  <div id="info">
+    <h2 id="nombre"></h2>
+    <p id="descripcion"></p>
+    <img id="imagen" src="" alt="" style="display:none;" />
   </div>
 
-  <script src="https://unpkg.com/@zxing/library@0.19.1/umd/index.min.js"></script>
   <script>
-    // Productos con datos para mostrar al escanear
+    // Productos de ejemplo: Debe ser igual a tu catálogo
     const productos = [
       {
         nombre: "Camisa Clásica",
@@ -100,70 +60,78 @@
       }
     ];
 
-    const codeReader = new ZXing.BrowserQRCodeReader();
-    const videoElement = document.getElementById('preview');
-    const resultadoDiv = document.getElementById('resultado');
+    const infoNombre = document.getElementById('nombre');
+    const infoDescripcion = document.getElementById('descripcion');
+    const infoImagen = document.getElementById('imagen');
 
-    function mostrarProductoPorCodigo(codigo) {
-      // Buscar producto por código exacto
+    function mostrarProducto(codigo) {
       const producto = productos.find(p => p.codigo === codigo);
-      if (!producto) {
-        resultadoDiv.innerHTML = `<p style="color:red;">Producto no encontrado para el código: <strong>${codigo}</strong></p>`;
-        return;
+      if (producto) {
+        infoNombre.textContent = producto.nombre;
+        infoDescripcion.textContent = producto.descripcion;
+        infoImagen.src = producto.imagen;
+        infoImagen.style.display = 'block';
+      } else {
+        infoNombre.textContent = 'Producto no encontrado';
+        infoDescripcion.textContent = '';
+        infoImagen.style.display = 'none';
       }
-      resultadoDiv.innerHTML = `
-        <h2>${producto.nombre}</h2>
-        <img src="${producto.imagen}" alt="${producto.nombre}" />
-        <p>${producto.descripcion}</p>
-        <p><strong>Código:</strong> ${producto.codigo}</p>
-      `;
     }
 
-    // Iniciar cámara y escanear
-    codeReader
-      .listVideoInputDevices()
-      .then(videoInputDevices => {
-        if(videoInputDevices.length === 0){
-          resultadoDiv.innerHTML = "<p style='color:red;'>No se encontró cámara disponible.</p>";
-          return;
-        }
-        const selectedDeviceId = videoInputDevices[0].deviceId;
-        return codeReader.decodeFromVideoDevice(selectedDeviceId, videoElement, (result, err) => {
-          if (result) {
-            // Se leyó el QR
-            // El texto puede ser URL: https://voguecrest.com/producto.html?codigo=VC-001
-            // Extraemos el código VC-001 para mostrar info real
-            let texto = result.getText();
-            let codigo = null;
-            
-            try {
-              // Si es URL, parseamos parámetro "codigo"
-              const url = new URL(texto);
-              codigo = url.searchParams.get("codigo");
-            } catch {
-              // Si no es URL, quizás es el código directamente
-              codigo = texto.trim();
-            }
+    function extraerCodigoDeUrl(url) {
+      try {
+        const urlObj = new URL(url);
+        return urlObj.searchParams.get('codigo');
+      } catch (e) {
+        return null;
+      }
+    }
 
-            if(codigo) {
-              mostrarProductoPorCodigo(codigo);
-            } else {
-              resultadoDiv.innerHTML = `<p style="color:red;">QR no válido.</p>`;
-            }
-
-            // Para que no siga escaneando hasta recargar
-            codeReader.reset();
-            videoElement.srcObject.getTracks().forEach(track => track.stop());
-          }
-          if (err && !(err instanceof ZXing.NotFoundException)) {
-            console.error(err);
-          }
+    function onScanSuccess(decodedText, decodedResult) {
+      // decodedText es el texto del QR (URL)
+      const codigo = extraerCodigoDeUrl(decodedText);
+      if (codigo) {
+        mostrarProducto(codigo);
+        html5QrcodeScanner.stop().then(() => {
+          console.log("Escaneo detenido.");
         });
-      })
-      .catch(err => {
-        resultadoDiv.innerHTML = `<p style="color:red;">Error al acceder a la cámara: ${err}</p>`;
-      });
-  </script>
+      } else {
+        alert('QR no contiene código válido');
+      }
+    }
 
+    function onScanFailure(error) {
+      // No mostrar nada para evitar spam en consola
+    }
+
+    // Inicializamos el escáner con la cámara trasera
+    const html5QrcodeScanner = new Html5Qrcode("reader");
+
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        // Buscar cámara trasera: por lo general la que tiene 'back' en label o la última
+        let cameraId = devices[0].id; // default
+        for (const device of devices) {
+          if (device.label.toLowerCase().includes('back')) {
+            cameraId = device.id;
+            break;
+          }
+        }
+        // Iniciar escáner con cámara trasera
+        html5QrcodeScanner.start(
+          cameraId,
+          { fps: 10, qrbox: 250 },
+          onScanSuccess,
+          onScanFailure
+        ).catch(err => {
+          alert('Error al iniciar la cámara: ' + err);
+        });
+      } else {
+        alert('No se detectó ninguna cámara.');
+      }
+    }).catch(err => {
+      alert('Error al obtener cámaras: ' + err);
+    });
+  </script>
 </body>
 </html>
