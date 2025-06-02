@@ -534,6 +534,9 @@
       }
     });
 
+    carrito.push({ nombre: "Camisa", precio: 25.00 });
+localStorage.setItem('carrito', JSON.stringify(carrito));
+
     // Inicialización
     renderizarProductos();
     renderizarCarrito();

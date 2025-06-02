@@ -1,4 +1,3 @@
-<!-- perfil.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +8,6 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background-color: #000;
       color: #fff;
@@ -22,6 +20,7 @@
 
     h1 {
       margin-bottom: 1rem;
+      color: #d19e00;
     }
 
     .profile-container {
@@ -31,7 +30,7 @@
       text-align: center;
       width: 90%;
       max-width: 400px;
-      box-shadow: 0 0 12px #333;
+      box-shadow: 0 0 12px #d19e00aa;
     }
 
     .profile-container img {
@@ -40,30 +39,42 @@
       object-fit: cover;
       border-radius: 50%;
       margin-bottom: 1rem;
-      border: 2px solid #8c6300;
+      border: 3px solid #d19e00;
     }
 
     input[type="file"] {
       margin: 1rem 0;
       color: #ccc;
+      background-color: #222;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #555;
     }
 
     .info {
       margin-bottom: 1rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .info strong {
+      color: #d19e00;
     }
 
     .logout-btn {
-      background-color: #8c6300;
+      background-color: #d19e00;
       border: none;
-      color: white;
+      color: #111;
       padding: 0.7rem 1.2rem;
       font-size: 1rem;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s;
     }
 
     .logout-btn:hover {
-      background-color: #a87d00;
+      background-color: #b38600;
     }
   </style>
 </head>
@@ -79,7 +90,7 @@
     </div>
 
     <input type="file" id="imageUpload" accept="image/*" />
-    <button class="logout-btn" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <button class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 
   <script>
@@ -87,7 +98,6 @@
       const session = localStorage.getItem("voguecrestUser");
 
       if (!session) {
-        // Redirige si no hay sesión
         window.location.href = "index.html";
         return;
       }
@@ -108,14 +118,16 @@
 
       const reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById("profileImage").src = e.target.result;
-        localStorage.setItem("fotoPerfil", e.target.result);
+        const imgData = e.target.result;
+        document.getElementById("profileImage").src = imgData;
+        localStorage.setItem("fotoPerfil", imgData);
       };
       reader.readAsDataURL(file);
     });
 
     function cerrarSesion() {
-      localStorage.clear();
+      localStorage.removeItem("voguecrestUser");
+      localStorage.removeItem("fotoPerfil");
       window.location.href = "index.html";
     }
   </script>
