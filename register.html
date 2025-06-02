@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VogueCrest - Registro e Inicio</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      margin-top: 30px;
+    }
+
+    .form-box {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    input[type="text"], input[type="email"] {
+      background-color: #222;
+      color: #fff;
+      border: none;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    .main-buttons {
+      background-color: #f8f6f2;
+      color: #000;
+      border-radius: 12px;
+      margin: 20px 0;
+      padding: 20px;
+    }
+
+    .main-buttons a {
+      display: block;
+      color: #8c6300;
+      font-size: 18px;
+      text-decoration: none;
+      padding: 15px 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .main-buttons a:last-child {
+      border-bottom: none;
+    }
+
+    .main-buttons a i {
+      float: right;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .logo-container img {
+      width: 100px;
+      margin-bottom: 10px;
+    }
+
+    .brand-name {
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #000;
+      border-top: 1px solid #222;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+
+    .bottom-nav a {
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      text-decoration: none;
+    }
+
+    .bottom-nav i {
+      font-size: 20px;
+      display: block;
+    }
+
+    .saludo {
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .logout-btn {
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="logo-container">
+      <img src="ChatGPT Image 1 jun 2025, 12_05_00.png" alt="Logo VogueCrest">
+      <div class="brand-name">VOGUECREST</div>
+    </div>
+
+    <!-- Área de registro/login -->
+    <div id="authSection">
+      <div class="form-box">
+        <h4>Iniciar sesión o registrarse</h4>
+        <input id="nombre" class="form-control mt-3" type="text" placeholder="Nombre completo">
+        <input id="correo" class="form-control mt-3" type="email" placeholder="Correo electrónico">
+        <button onclick="registrarUsuario()" class="btn btn-light w-100 mt-3">Continuar</button>
+      </div>
+    </div>
+
+    <!-- Área de usuario ya autenticado -->
+    <div id="mainSection" style="display: none;">
+      <div class="saludo">¡Hola, <span id="userName"></span>!</div>
+
+      <div class="main-buttons">
+        <a href="catalogo.html">Colección <i class="bi bi-chevron-right"></i></a>
+        <a href="scaner.html">Escanear QR <i class="bi bi-qr-code-scan"></i></a>
+        <a href="drops.html">Drops <i class="bi bi-chevron-right"></i></a>
+        <a href="perfil.html">Mi perfil <i class="bi bi-person"></i></a>
+      </div>
+
+      <div class="logout-btn">
+        <button onclick="cerrarSesion()" class="btn btn-outline-light">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú inferior -->
+  <div class="bottom-nav">
+    <a href="registro.html"><i class="bi bi-house-door"></i>Inicio</a>
+    <a href="catalogo.html"><i class="bi bi-bag"></i>Colección</a>
+    <a href="scaner.html"><i class="bi bi-qr-code-scan"></i>Escanear QR</a>
+    <a href="drops.html"><i class="bi bi-fire"></i>Drops</a>
+    <a href="perfil.html"><i class="bi bi-person"></i>Mi perfil</a>
+  </div>
+
+  <script>
+    function registrarUsuario() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const correo = document.getElementById('correo').value.trim();
+
+      if (nombre && correo) {
+        localStorage.setItem('usuarioNombre', nombre);
+        localStorage.setItem('usuarioCorreo', correo);
+        mostrarContenido();
+      } else {
+        alert('Por favor completa ambos campos.');
+      }
+    }
+
+    function mostrarContenido() {
+      const nombreGuardado = localStorage.getItem('usuarioNombre');
+      if (nombreGuardado) {
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('mainSection').style.display = 'block';
+        document.getElementById('userName').textContent = nombreGuardado;
+      }
+    }
+
+    function cerrarSesion() {
+      localStorage.clear();
+      location.reload();
+    }
+
+    // Mostrar automáticamente el contenido si ya hay sesión iniciada
+    window.onload = mostrarContenido;
+  </script>
+</body>
+</html>

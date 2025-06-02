@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VogueCrest - Catálogo</title>
+
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
 
   <style>
@@ -18,8 +20,7 @@
     }
     header#header-fijo {
       position: fixed;
-      top: 0;
-      left: 0; right: 0;
+      top: 0; left: 0; right: 0;
       height: 60px;
       background-color: #111;
       border-bottom: 1px solid #222;
@@ -118,14 +119,12 @@
     button.agregar-carrito:hover, button.mostrar-qr:hover {
       background-color: #c7a600;
     }
-    /* Texto QR info */
     .texto-qr-info {
       color: #f8c630;
       font-size: 0.85rem;
       margin-top: 6px;
       display: none;
     }
-    /* Carrito desplegable */
     #carrito-desplegable {
       position: fixed;
       top: 60px;
@@ -220,10 +219,7 @@
     }
     .modal-bg {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       height: 100vh;
       background: rgba(0,0,0,0.8);
       display: none;
@@ -312,36 +308,44 @@
       <button class="modal-close" aria-label="Cerrar ventana QR">&times;</button>
       <h5 id="modal-qr-title">Código QR del producto</h5>
       <div id="qr-code" aria-describedby="modal-qr-desc"></div>
-      <p id="modal-qr-desc" style="margin-top: 15px; font-size: 0.9rem; color:#ccc;">
-        Escanea el código QR para ver el producto en línea.
+      <p id="modal-qr-desc" style="font-size:0.85rem; margin-top: 10px; color: #f8c630;">
+        Escanea este código con tu móvil para ver los detalles del producto.
       </p>
     </div>
   </div>
 
-  
-  <footer class="footer-voguecrest" style="background-color:#111; color:#fff; padding:20px 0; margin-top:40px; text-align:center;">
-  <div style="max-width:900px; margin:0 auto; display:flex; justify-content:center; gap:40px; flex-wrap:wrap; font-size:14px;">
-    <a href="inicio.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Página de inicio">
-      <i class="bi bi-house-door-fill" style="font-size:18px;"></i> Inicio
+  <footer>
+    &copy; 2025 VogueCrest. Todos los derechos reservados.
+  </footer>
+
+  <div class="bottom-nav" role="navigation" aria-label="Menú principal">
+    <a href="inicio.html" aria-label="Inicio">
+      <i class="bi bi-house"></i>
+      Inicio
     </a>
-    <a href="drops.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Página de drops">
-      <i class="bi bi-bag-fill" style="font-size:18px;"></i> Drops
+    <a href="catalogo.html" aria-current="page" aria-label="Catálogo">
+      <i class="bi bi-card-list"></i>
+      Catálogo
     </a>
-    <a href="catalogo.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Página de catálogo">
-      <i class="bi bi-card-list" style="font-size:18px;"></i> Catálogo
+    <a href="drops.html" aria-label="Drops exclusivos">
+      <i class="bi bi-star"></i>
+      Drops
     </a>
-    <a href="carrito.html" style="color:#f8c630; text-decoration:none; display:flex; align-items:center; gap:8px;" aria-label="Carrito de compras">
-      <i class="bi bi-bag-check-fill" style="font-size:18px;"></i> Carrito
+    <a href="carrito.html" aria-label="Carrito de compras">
+      <i class="bi bi-bag"></i>
+      Carrito
+    </a>
+    <a href="perfil.html" aria-label="Perfil de usuario">
+      <i class="bi bi-person"></i>
+      Perfil
     </a>
   </div>
-  <p style="margin-top:15px; font-size:13px; color:#aaa;">© 2025 VogueCrest. Todos los derechos reservados.</p>
-</footer>
-  
 
+  <!-- QRCode.js librería -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
   <script>
-    // Datos productos (usar tus imágenes reales)
+    // Datos productos
     const productos = [
       {
         id: 1,
@@ -349,7 +353,7 @@
         descripcion: "Playera amplia con diseño moderno y cómoda para el verano.",
         precio: 520,
         imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
-        url: "https://example.com/producto/1"
+        url: "prenda.html?id=1"
       },
       {
         id: 2,
@@ -357,7 +361,7 @@
         descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
         precio: 620,
         imagen: "descarga.jpg",
-        url: "https://example.com/producto/2"
+        url: "prenda.html?id=2"
       },
       {
         id: 3,
@@ -365,81 +369,78 @@
         descripcion: "Playera semi oversized color negro, elegante y versátil.",
         precio: 570,
         imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
-        url: "https://example.com/producto/3"
+        url: "prenda.html?id=3"
       }
     ];
 
     const listaProductos = document.getElementById('listaProductos');
+    const carritoHeader = document.getElementById('carrito-header');
     const contadorCarrito = document.getElementById('contador-carrito');
     const carritoDesplegable = document.getElementById('carrito-desplegable');
     const listaCarrito = document.getElementById('listaCarrito');
     const totalPrecio = document.getElementById('totalPrecio');
     const vaciarBtn = document.getElementById('vaciar-btn');
-
-    // Modal QR elementos
-    const modalQr = document.getElementById('modal-qr');
+    const modalQR = document.getElementById('modal-qr');
     const qrCodeDiv = document.getElementById('qr-code');
-    const modalCloseBtn = modalQr.querySelector('.modal-close');
+    const modalCloseBtn = modalQR.querySelector('.modal-close');
 
-    // Carrito en localStorage o vacío
+    // Carrito (array de productos con cantidad)
     let carrito = JSON.parse(localStorage.getItem('carritoVogueCrest')) || [];
 
-    // Mostrar productos
-    function mostrarProductos() {
-      listaProductos.innerHTML = "";
-      productos.forEach(producto => {
-        // Crear contenedor producto
-        const divProducto = document.createElement('div');
-        divProducto.classList.add('producto');
+    // Función para actualizar el contador del carrito en header
+    function actualizarContador() {
+      const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+      contadorCarrito.textContent = totalItems;
+    }
 
-        divProducto.innerHTML = `
+    // Función para renderizar productos en el catálogo
+    function renderizarProductos() {
+      listaProductos.innerHTML = '';
+      productos.forEach(producto => {
+        const div = document.createElement('div');
+        div.classList.add('producto');
+        div.setAttribute('role', 'region');
+        div.setAttribute('aria-label', `Producto ${producto.nombre}`);
+
+        div.innerHTML = `
           <img src="${producto.imagen}" alt="Imagen de ${producto.nombre}" loading="lazy" />
           <h3>${producto.nombre}</h3>
           <p class="descripcion">${producto.descripcion}</p>
           <p class="precio">$${producto.precio.toFixed(2)}</p>
-          <button class="agregar-carrito" data-id="${producto.id}">Agregar al carrito</button>
-          <button class="mostrar-qr" data-id="${producto.id}">Mostrar QR</button>
-          <p class="texto-qr-info" id="texto-qr-${producto.id}">📲 Escanea para ver la información de la prenda</p>
+          <button class="agregar-carrito" aria-label="Agregar ${producto.nombre} al carrito">Agregar al carrito</button>
+          <button class="mostrar-qr" aria-label="Mostrar código QR de ${producto.nombre}">Mostrar QR</button>
+          <p class="texto-qr-info" aria-live="polite"></p>
         `;
+        listaProductos.appendChild(div);
 
-        listaProductos.appendChild(divProducto);
+        // Agregar funcionalidad botones
+        const btnAgregar = div.querySelector('.agregar-carrito');
+        const btnQR = div.querySelector('.mostrar-qr');
+        const textoQR = div.querySelector('.texto-qr-info');
 
-        // Ocultar texto QR info inicialmente
-        const textoQrInfo = divProducto.querySelector('.texto-qr-info');
-        textoQrInfo.style.display = "none";
+        btnAgregar.addEventListener('click', () => {
+          agregarAlCarrito(producto);
+          textoQR.textContent = ''; // limpiar texto qr si estaba
+        });
+
+        btnQR.addEventListener('click', () => {
+          mostrarModalQR(producto.url);
+          textoQR.textContent = 'Escanea con tu móvil o haz clic en el QR para más detalles.';
+        });
       });
     }
 
-    // Actualizar contador carrito
-    function actualizarContador() {
-      contadorCarrito.textContent = carrito.length;
-    }
-
-    // Mostrar carrito desplegable
-    const carritoHeader = document.getElementById('carrito-header');
-    carritoHeader.addEventListener('click', () => {
-      if (carritoDesplegable.style.display === 'block') {
-        carritoDesplegable.style.display = 'none';
+    // Agregar producto al carrito
+    function agregarAlCarrito(producto) {
+      const index = carrito.findIndex(item => item.id === producto.id);
+      if (index >= 0) {
+        carrito[index].cantidad++;
       } else {
-        carritoDesplegable.style.display = 'block';
+        carrito.push({...producto, cantidad: 1});
       }
-    });
-
-    // Mostrar productos en carrito
-    function mostrarCarrito() {
-      listaCarrito.innerHTML = '';
-      let total = 0;
-      carrito.forEach(item => {
-        const producto = productos.find(p => p.id === item.id);
-        total += producto.precio * item.cantidad;
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${producto.nombre} x${item.cantidad} - $${(producto.precio * item.cantidad).toFixed(2)}
-          <button class="eliminar-item" data-id="${producto.id}" aria-label="Eliminar ${producto.nombre} del carrito">&times;</button>
-        `;
-        listaCarrito.appendChild(li);
-      });
-      totalPrecio.textContent = `Total: $${total.toFixed(2)}`;
+      guardarCarrito();
+      renderizarCarrito();
+      actualizarContador();
     }
 
     // Guardar carrito en localStorage
@@ -447,85 +448,96 @@
       localStorage.setItem('carritoVogueCrest', JSON.stringify(carrito));
     }
 
-    // Añadir producto al carrito
-    listaProductos.addEventListener('click', (e) => {
-      if (e.target.classList.contains('agregar-carrito')) {
-        const id = parseInt(e.target.dataset.id);
-        const productoEnCarrito = carrito.find(item => item.id === id);
-        if (productoEnCarrito) {
-          productoEnCarrito.cantidad++;
-        } else {
-          carrito.push({ id: id, cantidad: 1 });
-        }
-        actualizarContador();
-        mostrarCarrito();
-        guardarCarrito();
+    // Renderizar carrito desplegable
+    function renderizarCarrito() {
+      listaCarrito.innerHTML = '';
+      if (carrito.length === 0) {
+        listaCarrito.innerHTML = '<li>El carrito está vacío.</li>';
+        totalPrecio.textContent = 'Total: $0.00';
+        return;
       }
-    });
+      let total = 0;
+      carrito.forEach(item => {
+        total += item.precio * item.cantidad;
+        const li = document.createElement('li');
+        li.innerHTML = `
+          ${item.nombre} x${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}
+          <button aria-label="Eliminar ${item.nombre} del carrito">&times;</button>
+        `;
+        const btnEliminar = li.querySelector('button');
+        btnEliminar.addEventListener('click', () => {
+          eliminarDelCarrito(item.id);
+        });
+        listaCarrito.appendChild(li);
+      });
+      totalPrecio.textContent = `Total: $${total.toFixed(2)}`;
+    }
 
     // Eliminar producto del carrito
-    listaCarrito.addEventListener('click', (e) => {
-      if (e.target.classList.contains('eliminar-item')) {
-        const id = parseInt(e.target.dataset.id);
-        carrito = carrito.filter(item => item.id !== id);
-        actualizarContador();
-        mostrarCarrito();
-        guardarCarrito();
-      }
-    });
+    function eliminarDelCarrito(id) {
+      carrito = carrito.filter(item => item.id !== id);
+      guardarCarrito();
+      renderizarCarrito();
+      actualizarContador();
+    }
 
     // Vaciar carrito
     vaciarBtn.addEventListener('click', () => {
       carrito = [];
-      actualizarContador();
-      mostrarCarrito();
       guardarCarrito();
+      renderizarCarrito();
+      actualizarContador();
     });
 
-    // Mostrar QR y texto "Escanea..."
-    listaProductos.addEventListener('click', (e) => {
-      if (e.target.classList.contains('mostrar-qr')) {
-        const id = parseInt(e.target.dataset.id);
-        const producto = productos.find(p => p.id === id);
-        if (!producto) return;
+    // Mostrar/ocultar carrito al hacer click en icono carrito
+    carritoHeader.addEventListener('click', () => {
+      if (carritoDesplegable.style.display === 'block') {
+        carritoDesplegable.style.display = 'none';
+      } else {
+        carritoDesplegable.style.display = 'block';
+      }
+    });
+    carritoHeader.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        carritoHeader.click();
+      }
+    });
 
-        // Generar QR del url
-        qrCodeDiv.innerHTML = "";
-        QRCode.toCanvas(producto.url, { width: 200 }, (error, canvas) => {
-          if (error) console.error(error);
-          else qrCodeDiv.appendChild(canvas);
+    // Mostrar modal con QR code
+    function mostrarModalQR(url) {
+      modalQR.classList.add('active');
+      qrCodeDiv.innerHTML = '';
+      QRCode.toCanvas(url, { width: 200 }, function (error, canvas) {
+        if (error) {
+          qrCodeDiv.textContent = 'Error generando QR.';
+          return;
+        }
+        qrCodeDiv.appendChild(canvas);
+        canvas.style.cursor = 'pointer';
+        canvas.title = 'Haz clic para abrir el enlace del producto';
+        canvas.addEventListener('click', () => {
+          window.open(url, '_blank');
         });
+      });
+    }
 
-        // Mostrar modal
-        modalQr.classList.add('active');
-
-        // Mostrar el texto "Escanea para ver la información" SOLO para ese producto
-        // Primero ocultamos todos los textos
-        document.querySelectorAll('.texto-qr-info').forEach(el => el.style.display = 'none');
-        // Luego mostramos solo el texto del producto actual
-        const textoQr = document.getElementById(`texto-qr-${id}`);
-        if(textoQr) textoQr.style.display = 'block';
-      }
-    });
-
-    // Cerrar modal QR y ocultar textos
+    // Cerrar modal QR
     modalCloseBtn.addEventListener('click', () => {
-      modalQr.classList.remove('active');
-      // Ocultar todos textos QR info
-      document.querySelectorAll('.texto-qr-info').forEach(el => el.style.display = 'none');
+      modalQR.classList.remove('active');
+      qrCodeDiv.innerHTML = '';
     });
-
-    // Cerrar modal al hacer clic fuera contenido
-    modalQr.addEventListener('click', (e) => {
-      if(e.target === modalQr) {
-        modalCloseBtn.click();
+    modalQR.addEventListener('click', (e) => {
+      if (e.target === modalQR) {
+        modalQR.classList.remove('active');
+        qrCodeDiv.innerHTML = '';
       }
     });
 
-    // Inicializar
-    mostrarProductos();
+    // Inicialización
+    renderizarProductos();
+    renderizarCarrito();
     actualizarContador();
-    mostrarCarrito();
   </script>
 </body>
 </html>

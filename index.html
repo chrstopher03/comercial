@@ -2,132 +2,502 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VogueCrest - Inicio</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
+    /* Reset y básicos */
+    * {
+      box-sizing: border-box;
+    }
     body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #000;
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
+    /* Splash */
+    #splash {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+    #splash.active {
+      pointer-events: all;
+      opacity: 1;
+      visibility: visible;
+      animation: splashFadeIn 1.2s ease forwards;
+    }
+    #splash img {
+      width: 140px;
+      opacity: 0;
+      transform: scale(0.6);
+      animation: splashLogoIn 1.5s ease forwards;
+      animation-delay: 0.3s;
+    }
+    #splash h1 {
+      font-size: 40px;
+      margin-top: 20px;
+      letter-spacing: 4px;
+      color: #d19e00;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: splashTextIn 1.5s ease forwards;
+      animation-delay: 0.9s;
+      user-select: none;
+    }
+    @keyframes splashFadeIn {
+      from { opacity: 0; visibility: hidden;}
+      to { opacity: 1; visibility: visible;}
+    }
+    @keyframes splashLogoIn {
+      0% {opacity: 0; transform: scale(0.6);}
+      60% {opacity: 1; transform: scale(1.1);}
+      100% {opacity: 1; transform: scale(1);}
+    }
+    @keyframes splashTextIn {
+      0% {opacity: 0; transform: translateY(20px);}
+      100% {opacity: 1; transform: translateY(0);}
+    }
+    @keyframes splashFadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+    }
+
+    /* Contenedores principales */
+    #login-section, #main-content {
+      flex-grow: 1;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      overflow-y: auto;
+    }
+    #login-section.active, #main-content.active {
+      display: flex;
+    }
+
+    /* Login Form */
+    #login-form {
+      background-color: #111;
+      padding: 30px 25px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 0 15px #d19e00;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    #login-form h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: 700;
+      color: #d19e00;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    #login-form input {
+      background-color: #222;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-size: 16px;
+      color: #eee;
+      transition: box-shadow 0.3s;
+    }
+    #login-form input::placeholder {
+      color: #bbb;
+    }
+    #login-form input:focus {
+      outline: none;
+      box-shadow: 0 0 8px #d19e00;
+    }
+    #login-form button {
+      margin-top: 10px;
+      background: linear-gradient(45deg, #d19e00, #a67c00);
+      border: none;
+      color: #111;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s;
+      user-select: none;
+    }
+    #login-form button:hover {
+      background: linear-gradient(45deg, #a67c00, #d19e00);
+    }
+
+    /* Feedback error */
+    #error-msg {
+      background: #b32929;
+      padding: 10px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+      user-select: none;
+    }
+
+    /* Main content */
+    #main-content {
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      padding-bottom: 80px; /* espacio para barra inferior */
+    }
     .logo-container {
       text-align: center;
-      margin-top: 20px;
+      margin-bottom: 15px;
+      user-select: none;
     }
-
     .logo-container img {
-      width: 100px;
-      margin-bottom: 10px;
+      width: 110px;
+      filter: drop-shadow(0 0 3px #d19e00);
+      user-select: none;
     }
-
     .brand-name {
-      font-size: 28px;
-      font-weight: bold;
+      font-size: 34px;
+      font-weight: 800;
+      color: #d19e00;
+      letter-spacing: 3px;
+      user-select: none;
     }
-
-    .hero-image {
-      width: 100%;
-      max-width: 100%;
-      display: block;
-      margin: 0 auto;
-      border-radius: 12px;
-      margin-top: 10px;
+    .welcome-msg {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 20px;
+      color: #fff;
+      user-select: none;
     }
 
     .main-buttons {
       background-color: #f8f6f2;
       color: #000;
-      border-radius: 12px;
-      margin: 20px;
-      padding: 20px;
+      border-radius: 15px;
+      margin: 20px auto;
+      padding: 25px 25px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 0 15px #d19e00aa;
+      user-select: none;
     }
-
     .main-buttons a {
       display: block;
       color: #8c6300;
-      font-size: 18px;
+      font-size: 20px;
       text-decoration: none;
-      padding: 15px 10px;
+      padding: 16px 12px;
       border-bottom: 1px solid #ccc;
+      transition: background-color 0.3s;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
-
+    .main-buttons a:hover,
+    .main-buttons a:focus {
+      background-color: #d19e0011;
+      outline: none;
+    }
     .main-buttons a:last-child {
       border-bottom: none;
     }
-
     .main-buttons a i {
       float: right;
+      font-size: 24px;
     }
 
     .qr-box {
       background-color: #111;
       text-align: center;
       padding: 20px;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 15px;
+      box-sizing: border-box;
+      margin-bottom: 15px;
+      box-shadow: 0 0 15px #d19e00aa;
+      user-select: none;
     }
-
+    .qr-box p {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      user-select: none;
+    }
     .qr-box img {
-      width: 120px;
+      width: 140px;
+      user-select: none;
+      filter: drop-shadow(0 0 4px #d19e00);
     }
 
+    /* Logout button */
+    .logout-btn {
+      background-color: #d19e00;
+      border: none;
+      color: #111;
+      width: 100%;
+      max-width: 380px;
+      padding: 14px 0;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: 0 0 15px #d19e00aa;
+      transition: background-color 0.3s;
+      user-select: none;
+    }
+    .logout-btn:hover,
+    .logout-btn:focus {
+      background-color: #b38600;
+      outline: none;
+    }
+
+    /* Barra inferior fija con todos los botones */
     .bottom-nav {
       position: fixed;
       bottom: 0;
-      width: 100%;
-      background-color: #000;
-      border-top: 1px solid #222;
+      left: 0; 
+      right: 0;
+      height: 56px;
+      background-color: #111;
+      border-top: 2px solid #d19e00;
       display: flex;
       justify-content: space-around;
-      padding: 10px 0;
+      align-items: center;
+      box-shadow: 0 -2px 10px #d19e00aa;
+      z-index: 10000;
+      user-select: none;
     }
-
     .bottom-nav a {
-      color: #fff;
-      text-align: center;
-      font-size: 12px;
+      color: #d19e00;
+      font-size: 26px;
       text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .bottom-nav a:hover,
+    .bottom-nav a:focus {
+      background-color: #d19e00;
+      color: #111;
+      outline: none;
+    }
+    .bottom-nav a[aria-current="page"] {
+      background-color: #d19e00;
+      color: #111;
+      cursor: default;
+      pointer-events: none;
     }
 
-    .bottom-nav i {
-      font-size: 20px;
-      display: block;
+    /* Responsive */
+    @media (max-width: 480px) {
+      #login-form, .main-buttons, .qr-box, .logout-btn {
+        max-width: 90vw;
+      }
+      .main-buttons a {
+        font-size: 18px;
+        padding: 12px 10px;
+      }
+      .bottom-nav a {
+        font-size: 22px;
+        width: 40px;
+        height: 40px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Logo y nombre -->
-  <div class="logo-container">
-    <img src="ChatGPT Image 1 jun 2025, 12_05_00.png" alt="VogueCrest Logo">
-    <div class="brand-name">VOGUECREST</div>
+  <!-- Splash animado -->
+  <div id="splash" role="alert" aria-live="assertive" aria-label="Animación de carga VogueCrest">
+    <img src="ChatGPT_Image_1_jun_2025__12_05_00-removebg-preview.png" alt="Logo VogueCrest" />
+    <h1>VOGUECREST</h1>
   </div>
 
- 
+  <!-- Formulario login -->
+  <section id="login-section" aria-label="Formulario de inicio de sesión">
+    <form id="login-form" aria-describedby="error-msg" novalidate>
+      <h2>Iniciar sesión</h2>
+      <input type="text" id="nombre" name="nombre" placeholder="Nombre" autocomplete="given-name" required aria-required="true" />
+      <input type="text" id="apellido" name="apellido" placeholder="Apellido" autocomplete="family-name" required aria-required="true" />
+      <input type="email" id="correo" name="correo" placeholder="Correo electrónico" autocomplete="email" required aria-required="true" />
+      <button type="submit">Entrar</button>
+      <div id="error-msg" role="alert" aria-live="assertive"></div>
+    </form>
+  </section>
 
-  <!-- Botones principales -->
-  <div class="main-buttons">
-    <a href="catalogo.html">Colección <i class="bi bi-chevron-right"></i></a>
-    <a href="scaner.html">Escanear QR <i class="bi bi-qr-code-scan"></i></a>
-    <a href="drops.html">Drops <i class="bi bi-chevron-right"></i></a>
-    <a href="perfil.html">Mi perfil<i class="bi bi-person"></i></a>
-  </div>
+  <!-- Contenido principal (visible solo tras login) -->
+  <main id="main-content" tabindex="-1" aria-label="Contenido principal de VogueCrest">
+    <div class="logo-container" aria-label="Logo y nombre VogueCrest">
+      <img src="ChatGPT_Image_1_jun_2025__12_05_00-removebg-preview.png" alt="Logo VogueCrest" />
+      <div class="brand-name">VOGUECREST</div>
+      <div class="welcome-msg" id="welcome-msg"></div>
+    </div>
 
-  <!-- QR mensaje -->
-  <div class="qr-box">
-    <p>Escanear el código QR en tu prenda</p>
-<img src="descargam.png" alt="Código QR VogueCrest">
-  </div>
+    <section class="main-buttons" role="navigation" aria-label="Navegación principal">
+      <a href="scaner.html" tabindex="0" aria-label="Ir a escáner"><i class="bi bi-upc-scan"></i> Escáner</a>
+      <a href="catalogo.html" tabindex="0" aria-label="Ir a catálogo"><i class="bi bi-shop-window"></i> Catálogo</a>
+      <a href="drops.html" tabindex="0" aria-label="Ir a drops"><i class="bi bi-gift-fill"></i> Drops</a>
+      <a href="perfil.html" tabindex="0" aria-label="Ir a perfil"><i class="bi bi-person-circle"></i> Perfil</a>
+      <a href="carrito.html" tabindex="0" aria-label="Ir a carrito"><i class="bi bi-bag-fill"></i> Carrito</a>
+    </section>
 
-  <!-- Menú inferior -->
-  <div class="bottom-nav">
-    <a href="inicio.html"><i class="bi bi-house-door"></i>Inicio</a>
-    <a href="catalogo.html"><i class="bi bi-bag"></i>Colección</a>
-    <a href="scaner.html"><i class="bi bi-qr-code-scan"></i>Escanear QR</a>
-    <a href="drops.html"> <i class="bi bi-fire"></i>Drops</a>
-    <a href="perfil.htm"><i class="bi bi-person"></i>Mi perfil</a>
-  </div>
+    <section class="qr-box" aria-label="Código QR de VogueCrest">
+      <p>Escanea el QR para más info</p>
+      <img src="descargam.png"Código QR VogueCrest" />
+    </section>
 
+    <button class="logout-btn" aria-label="Cerrar sesión">Cerrar sesión</button>
+  </main>
+
+  <!-- Barra inferior fija con todos los botones -->
+  <nav class="bottom-nav" aria-label="Navegación inferior" style="display:none;">
+    <a href="scanner.html" aria-label="Escáner" tabindex="0" title="Escáner"><i class="bi bi-upc-scan"></i></a>
+    <a href="catalogo.html" aria-label="Catálogo" tabindex="0" title="Catálogo"><i class="bi bi-shop-window"></i></a>
+    <a href="drops.html" aria-label="Drops" tabindex="0" title="Drops"><i class="bi bi-gift-fill"></i></a>
+    <a href="carrito.html" aria-label="Carrito" tabindex="0" title="Carrito"><i class="bi bi-bag-fill"></i></a>
+    <a href="perfil.html" aria-label="Perfil" tabindex="0" title="Perfil"><i class="bi bi-person-circle"></i></a>
+  </nav>
+
+  <script>
+    
+    // Función para simular "guardar sesión" en localStorage
+    function setSession(user) {
+      localStorage.setItem('voguecrestUser', JSON.stringify(user));
+    }
+    function getSession() {
+      const userStr = localStorage.getItem('voguecrestUser');
+      if (!userStr) return null;
+      try {
+        return JSON.parse(userStr);
+      } catch {
+        return null;
+      }
+    }
+    function clearSession() {
+      localStorage.removeItem('voguecrestUser');
+    }
+
+    // DOM Elements
+    const splash = document.getElementById('splash');
+    const loginSection = document.getElementById('login-section');
+    const loginForm = document.getElementById('login-form');
+    const errorMsg = document.getElementById('error-msg');
+    const mainContent = document.getElementById('main-content');
+    const welcomeMsg = document.getElementById('welcome-msg');
+    const logoutBtn = document.querySelector('.logout-btn');
+    const bottomNav = document.querySelector('.bottom-nav');
+
+    // Mostrar splash y luego login o main según sesión
+    function showSplashThenPage() {
+      splash.classList.add('active');
+      // Duración total splash (3.2s anim + 0.6s fadeout)
+      setTimeout(() => {
+        splash.style.animation = 'splashFadeOut 0.6s ease forwards';
+        setTimeout(() => {
+          splash.classList.remove('active');
+          splash.style.animation = '';
+          decidePage();
+        }, 600);
+      }, 3200);
+    }
+
+    // Mostrar login
+    function showLogin() {
+      loginSection.classList.add('active');
+      mainContent.classList.remove('active');
+      bottomNav.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      loginForm.nombre.focus();
+    }
+
+    // Mostrar main (ya logueado)
+    function showMain(user) {
+      welcomeMsg.textContent = `Bienvenido, ${user.nombre} ${user.apellido}`;
+      mainContent.classList.add('active');
+      loginSection.classList.remove('active');
+      bottomNav.style.display = 'flex';
+      document.body.style.overflow = 'auto';
+      mainContent.focus();
+    }
+
+    // Decidir qué mostrar según sesión
+    function decidePage() {
+      const user = getSession();
+      if (user) {
+        showMain(user);
+      } else {
+        showLogin();
+      }
+    }
+
+    // Validar login básico
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+
+      const nombre = loginForm.nombre.value.trim();
+      const apellido = loginForm.apellido.value.trim();
+      const correo = loginForm.correo.value.trim();
+
+      if (!nombre || !apellido || !correo) {
+        errorMsg.textContent = 'Por favor completa todos los campos.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      // Validar correo simple
+      if (!correo.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        errorMsg.textContent = 'Introduce un correo válido.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      // Guardar sesión y mostrar main
+      setSession({ nombre, apellido, correo });
+      showMain({ nombre, apellido, correo });
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', () => {
+      clearSession();
+      showLogin();
+    });
+
+    // Al cargar la página, si no hay sesión mostrar splash primero
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!getSession()) {
+        // Mostrar splash con animación
+        showSplashThenPage();
+      } else {
+        decidePage();
+      }
+    });
+  </script>
 </body>
 </html>
