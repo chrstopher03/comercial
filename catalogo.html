@@ -61,6 +61,7 @@
       box-shadow: 0 0 10px #222;
       text-align: center;
       transition: transform 0.2s ease;
+      position: relative;
     }
     .producto:hover {
       transform: scale(1.03);
@@ -89,15 +90,30 @@
       color: #ffffff;
       margin-bottom: 0.8rem;
     }
-    a.detalle-link {
-      color: #f8c630;
+    button.mostrar-qr {
+      background-color: #f8c630;
+      border: none;
+      color: #000;
       font-weight: 700;
-      text-decoration: none;
-      display: inline-block;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
       margin-top: 10px;
+      min-width: 130px;
     }
-    a.detalle-link:hover {
-      text-decoration: underline;
+    button.mostrar-qr:hover {
+      background-color: #d4b320;
+    }
+    .qr-container {
+      margin-top: 10px;
+      display: none;
+      justify-content: center;
+    }
+    .qr-container canvas {
+      cursor: pointer;
+      border-radius: 12px;
+      box-shadow: 0 0 8px #f8c630;
     }
   </style>
 </head>
@@ -118,33 +134,38 @@
     </div>
   </main>
 
-  <footer>
+  <footer style="text-align:center; padding: 1rem; color: #fff;">
     &copy; 2025 VogueCrest. Todos los derechos reservados.
   </footer>
 
+  <!-- QRCode.js librería -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
   <script>
-    // Aquí va tu array de productos
     const productos = [
       {
         id: 1,
         nombre: "Playera Oversized Blanco",
         descripcion: "Playera amplia con diseño moderno y cómoda para el verano.",
         precio: 520,
-        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
+        imagen: "1.jpeg",
+        url: "prenda.html?id=1"
       },
       {
         id: 2,
         nombre: "Playera Cebra",
         descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
         precio: 620,
-        imagen: "descarga.jpg",
+        imagen: "2.jpeg",
+        url: "prenda.html?id=2"
       },
       {
         id: 3,
         nombre: "Playera Semi Oversized Negra",
         descripcion: "Playera semi oversized color negro, elegante y versátil.",
         precio: 570,
-        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
+        imagen: "3.png",
+        url: "prenda.html?id=3"
       }
     ];
 
@@ -162,10 +183,42 @@
           <h3>${producto.nombre}</h3>
           <p class="descripcion">${producto.descripcion}</p>
           <p class="precio">$${producto.precio.toFixed(2)}</p>
-          <a href="prenda.html?id=${producto.id}" class="detalle-link" aria-label="Ver detalle de ${producto.nombre}">Ver detalle</a>
+          <button class="mostrar-qr" aria-label="Mostrar código QR de ${producto.nombre}">Mostrar QR</button>
+          <div class="qr-container" aria-live="polite"></div>
         `;
 
         listaProductos.appendChild(div);
+
+        // Botón mostrar QR
+        const btnQR = div.querySelector('.mostrar-qr');
+        const qrContainer = div.querySelector('.qr-container');
+
+        btnQR.addEventListener('click', () => {
+          if (qrContainer.style.display === 'flex') {
+            qrContainer.style.display = 'none';
+            qrContainer.innerHTML = '';
+            btnQR.textContent = 'Mostrar QR';
+          } else {
+            qrContainer.style.display = 'flex';
+            qrContainer.innerHTML = ''; // limpiar
+
+            // Generar QR con la url de la prenda
+            QRCode.toCanvas(producto.url, { width: 160 }, (error, canvas) => {
+              if (error) {
+                qrContainer.textContent = 'Error generando QR.';
+                return;
+              }
+              qrContainer.appendChild(canvas);
+              canvas.title = 'Haz clic para abrir el detalle del producto';
+              canvas.style.cursor = 'pointer';
+
+              canvas.addEventListener('click', () => {
+                window.open(producto.url, '_blank');
+              });
+              btnQR.textContent = 'Ocultar QR';
+            });
+          }
+        });
       });
     }
 
