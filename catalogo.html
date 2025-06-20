@@ -17,6 +17,11 @@
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding-top: 70px; /* espacio para header fijo */
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 15px;
+      padding-right: 15px;
     }
     header#header-fijo {
       position: fixed;
@@ -45,33 +50,8 @@
       height: 40px;
       border-radius: 6px;
     }
-    #carrito-header {
-      position: relative;
-      cursor: pointer;
-      color: #fffffd;
-      font-size: 28px;
-      display: flex;
-      align-items: center;
-    }
-    #contador-carrito {
-      position: absolute;
-      top: -8px;
-      right: -12px;
-      background: #f00;
-      color: #fff;
-      font-size: 12px;
-      font-weight: bold;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
     main {
-      max-width: 900px;
-      margin: 0 auto 80px auto;
-      padding: 10px 15px;
+      margin-top: 20px;
     }
     .producto {
       background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
@@ -80,6 +60,10 @@
       padding: 15px;
       box-shadow: 0 0 10px #222;
       text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .producto:hover {
+      transform: scale(1.03);
     }
     .producto img {
       max-width: 100%;
@@ -92,6 +76,7 @@
       margin: 0.4rem 0;
       font-weight: 700;
       font-size: 1.3rem;
+      color: #f8c630;
     }
     .descripcion {
       font-size: 0.9rem;
@@ -104,174 +89,15 @@
       color: #ffffff;
       margin-bottom: 0.8rem;
     }
-    button.agregar-carrito, button.mostrar-qr {
-      background-color: #f7f3ea;
-      border: none;
-      color: #000;
+    a.detalle-link {
+      color: #f8c630;
       font-weight: 700;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin: 5px;
-      min-width: 130px;
-    }
-    button.agregar-carrito:hover, button.mostrar-qr:hover {
-      background-color: #faf9f5;
-    }
-    .texto-qr-info {
-      color: #fffcf2;
-      font-size: 0.85rem;
-      margin-top: 6px;
-      display: none;
-    }
-    #carrito-desplegable {
-      position: fixed;
-      top: 60px;
-      right: 0;
-      width: 320px;
-      max-height: 70vh;
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      border-left: 1px solid #222;
-      box-shadow: -2px 0 8px #000;
-      padding: 20px;
-      overflow-y: auto;
-      display: none;
-      z-index: 1300;
-      color: #fff;
-    }
-    #carrito-desplegable h4 {
-      margin-top: 0;
-      border-bottom: 1px solid #444;
-      padding-bottom: 10px;
-    }
-    #listaCarrito li {
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-      border-bottom: 1px solid #222;
-      padding-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    #listaCarrito li button {
-      background: transparent;
-      border: none;
-      color: rgb(205, 126, 126);
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #totalPrecio {
-      font-weight: 700;
-      margin-top: 15px;
-      font-size: 1.2rem;
-      color: #ffffff;
-      text-align: right;
-    }
-    #vaciar-btn {
-      background: #f00;
-      border: none;
-      color: #fff;
-      font-weight: 700;
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    #vaciar-btn:hover {
-      background: #b30000;
-    }
-    footer {
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      color: #fff;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 40px;
-      font-size: 0.9rem;
-    }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      border-top: 1px solid #222;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0;
-      z-index: 1000;
-    }
-    .bottom-nav a {
-      color: #fff;
-      text-align: center;
-      font-size: 12px;
       text-decoration: none;
-      width: 20%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
+      display: inline-block;
+      margin-top: 10px;
     }
-    .bottom-nav i {
-      font-size: 20px;
-      line-height: 1;
-    }
-    .modal-bg {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      height: 100vh;
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1400;
-      padding: 20px;
-    }
-    .modal-bg.active {
-      display: flex;
-    }
-    .modal-content {
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 280px;
-      width: 90%;
-      color: #fff;
-      box-shadow: 0 0 20px #ffffff;
-      position: relative;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-    }
-    .modal-content h5 {
-      margin-bottom: 15px;
-    }
-    .modal-close {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      font-size: 22px;
-      color: #fffcf4;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-weight: 700;
-    }
-    @media (max-width: 480px) {
-      #logo-header {
-        font-size: 18px;
-      }
-      #carrito-header {
-        font-size: 24px;
-      }
-      main {
-        padding: 10px 8px;
-      }
+    a.detalle-link:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -282,10 +108,6 @@
       <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
       VOGUECREST
     </a>
-    <div id="carrito-header" aria-label="Ver carrito de compras" role="button" tabindex="0">
-      <i class="bi bi-bag"></i>
-      <div id="contador-carrito" aria-live="polite" aria-atomic="true">0</div>
-    </div>
   </header>
 
   <main>
@@ -296,259 +118,59 @@
     </div>
   </main>
 
-  <aside id="carrito-desplegable" aria-label="Carrito de compras">
-    <h4>Carrito de Compras</h4>
-    <ul id="listaCarrito"></ul>
-    <p id="totalPrecio">Total: $0.00</p>
-    <button id="vaciar-btn">Vaciar Carrito</button>
-  </aside>
-
-  <div class="modal-bg" id="modal-qr" role="dialog" aria-modal="true" aria-labelledby="modal-qr-title" aria-describedby="modal-qr-desc">
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Cerrar ventana QR">&times;</button>
-      <h5 id="modal-qr-title">Código QR del producto</h5>
-      <div id="qr-code" aria-describedby="modal-qr-desc"></div>
-      <p id="modal-qr-desc" style="font-size:0.85rem; margin-top: 10px; color: #fffefa;">
-        Escanea este código con tu móvil para ver los detalles del producto.
-      </p>
-    </div>
-  </div>
-
   <footer>
     &copy; 2025 VogueCrest. Todos los derechos reservados.
   </footer>
 
-  <div class="bottom-nav" role="navigation" aria-label="Menú principal">
-    <a href="inicio.html" aria-label="Inicio">
-      <i class="bi bi-house"></i>
-      Inicio
-    </a>
-    <a href="catalogo.html" aria-current="page" aria-label="Catálogo">
-      <i class="bi bi-card-list"></i>
-      Catálogo
-    </a>
-    <a href="drops.html" aria-label="Drops exclusivos">
-      <i class="bi bi-star"></i>
-      Drops
-    </a>
-    <a href="carrito.html" aria-label="Carrito de compras">
-      <i class="bi bi-bag"></i>
-      Carrito
-    </a>
-    <a href="perfil.html" aria-label="Perfil de usuario">
-      <i class="bi bi-person"></i>
-      Perfil
-    </a>
-  </div>
-
-  <!-- QRCode.js librería -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
   <script>
-    // Datos productos
+    // Aquí va tu array de productos
     const productos = [
       {
         id: 1,
         nombre: "Playera Oversized Blanco",
         descripcion: "Playera amplia con diseño moderno y cómoda para el verano.",
         precio: 520,
-        imagen: "1.jpeg",
-        url: "prenda.html"
+        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
       },
       {
         id: 2,
         nombre: "Playera Cebra",
         descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
         precio: 620,
-        imagen: "2.jpeg",
-        url: "prenda.html?id=2"
+        imagen: "descarga.jpg",
       },
       {
         id: 3,
         nombre: "Playera Semi Oversized Negra",
         descripcion: "Playera semi oversized color negro, elegante y versátil.",
         precio: 570,
-        imagen: "3.png",
-        url: "prenda.html?id=3"
-      },
-        {
-        id: 4,
-        nombre: "Playera Semi Oversized Negra",
-        descripcion: "Playera semi oversized color negro, elegante y versátil.",
-        precio: 570,
-        imagen: "5.jpeg",
-        url: "prenda.html?id=3"
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
       }
     ];
 
     const listaProductos = document.getElementById('listaProductos');
-    const carritoHeader = document.getElementById('carrito-header');
-    const contadorCarrito = document.getElementById('contador-carrito');
-    const carritoDesplegable = document.getElementById('carrito-desplegable');
-    const listaCarrito = document.getElementById('listaCarrito');
-    const totalPrecio = document.getElementById('totalPrecio');
-    const vaciarBtn = document.getElementById('vaciar-btn');
-    const modalQR = document.getElementById('modal-qr');
-    const qrCodeDiv = document.getElementById('qr-code');
-    const modalCloseBtn = modalQR.querySelector('.modal-close');
 
-    // Carrito (array de productos con cantidad)
-    let carrito = JSON.parse(localStorage.getItem('carritoVogueCrest')) || [];
-
-    // Función para actualizar el contador del carrito en header
-    function actualizarContador() {
-      const totalItems = carrito.reduce((acc, item) => acc + item.cantidad, 0);
-      contadorCarrito.textContent = totalItems;
-    }
-
-    // Función para renderizar productos en el catálogo
     function renderizarProductos() {
       listaProductos.innerHTML = '';
+
       productos.forEach(producto => {
         const div = document.createElement('div');
         div.classList.add('producto');
-        div.setAttribute('role', 'region');
-        div.setAttribute('aria-label', `Producto ${producto.nombre}`);
 
         div.innerHTML = `
           <img src="${producto.imagen}" alt="Imagen de ${producto.nombre}" loading="lazy" />
           <h3>${producto.nombre}</h3>
           <p class="descripcion">${producto.descripcion}</p>
           <p class="precio">$${producto.precio.toFixed(2)}</p>
-          <button class="agregar-carrito" aria-label="Agregar ${producto.nombre} al carrito">Agregar al carrito</button>
-          <button class="mostrar-qr" aria-label="Mostrar código QR de ${producto.nombre}">Mostrar QR</button>
-          <p class="texto-qr-info" aria-live="polite"></p>
+          <a href="prenda.html?id=${producto.id}" class="detalle-link" aria-label="Ver detalle de ${producto.nombre}">Ver detalle</a>
         `;
+
         listaProductos.appendChild(div);
-
-        // Agregar funcionalidad botones
-        const btnAgregar = div.querySelector('.agregar-carrito');
-        const btnQR = div.querySelector('.mostrar-qr');
-        const textoQR = div.querySelector('.texto-qr-info');
-
-        btnAgregar.addEventListener('click', () => {
-          agregarAlCarrito(producto);
-          textoQR.textContent = ''; // limpiar texto qr si estaba
-        });
-
-        btnQR.addEventListener('click', () => {
-          mostrarModalQR(producto.url);
-          textoQR.textContent = 'Escanea con tu móvil o haz clic en el QR para más detalles.';
-        });
       });
     }
 
-    // Agregar producto al carrito
-    function agregarAlCarrito(producto) {
-      const index = carrito.findIndex(item => item.id === producto.id);
-      if (index >= 0) {
-        carrito[index].cantidad++;
-      } else {
-        carrito.push({...producto, cantidad: 1});
-      }
-      guardarCarrito();
-      renderizarCarrito();
-      actualizarContador();
-    }
-
-    // Guardar carrito en localStorage
-    function guardarCarrito() {
-      localStorage.setItem('carritoVogueCrest', JSON.stringify(carrito));
-    }
-
-    // Renderizar carrito desplegable
-    function renderizarCarrito() {
-      listaCarrito.innerHTML = '';
-      if (carrito.length === 0) {
-        listaCarrito.innerHTML = '<li>El carrito está vacío.</li>';
-        totalPrecio.textContent = 'Total: $0.00';
-        return;
-      }
-      let total = 0;
-      carrito.forEach(item => {
-        total += item.precio * item.cantidad;
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${item.nombre} x${item.cantidad} - $${(item.precio * item.cantidad).toFixed(2)}
-          <button aria-label="Eliminar ${item.nombre} del carrito">&times;</button>
-        `;
-        const btnEliminar = li.querySelector('button');
-        btnEliminar.addEventListener('click', () => {
-          eliminarDelCarrito(item.id);
-        });
-        listaCarrito.appendChild(li);
-      });
-      totalPrecio.textContent = `Total: $${total.toFixed(2)}`;
-    }
-
-    // Eliminar producto del carrito
-    function eliminarDelCarrito(id) {
-      carrito = carrito.filter(item => item.id !== id);
-      guardarCarrito();
-      renderizarCarrito();
-      actualizarContador();
-    }
-
-    // Vaciar carrito
-    vaciarBtn.addEventListener('click', () => {
-      carrito = [];
-      guardarCarrito();
-      renderizarCarrito();
-      actualizarContador();
-    });
-
-    // Mostrar/ocultar carrito al hacer click en icono carrito
-    carritoHeader.addEventListener('click', () => {
-      if (carritoDesplegable.style.display === 'block') {
-        carritoDesplegable.style.display = 'none';
-      } else {
-        carritoDesplegable.style.display = 'block';
-      }
-    });
-    carritoHeader.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        carritoHeader.click();
-      }
-    });
-
-    // Mostrar modal con QR code
-    function mostrarModalQR(url) {
-      modalQR.classList.add('active');
-      qrCodeDiv.innerHTML = '';
-      QRCode.toCanvas(url, { width: 200 }, function (error, canvas) {
-        if (error) {
-          qrCodeDiv.textContent = 'Error generando QR.';
-          return;
-        }
-        qrCodeDiv.appendChild(canvas);
-        canvas.style.cursor = 'pointer';
-        canvas.title = 'Haz clic para abrir el enlace del producto';
-        canvas.addEventListener('click', () => {
-          window.open(url, '_blank');
-        });
-      });
-    }
-
-    // Cerrar modal QR
-    modalCloseBtn.addEventListener('click', () => {
-      modalQR.classList.remove('active');
-      qrCodeDiv.innerHTML = '';
-    });
-    modalQR.addEventListener('click', (e) => {
-      if (e.target === modalQR) {
-        modalQR.classList.remove('active');
-        qrCodeDiv.innerHTML = '';
-      }
-    });
-
-    carrito.push({ nombre: "Camisa", precio: 25.00 });
-localStorage.setItem('carrito', JSON.stringify(carrito));
-
-    // Inicialización
     renderizarProductos();
-    renderizarCarrito();
-    actualizarContador();
   </script>
+
 </body>
 </html>
