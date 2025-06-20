@@ -53,24 +53,34 @@
     main {
       margin-top: 20px;
     }
+    /* Flexbox para productos: tarjetas en filas responsivas */
+  #listaProductos {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
     .producto {
       background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
       border-radius: 12px;
-      margin-bottom: 1.5rem;
       padding: 15px;
       box-shadow: 0 0 10px #222;
       text-align: center;
       transition: transform 0.2s ease;
-      position: relative;
+      flex: 1 1 250px; /* ancho flexible mínimo 250px */
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .producto:hover {
       transform: scale(1.03);
     }
     .producto img {
-      max-width: 100%;
+      width: 100%;
       border-radius: 8px;
       margin-bottom: 10px;
-      height: 220px;
+      height: 180px;
       object-fit: cover;
     }
     .producto h3 {
@@ -83,6 +93,7 @@
       font-size: 0.9rem;
       margin-bottom: 0.8rem;
       color: #ddd;
+      flex-grow: 1;
     }
     .precio {
       font-weight: 700;
@@ -91,7 +102,7 @@
       margin-bottom: 0.8rem;
     }
     button.mostrar-qr {
-      background-color: #f8c630;
+      background-color: #f7f3ea;
       border: none;
       color: #000;
       font-weight: 700;
@@ -99,21 +110,32 @@
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      margin-top: 10px;
-      min-width: 130px;
+      margin-top: auto;
     }
     button.mostrar-qr:hover {
-      background-color: #d4b320;
+      background-color: #faf9f5;
     }
-    .qr-container {
-      margin-top: 10px;
-      display: none;
-      justify-content: center;
+
+    /* Texto QR, oculto por defecto */
+    .texto-qr-info {
+      color: #fffcf2;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      min-height: 18px;
     }
-    .qr-container canvas {
-      cursor: pointer;
-      border-radius: 12px;
-      box-shadow: 0 0 8px #f8c630;
+
+    /* Responsive ajustes */
+    @media (max-width: 600px) {
+      .producto {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+      .producto img {
+        height: 220px;
+      }
+      #logo-header {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
@@ -134,11 +156,11 @@
     </div>
   </main>
 
-  <footer style="text-align:center; padding: 1rem; color: #fff;">
+  <footer style="text-align:center; padding: 15px 0; color: #fff;">
     &copy; 2025 VogueCrest. Todos los derechos reservados.
   </footer>
 
-  <!-- QRCode.js librería -->
+  <!-- Librería QR -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
   <script>
@@ -156,7 +178,7 @@
         nombre: "Playera Cebra",
         descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
         precio: 620,
-        imagen: "2.jpeg",
+        imagen: "descarga.jpg",
         url: "prenda.html?id=2"
       },
       {
@@ -164,16 +186,32 @@
         nombre: "Playera Semi Oversized Negra",
         descripcion: "Playera semi oversized color negro, elegante y versátil.",
         precio: 570,
-        imagen: "3.png",
+        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
         url: "prenda.html?id=3"
       }
     ];
 
     const listaProductos = document.getElementById('listaProductos');
 
+    function mostrarModalQR(url, textoElemento) {
+      // Crear un canvas temporal para el QR
+      QRCode.toCanvas(url, { width: 120 }, function (error, canvas) {
+        if (error) {
+          textoElemento.textContent = 'Error generando QR.';
+          return;
+        }
+        // Limpiar y añadir canvas
+        textoElemento.innerHTML = '';
+        textoElemento.appendChild(canvas);
+        // Click abre la URL
+        canvas.style.cursor = 'pointer';
+        canvas.title = 'Haz clic para abrir el enlace del producto';
+        canvas.onclick = () => window.open(url, '_blank');
+      });
+    }
+
     function renderizarProductos() {
       listaProductos.innerHTML = '';
-
       productos.forEach(producto => {
         const div = document.createElement('div');
         div.classList.add('producto');
@@ -184,46 +222,21 @@
           <p class="descripcion">${producto.descripcion}</p>
           <p class="precio">$${producto.precio.toFixed(2)}</p>
           <button class="mostrar-qr" aria-label="Mostrar código QR de ${producto.nombre}">Mostrar QR</button>
-          <div class="qr-container" aria-live="polite"></div>
+          <p class="texto-qr-info" aria-live="polite" aria-atomic="true"></p>
         `;
 
         listaProductos.appendChild(div);
 
-        // Botón mostrar QR
         const btnQR = div.querySelector('.mostrar-qr');
-        const qrContainer = div.querySelector('.qr-container');
+        const textoQR = div.querySelector('.texto-qr-info');
 
         btnQR.addEventListener('click', () => {
-          if (qrContainer.style.display === 'flex') {
-            qrContainer.style.display = 'none';
-            qrContainer.innerHTML = '';
-            btnQR.textContent = 'Mostrar QR';
-          } else {
-            qrContainer.style.display = 'flex';
-            qrContainer.innerHTML = ''; // limpiar
-
-            // Generar QR con la url de la prenda
-            QRCode.toCanvas(producto.url, { width: 160 }, (error, canvas) => {
-              if (error) {
-                qrContainer.textContent = 'Error generando QR.';
-                return;
-              }
-              qrContainer.appendChild(canvas);
-              canvas.title = 'Haz clic para abrir el detalle del producto';
-              canvas.style.cursor = 'pointer';
-
-              canvas.addEventListener('click', () => {
-                window.open(producto.url, '_blank');
-              });
-              btnQR.textContent = 'Ocultar QR';
-            });
-          }
+          mostrarModalQR(producto.url, textoQR);
         });
       });
     }
 
     renderizarProductos();
   </script>
-
 </body>
 </html>

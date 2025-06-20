@@ -1,80 +1,180 @@
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Detalle de Prenda</title>
+  <title>VogueCrest - Catálogo</title>
+
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
   <style>
     body {
-      background-color: #000;
+      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
       color: #fff;
       font-family: 'Segoe UI', sans-serif;
-      padding: 20px;
-      max-width: 700px;
-      margin: 0 auto;
+      margin: 0;
+      padding-top: 70px; /* espacio para header fijo */
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 15px;
+      padding-right: 15px;
     }
-    .prenda-img {
-      max-width: 100%;
+    header#header-fijo {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
+      border-bottom: 1px solid #222;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      z-index: 1200;
+    }
+    #logo-header {
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 22px;
+      text-decoration: none;
+    }
+    #logo-header img {
+      height: 40px;
+      border-radius: 6px;
+    }
+    main {
+      margin-top: 20px;
+    }
+    /* Flexbox para productos: tarjetas en filas responsivas */
+    #listaProductos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+    }
+    .producto {
+      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
       border-radius: 12px;
-      margin-bottom: 20px;
-      object-fit: cover;
-      height: 300px;
-      width: 100%;
-    }
-    h1 {
-      color: #f8c630;
-      margin-bottom: 10px;
-    }
-    .descripcion {
-      font-size: 1rem;
-      margin-bottom: 15px;
-      color: #ddd;
-    }
-    .info-material {
-      font-size: 0.95rem;
-      background-color: #111;
       padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      line-height: 1.5;
+      box-shadow: 0 0 10px #222;
+      text-align: center;
+      transition: transform 0.2s ease;
+      flex: 1 1 250px; /* ancho flexible mínimo 250px */
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .precio {
+    .producto:hover {
+      transform: scale(1.03);
+    }
+    .producto img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      height: 180px;
+      object-fit: cover;
+    }
+    .producto h3 {
+      margin: 0.4rem 0;
       font-weight: 700;
       font-size: 1.3rem;
       color: #f8c630;
-      margin-bottom: 20px;
     }
-    a.volver {
-      color: #f8c630;
-      text-decoration: none;
+    .descripcion {
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      color: #ddd;
+      flex-grow: 1;
+    }
+    .precio {
       font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #ffffff;
+      margin-bottom: 0.8rem;
     }
-    a.volver:hover {
-      text-decoration: underline;
+    button.mostrar-qr {
+      background-color: #f7f3ea;
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: auto;
+    }
+    button.mostrar-qr:hover {
+      background-color: #faf9f5;
+    }
+
+    /* Texto QR, oculto por defecto */
+    .texto-qr-info {
+      color: #fffcf2;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      min-height: 18px;
+    }
+
+    /* Responsive ajustes */
+    @media (max-width: 600px) {
+      .producto {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+      .producto img {
+        height: 220px;
+      }
+      #logo-header {
+        font-size: 18px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div id="contenido-prenda" role="main" aria-live="polite" aria-atomic="true">
-    <!-- Contenido se carga aquí -->
-  </div>
+  <header id="header-fijo">
+    <a href="inicio.html" id="logo-header" aria-label="Volver a página principal">
+      <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
+      VOGUECREST
+    </a>
+  </header>
+
+  <main>
+    <h1 style="text-align:center; margin-bottom: 1.5rem;">Catálogo de Prendas</h1>
+
+    <div id="listaProductos">
+      <!-- Productos insertados por JS -->
+    </div>
+  </main>
+
+  <footer style="text-align:center; padding: 15px 0; color: #fff;">
+    &copy; 2025 VogueCrest. Todos los derechos reservados.
+  </footer>
+
+  <!-- Librería QR -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
   <script>
-    // Productos: copia tu array, pero añade info material (ejemplo)
     const productos = [
       {
         id: 1,
         nombre: "Playera Oversized Blanco",
         descripcion: "Playera amplia con diseño moderno y cómoda para el verano.",
         precio: 520,
-        imagen: "40e21d0f9d59cead97a303e2d3bc74d0.jpg",
-        material: "100% algodón orgánico, teñido con tintes naturales para reducir impacto ambiental."
+        imagen: "1.jpeg",
+        url: "prenda.html?id=1"
       },
       {
         id: 2,
@@ -82,7 +182,7 @@
         descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
         precio: 620,
         imagen: "descarga.jpg",
-        material: "Tela suave con mezcla de algodón y poliéster reciclado."
+        url: "prenda.html?id=2"
       },
       {
         id: 3,
@@ -90,43 +190,56 @@
         descripcion: "Playera semi oversized color negro, elegante y versátil.",
         precio: 570,
         imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
-        material: "Algodón 100%, certificado GOTS, producido bajo estándares éticos."
+        url: "prenda.html?id=3"
       }
     ];
 
-    // Función para obtener el parámetro "id" de la URL
-    function getParameterByName(name) {
-      const url = window.location.href;
-      name = name.replace(/[\[\]]/g, '\\$&');
-      const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-      const results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    const listaProductos = document.getElementById('listaProductos');
+
+    function mostrarModalQR(url, textoElemento) {
+      // Crear un canvas temporal para el QR
+      QRCode.toCanvas(url, { width: 120 }, function (error, canvas) {
+        if (error) {
+          textoElemento.textContent = 'Error generando QR.';
+          return;
+        }
+        // Limpiar y añadir canvas
+        textoElemento.innerHTML = '';
+        textoElemento.appendChild(canvas);
+        // Click abre la URL
+        canvas.style.cursor = 'pointer';
+        canvas.title = 'Haz clic para abrir el enlace del producto';
+        canvas.onclick = () => window.open(url, '_blank');
+      });
     }
 
-    const idPrenda = parseInt(getParameterByName('id'));
-    const contenido = document.getElementById('contenido-prenda');
+    function renderizarProductos() {
+      listaProductos.innerHTML = '';
+      productos.forEach(producto => {
+        const div = document.createElement('div');
+        div.classList.add('producto');
 
-    if (!idPrenda) {
-      contenido.innerHTML = '<p>Prenda no encontrada. <a href="catalogo.html" class="volver">Volver al catálogo</a></p>';
-    } else {
-      const prenda = productos.find(p => p.id === idPrenda);
-      if (!prenda) {
-        contenido.innerHTML = '<p>Prenda no encontrada. <a href="catalogo.html" class="volver">Volver al catálogo</a></p>';
-      } else {
-        contenido.innerHTML = `
-          <h1>${prenda.nombre}</h1>
-          <img src="${prenda.imagen}" alt="Imagen de ${prenda.nombre}" class="prenda-img" loading="lazy" />
-          <p class="descripcion">${prenda.descripcion}</p>
-          <div class="info-material"><strong>Material:</strong> ${prenda.material}</div>
-          <p class="precio">Precio: $${prenda.precio.toFixed(2)}</p>
-          <a href="catalogo.html" class="volver" aria-label="Volver al catálogo"><i class="bi bi-arrow-left"></i> Volver al catálogo</a>
+        div.innerHTML = `
+          <img src="${producto.imagen}" alt="Imagen de ${producto.nombre}" loading="lazy" />
+          <h3>${producto.nombre}</h3>
+          <p class="descripcion">${producto.descripcion}</p>
+          <p class="precio">$${producto.precio.toFixed(2)}</p>
+          <button class="mostrar-qr" aria-label="Mostrar código QR de ${producto.nombre}">Mostrar QR</button>
+          <p class="texto-qr-info" aria-live="polite" aria-atomic="true"></p>
         `;
-      }
-    }
-  </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.js"></script>
+        listaProductos.appendChild(div);
+
+        const btnQR = div.querySelector('.mostrar-qr');
+        const textoQR = div.querySelector('.texto-qr-info');
+
+        btnQR.addEventListener('click', () => {
+          mostrarModalQR(producto.url, textoQR);
+        });
+      });
+    }
+
+    renderizarProductos();
+  </script>
 </body>
 </html>
