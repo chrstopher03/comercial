@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Escáner QR y detalle</title>
+  <title>VogueCrest - Escáner QR</title>
   <style>
     body {
       background: #000;
@@ -14,7 +14,7 @@
       margin: 0 auto;
       text-align: center;
     }
-    video {
+    video, canvas {
       width: 100%;
       border-radius: 12px;
       margin-bottom: 20px;
@@ -25,6 +25,7 @@
       padding: 15px;
       margin-top: 20px;
       text-align: left;
+      display: none;
     }
     #producto-info img {
       width: 100%;
@@ -35,13 +36,12 @@
     }
     h2 {
       color: #f8c630;
-      margin-bottom: 10px;
     }
     .precio {
       font-weight: 700;
       font-size: 1.2rem;
-      margin-bottom: 15px;
       color: #f8c630;
+      margin-top: 10px;
     }
     .material {
       font-size: 0.95rem;
@@ -49,11 +49,11 @@
       margin-bottom: 10px;
     }
     #mensaje {
-      margin-bottom: 20px;
       font-style: italic;
       color: #bbb;
+      margin-bottom: 20px;
     }
-    button#reiniciar {
+    .boton {
       background: #f8c630;
       border: none;
       padding: 10px 20px;
@@ -61,25 +61,55 @@
       border-radius: 12px;
       cursor: pointer;
       color: #000;
-      margin-top: 15px;
+      margin: 10px 5px;
+    }
+    .loader {
+      border: 4px solid #333;
+      border-top: 4px solid #f8c630;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+    input[type="file"] {
+      display: none;
+    }
+    label[for="subirQR"] {
+      display: inline-block;
+      background: #f8c630;
+      color: #000;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin: 10px 5px;
     }
   </style>
 </head>
 <body>
 
   <h1>Escáner QR VogueCrest</h1>
-  <p id="mensaje">Apunta la cámara al código QR de la prenda.</p>
-  <video id="video" autoplay></video>
+  <p id="mensaje">Cargando cámara...</p>
+  <div id="loader" class="loader"></div>
 
-  <div id="producto-info" style="display:none;">
-    <!-- Aquí se mostrará la info de la prenda -->
-  </div>
+  <div id="video-container"></div>
 
-  <button id="reiniciar" style="display:none;">Escanear otro código</button>
+  <div id="producto-info"></div>
 
+  <button id="reiniciar" class="boton" style="display:none;">Escanear otro</button>
+  <button id="cambiarCamara" class="boton" style="display:none;">Cambiar cámara</button>
+
+  <input type="file" accept="image/*" id="subirQR" />
+  <label for="subirQR">Escanear desde foto</label>
+
+  <!-- Librería QR -->
   <script src="https://unpkg.com/html5-qrcode@2.3.7/minified/html5-qrcode.min.js"></script>
   <script>
-    // Array productos (debe tener al menos estos campos)
     const productos = [
       {
         id: 1,
@@ -107,31 +137,17 @@
       }
     ];
 
-    const videoElem = document.getElementById('video');
-    const mensajeElem = document.getElementById('mensaje');
-    const productoInfo = document.getElementById('producto-info');
-    const btnReiniciar = document.getElementById('reiniciar');
+    let html5QrCode;
+    let currentCameraId = null;
+    let cameras = [];
 
-    const html5QrCode = new Html5Qrcode("video");
-
-    function mostrarProducto(id) {
-      const producto = productos.find(p => p.id === id);
-      if (!producto) {
-        productoInfo.innerHTML = `<p>Producto no encontrado.</p>`;
-      } else {
-        productoInfo.innerHTML = `
-          <img src="${producto.imagen}" alt="Imagen de ${producto.nombre}" />
-          <h2>${producto.nombre}</h2>
-          <p class="descripcion">${producto.descripcion}</p>
-          <p class="material"><strong>Material:</strong> ${producto.material}</p>
-          <p class="precio">Precio: $${producto.precio.toFixed(2)}</p>
-        `;
-      }
-      productoInfo.style.display = 'block';
-      mensajeElem.style.display = 'none';
-      btnReiniciar.style.display = 'inline-block';
-      html5QrCode.stop().catch(() => {});
-    }
+    const videoContainer = document.getElementById("video-container");
+    const mensaje = document.getElementById("mensaje");
+    const loader = document.getElementById("loader");
+    const productoInfo = document.getElementById("producto-info");
+    const reiniciarBtn = document.getElementById("reiniciar");
+    const cambiarCamaraBtn = document.getElementById("cambiarCamara");
+    const subirQRInput = document.getElementById("subirQR");
 
     function extraerIdDeUrl(url) {
       try {
@@ -142,41 +158,98 @@
       }
     }
 
-    function iniciarEscaner() {
-      productoInfo.style.display = 'none';
-      mensajeElem.style.display = 'block';
-      btnReiniciar.style.display = 'none';
-      mensajeElem.textContent = 'Apunta la cámara al código QR de la prenda.';
-      Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length) {
-          html5QrCode.start(
-            devices[0].id,
-            { fps: 10, qrbox: 250 },
-            (decodedText, decodedResult) => {
-              const id = extraerIdDeUrl(decodedText);
-              if (id) {
-                mostrarProducto(id);
-              } else {
-                mensajeElem.textContent = "QR leído no es válido.";
-              }
-            },
-            (errorMessage) => {
-              // No mostrar errores menores
-            }
-          );
-        } else {
-          mensajeElem.textContent = "No se encontró cámara compatible.";
+    function mostrarProducto(id) {
+      const producto = productos.find(p => p.id === id);
+      if (!producto) {
+        productoInfo.innerHTML = "<p>Producto no encontrado.</p>";
+      } else {
+        productoInfo.innerHTML = `
+          <img src="${producto.imagen}" alt="${producto.nombre}" />
+          <h2>${producto.nombre}</h2>
+          <p>${producto.descripcion}</p>
+          <p class="material"><strong>Material:</strong> ${producto.material}</p>
+          <p class="precio">Precio: $${producto.precio.toFixed(2)}</p>
+        `;
+      }
+      productoInfo.style.display = "block";
+      mensaje.style.display = "none";
+      reiniciarBtn.style.display = "inline-block";
+      cambiarCamaraBtn.style.display = "inline-block";
+      loader.style.display = "none";
+      html5QrCode.stop().catch(() => {});
+    }
+
+    function iniciarEscaner(cameraId) {
+      mensaje.textContent = "Apunta la cámara al código QR de la prenda.";
+      loader.style.display = "none";
+      productoInfo.style.display = "none";
+      reiniciarBtn.style.display = "none";
+
+      html5QrCode = new Html5Qrcode("video-container");
+
+      html5QrCode.start(
+        cameraId,
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+          const id = extraerIdDeUrl(decodedText);
+          if (id) mostrarProducto(id);
+          else mensaje.textContent = "QR no válido.";
+        },
+        () => {} // errores ignorados
+      );
+    }
+
+    function cargarCamaras() {
+      Html5Qrcode.getCameras().then(devs => {
+        if (devs.length === 0) {
+          mensaje.textContent = "No se encontró cámara.";
+          loader.style.display = "none";
+          return;
         }
+        cameras = devs;
+        currentCameraId = cameras[0].id;
+        iniciarEscaner(currentCameraId);
+        cambiarCamaraBtn.style.display = cameras.length > 1 ? "inline-block" : "none";
       }).catch(err => {
-        mensajeElem.textContent = "Error al acceder a la cámara: " + err;
+        mensaje.textContent = "Error accediendo a la cámara: " + err;
+        loader.style.display = "none";
       });
     }
 
-    btnReiniciar.addEventListener('click', () => {
-      iniciarEscaner();
+    reiniciarBtn.onclick = () => {
+      html5QrCode.clear().then(() => {
+        iniciarEscaner(currentCameraId);
+      });
+    };
+
+    cambiarCamaraBtn.onclick = () => {
+      const index = cameras.findIndex(c => c.id === currentCameraId);
+      const next = (index + 1) % cameras.length;
+      currentCameraId = cameras[next].id;
+      html5QrCode.clear().then(() => iniciarEscaner(currentCameraId));
+    };
+
+    subirQRInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        Html5Qrcode.getCameras(); // Evita errores con instancias viejas
+        Html5Qrcode.scanFile(file, true)
+          .then(decodedText => {
+            const id = extraerIdDeUrl(decodedText);
+            if (id) mostrarProducto(id);
+            else mensaje.textContent = "Imagen escaneada, pero QR no válido.";
+          })
+          .catch(err => {
+            mensaje.textContent = "No se pudo leer el QR de la imagen.";
+          });
+      };
+      reader.readAsDataURL(file);
     });
 
-    iniciarEscaner();
+    cargarCamaras();
   </script>
 </body>
 </html>
