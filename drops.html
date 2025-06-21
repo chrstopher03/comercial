@@ -3,506 +3,274 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Drops Exclusivos</title>
-
-  <!-- Bootstrap CSS (opcional, para íconos) -->
+  <title>VogueCrest - Drops “Origen”</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
-
   <style>
-    /* Variables de color */
     :root {
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      --color-texto: #101010;
-      --color-acento: #ffffff;
-      --color-acento-hover: #000000;
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      --color-sombra: rgba(0, 0, 0, 0.4);
-      --fuente-principal: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --bg-img: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
+      --clr-text: #101010;
+      --clr-accent: #ffffff;
+      --clr-shadow: rgba(0,0,0,0.4);
+      --font-main: 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+      font-family: var(--font-main);
+      background-image: var(--bg-img);
+      background-size: cover;
+      color: var(--clr-text);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* Reset y base */
-    * {
-      box-sizing: border-box;
+    /* Splash */
+    #splash {
+      position: fixed; inset:0;
+      background-image: var(--bg-img);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; z-index:2000;
+      animation: fadeIn 0.6s ease forwards;
     }
-    body {
-      margin: 0;
-      background-color: var(--color-fondo);
-      color: var(--color-texto);
-      font-family: var(--fuente-principal);
-      margin-bottom: 60px; /* espacio para menú inferior fijo */
-      min-height: 100vh;
-      display: flex;
+    #splash img {
+      width:120px; opacity:0; transform:scale(0.5);
+      animation: logoIn 1s ease forwards; animation-delay:0.3s;
+    }
+    #splash h1 {
+      margin-top:16px; font-size:32px; letter-spacing:4px; color:#fff;
+      opacity:0; transform:translateY(20px);
+      animation: textIn 1s ease forwards; animation-delay:0.8s;
+    }
+    @keyframes fadeIn { to { opacity:1; visibility:visible; } }
+    @keyframes logoIn { to { opacity:1; transform:scale(1); } }
+    @keyframes textIn { to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+
+    /* Contenido */
+    #content {
+      display: none;
       flex-direction: column;
       align-items: center;
+      padding-bottom:80px;
     }
-
-    /* Logo y nombre */
-    .logo-container {
-      text-align: center;
-      margin: 30px 0 15px;
-      user-select: none;
+    header.page-header {
+      text-align:center; margin:30px 0 15px;
     }
-    .logo-container img {
-      width: 110px;
-      filter: drop-shadow(0 0 4px var(--color-acento));
-      border-radius: 20px;
+    header.page-header img {
+      width:110px; filter:drop-shadow(0 0 4px var(--clr-accent)); border-radius:20px;
     }
     .brand-name {
-      margin-top: 8px;
-      font-size: 32px;
-      font-weight: 900;
-      color: var(--color-acento);
-      letter-spacing: 3px;
-      text-shadow: 0 0 6px var(--color-acento);
+      margin-top:8px; font-size:32px; font-weight:900;
+      color:var(--clr-accent); letter-spacing:3px;
+      text-shadow:0 0 6px var(--clr-accent);
     }
-
-    /* Temporizador */
+    .drop-name {
+      margin-top:4px; font-size:24px; font-weight:700;
+      color:#c9c9c7; letter-spacing:1px;
+    }
+    .today-date {
+      margin-top:6px; font-size:1rem; color:#555;
+    }
     #temporizador {
-      font-weight: 700;
-      font-size: 1.5rem;
-      margin: 20px auto 25px;
-      max-width: 320px;
-      text-align: center;
-      color: var(--color-acento);
-      text-shadow: 0 0 6px var(--color-acento);
-      user-select: none;
+      display:flex; gap:12px; margin:20px 0 25px;
+      font-weight:700; font-size:1.5rem; flex-wrap: wrap; justify-content: center;
     }
-
-    /* Contenedor productos */
+    #temporizador span {
+      background:rgba(255,255,255,0.8); padding:6px 10px;
+      border-radius:6px; min-width:40px; text-align:center;
+      color:var(--clr-text);
+    }
     .productos-drop {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      width: 100%;
-      max-width: 1024px;
-      padding: 0 15px 30px;
+      display:flex; flex-wrap:wrap; justify-content:center;
+      gap:20px; width:100%; max-width:1024px; padding:0 15px 30px;
     }
     .producto {
-      background-color: var(--color-card-fondo);
-      border-radius: 16px;
-      box-shadow: 0 6px 20px var(--color-sombra);
-      width: 280px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: transform 0.25s ease;
-      cursor: pointer;
+      background:rgba(255,255,255,0.9);
+      border-radius:16px; box-shadow:0 6px 20px var(--clr-shadow);
+      width:280px; display:flex; flex-direction:column;
+      overflow:hidden; transition:transform .25s;
     }
-    .producto:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 10px 30px var(--color-acento-hover);
-    }
+    .producto:hover { transform:translateY(-8px); }
     .producto img {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      border-bottom: 1px solid #222;
-      user-select: none;
-      pointer-events: none;
+      width:100%; height:180px; object-fit:cover;
+      border-bottom:1px solid #ccc;
     }
-    .producto h3 {
-      margin: 12px 18px 6px;
-      font-weight: 900;
-      font-size: 1.3rem;
-      color: var(--color-acento);
-      text-shadow: 0 0 3px var(--color-acento);
+    .producto h3 { margin:12px 18px 6px; font-size:1.2rem; font-weight:800; }
+    .producto p { margin:0 18px 10px; color:#555; font-size:.9rem; flex-grow:1; }
+    .btn-group { display:flex; gap:10px; padding:0 18px 18px; }
+    .btn-cart, .btn-reserve {
+      flex:1; padding:10px; border:none; border-radius:8px;
+      font-weight:700; cursor:pointer; transition:.3s;
     }
-    .producto p {
-      margin: 0 18px 14px;
-      color: #bbb;
-      font-size: 0.95rem;
-      flex-grow: 1;
-      font-weight: 600;
-    }
-    .producto button {
-      margin: 0 18px 18px;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      background-color: var(--color-acento);
-      color: var(--color-fondo);
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      box-shadow: 0 3px 10px var(--color-acento);
-      user-select: none;
-    }
-    .producto button:hover,
-    .producto button:focus {
-      background-color: var(--color-acento-hover);
-      outline: none;
-    }
+    .btn-cart { background:var(--clr-accent); color:var(--clr-text); }
+    .btn-cart:hover { background:#ddd; }
+    .btn-reserve { background:#c9c9c7; color:var(--clr-text); }
+    .btn-reserve:hover { background:#e61700; }
 
-    /* Botón carrito flotante */
-    #btn-carrito {
+    .btn-fijos {
       position: fixed;
       top: 20px;
       right: 20px;
-      background-color: var(--color-acento);
-      color: var(--color-fondo);
-      border: none;
-      border-radius: 50%;
-      width: 52px;
-      height: 52px;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 0 15px var(--color-acento);
+      display: flex;
+      gap: 10px;
       z-index: 1500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.3s ease;
     }
-    #btn-carrito:hover,
-    #btn-carrito:focus {
-      background-color: var(--color-acento-hover);
-      outline: none;
-    }
-    #contador-carrito {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: var(--color-fondo);
-      color: var(--color-acento);
-      font-weight: 700;
+    .btn-fijos button {
+      width: 48px;
+      height: 48px;
+      border: none;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      user-select: none;
-    }
-    #contador-carrito:empty {
-      display: none;
-    }
-
-    /* Modal carrito */
-    #modal-carrito {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-      padding: 25px 10px;
-    }
-    #modal-carrito.active {
-      display: flex;
-    }
-    #modal-contenido {
-      background: var(--color-card-fondo);
-      width: 90%;
-      max-width: 420px;
-      border-radius: 18px;
-      padding: 25px 30px;
-      color: var(--color-texto);
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 0 24px var(--color-acento);
-      position: relative;
-      user-select: text;
-    }
-    #modal-contenido h2 {
-      margin: 0 0 22px;
-      font-weight: 900;
-      text-align: center;
-      color: var(--color-acento);
-      text-shadow: 0 0 7px var(--color-acento);
-      letter-spacing: 2px;
-    }
-    #modal-contenido ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    #modal-contenido li {
-      padding: 10px 8px;
-      border-bottom: 1px solid #333;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #ccc;
-      user-select: text;
-    }
-    #modal-contenido li button {
-      background: none;
-      border: none;
-      color: var(--color-acento);
-      font-size: 20px;
-      cursor: pointer;
-      padding: 0 6px;
-      transition: color 0.3s ease;
-    }
-    #modal-contenido li button:hover,
-    #modal-contenido li button:focus {
-      color: #fff4b7;
-      outline: none;
-    }
-    #cerrar-modal {
-      position: absolute;
-      top: 14px;
-      right: 18px;
-      background: none;
-      border: none;
-      color: var(--color-acento);
-      font-size: 32px;
-      cursor: pointer;
-      font-weight: 900;
-      transition: color 0.3s ease;
-    }
-    #cerrar-modal:hover,
-    #cerrar-modal:focus {
-      color: #fff4b7;
-      outline: none;
-    }
-    #carrito-vacio {
-      text-align: center;
-      margin-top: 15px;
-      color: #999;
-      font-style: italic;
-      user-select: none;
-    }
-
-    /* Menú inferior fijo */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background-color: var(--color-fondo);
-      border-top: 1px solid #222;
-      display: flex;
-      justify-content: space-around;
-      padding: 12px 0;
-      z-index: 1000;
-      user-select: none;
-    }
-    .bottom-nav a {
-      color: var(--color-texto);
-      text-align: center;
-      font-size: 13px;
-      text-decoration: none;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      transition: color 0.3s ease;
-    }
-    .bottom-nav a:hover,
-    .bottom-nav a:focus {
-      color: var(--color-acento);
-      outline: none;
-    }
-    .bottom-nav i {
       font-size: 22px;
-      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    #btn-carrito { background: var(--clr-accent); color: var(--clr-text); }
+    #btn-reservas { background: #ff6a59; color: var(--clr-text); }
+
+    .contador {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--clr-text);
+      color: var(--clr-accent);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* Responsive */
-    @media (max-width: 600px) {
-      .producto {
-        width: 90vw;
-        max-width: 320px;
-      }
-      .logo-container img {
-        width: 90px;
-      }
-      .brand-name {
-        font-size: 26px;
-      }
-      #temporizador {
-        font-size: 1.3rem;
-      }
+    @media (max-width: 480px) {
+      .brand-name { font-size: 24px; }
+      .drop-name { font-size: 18px; }
+      .producto { width: 100%; }
+      .btn-cart, .btn-reserve { font-size: 0.85rem; padding: 8px; }
+      .btn-fijos { top: 12px; right: 12px; gap: 8px; }
+      .btn-fijos button { width: 42px; height: 42px; font-size: 18px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Logo y nombre -->
-  <div class="logo-container" aria-label="Logo y nombre VogueCrest">
+  <div id="splash">
     <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
-    <div class="brand-name">VOGUECREST</div>
+    <h1>Origen</h1>
   </div>
 
-  <!-- Temporizador -->
-  <div id="temporizador" aria-live="polite" role="timer" aria-atomic="true">Cargando temporizador...</div>
+  <div id="content">
+    <header class="page-header">
+      <img src="Think-removebg-preview.png" alt="VogueCrest Logo"/>
+      <div class="brand-name">VOGUECREST</div>
+      <div class="drop-name">“Origen”</div>
+      <div class="today-date" id="today-date"></div>
+    </header>
 
-  <!-- Productos Drops -->
-  <section class="productos-drop" aria-label="Lista de productos exclusivos en Drops">
-    <article class="producto" tabindex="0">
-      <img src="Think (1).png" alt="Vestido rojo elegante" />
-      <h3>Dreamguard – Camisa Edición Especial</h3>
-      <p>"Dreamguard" es una prenda que fusiona lo espiritual con lo urbano. Su diseño exclusivo combina mensajes inspiradores, trazos poderosos y una estética elegante.</p>
-      <button aria-label="Agregar Vestido Rojo al carrito">Agregar al carrito</button>
-    </article>
-    <article class="producto" tabindex="0">
-      <img src="6.png" alt="Camisa negra de seda" />
-      <h3>Camisa Negra</h3>
-      <p>Camisa de seda premium para ocasiones especiales.</p>
-      <button aria-label="Agregar Camisa Negra al carrito">Agregar al carrito</button>
-    </article>
-    <article class="producto" tabindex="0">
-      <img src="pantalon_blanco.webp" alt="Pantalón blanco de lino" />
-      <h3>Pantalón Blanco</h3>
-      <p>Pantalón fresco de lino para un look sofisticado y cómodo.</p>
-      <button aria-label="Agregar Pantalón Blanco al carrito">Agregar al carrito</button>
-    </article>
-    <article class="producto" tabindex="0">
-      <img src="chaqueta_marron.webp" alt="Chaqueta marrón de cuero" />
-      <h3>Chaqueta Marrón</h3>
-      <p>Chaqueta de cuero genuino, estilo vintage y corte ajustado.</p>
-      <button aria-label="Agregar Chaqueta Marrón al carrito">Agregar al carrito</button>
-    </article>
-  </section>
+    <div id="temporizador" role="timer" aria-live="polite">
+      <span id="dias">0</span>d
+      <span id="horas">0</span>h
+      <span id="minutos">0</span>m
+      <span id="segundos">0</span>s
+    </div>
 
-  <!-- Botón carrito -->
-  <button id="btn-carrito" aria-label="Abrir carrito de compras">
-    <i class="bi bi-cart-fill" aria-hidden="true"></i>
-    <span id="contador-carrito" aria-live="polite" aria-atomic="true"></span>
-  </button>
+    <section class="productos-drop"></section>
 
-  <!-- Modal carrito -->
-  <div id="modal-carrito" role="dialog" aria-modal="true" aria-labelledby="modal-carrito-titulo" tabindex="-1">
-    <div id="modal-contenido">
-      <h2 id="modal-carrito-titulo">Carrito de Compras</h2>
-      <ul id="lista-carrito" aria-live="polite" aria-atomic="true"></ul>
-      <p id="carrito-vacio">El carrito está vacío.</p>
-      <button id="cerrar-modal" aria-label="Cerrar carrito">&times;</button>
+    <div class="btn-fijos">
+      <button id="btn-carrito" aria-label="Abrir carrito">
+        <i class="bi bi-cart-fill"></i>
+        <div id="contador-carrito" class="contador"></div>
+      </button>
+      <button id="btn-reservas" aria-label="Ver reservas">
+        <i class="bi bi-calendar-check-fill"></i>
+        <div id="contador-reservas" class="contador"></div>
+      </button>
     </div>
   </div>
 
-  <!-- Menú inferior fijo -->
-  <nav class="bottom-nav" role="navigation" aria-label="Menú principal">
-    <a href="index.html" aria-label="Inicio">
-      <i class="bi bi-house-fill" aria-hidden="true"></i>
-      Inicio
-    </a>
-    <a href="catalogo.html" aria-label="Catálogo">
-      <i class="bi bi-tags-fill" aria-hidden="true"></i>
-      Catálogo
-    </a>
-    <a href="drops.html" aria-current="page" aria-label="Drops Exclusivos">
-      <i class="bi bi-gem" aria-hidden="true"></i>
-      Drops
-    </a>
-    <a href="perfil.html" aria-label="Perfil">
-      <i class="bi bi-person-circle" aria-hidden="true"></i>
-      Perfil
-    </a>
-  </nav>
-
   <script>
-    // Contador regresivo para drops (p. ej. 3 días desde ahora)
-    const temporizadorEl = document.getElementById('temporizador');
-    const countdownDuration = 3 * 24 * 60 * 60 * 1000; // 3 días en ms
-    const dropEndTime = new Date(Date.now() + countdownDuration);
+    const splash = document.getElementById('splash');
+    const content = document.getElementById('content');
+    splash.style.opacity = '1'; splash.style.visibility = 'visible';
 
-    function actualizarTemporizador() {
-      const ahora = new Date();
-      const diff = dropEndTime - ahora;
-      if (diff <= 0) {
-        temporizadorEl.textContent = "¡Drops finalizados!";
-        clearInterval(timerInterval);
-        return;
-      }
-      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const segundos = Math.floor((diff % (1000 * 60)) / 1000);
-      temporizadorEl.textContent = `Drops exclusivos terminan en: ${dias}d ${horas}h ${minutos}m ${segundos}s`;
-    }
-    actualizarTemporizador();
-    const timerInterval = setInterval(actualizarTemporizador, 1000);
+    setTimeout(() => {
+      splash.style.animation = 'fadeOut 0.6s ease forwards';
+      setTimeout(() => {
+        splash.style.display = 'none';
+        content.style.display = 'flex';
+      }, 600);
+    }, 2000);
 
-    // Carrito de compras
-    const btnCarrito = document.getElementById('btn-carrito');
-    const modalCarrito = document.getElementById('modal-carrito');
-    const cerrarModal = document.getElementById('cerrar-modal');
-    const listaCarrito = document.getElementById('lista-carrito');
-    const carritoVacioMsg = document.getElementById('carrito-vacio');
-    const contadorCarrito = document.getElementById('contador-carrito');
-
-    // Guardar y recuperar carrito en localStorage
-    let carrito = JSON.parse(localStorage.getItem('voguecrest_carrito')) || [];
-
-    // Actualizar contador del carrito en botón
-    function actualizarContador() {
-      contadorCarrito.textContent = carrito.length || '';
-    }
-
-    // Mostrar el carrito en modal
-    function mostrarCarrito() {
-      listaCarrito.innerHTML = '';
-      if (carrito.length === 0) {
-        carritoVacioMsg.style.display = 'block';
-      } else {
-        carritoVacioMsg.style.display = 'none';
-        carrito.forEach((item, index) => {
-          const li = document.createElement('li');
-          li.textContent = item.nombre;
-          const btnEliminar = document.createElement('button');
-          btnEliminar.innerHTML = '&times;';
-          btnEliminar.setAttribute('aria-label', `Eliminar ${item.nombre} del carrito`);
-          btnEliminar.onclick = () => {
-            carrito.splice(index, 1);
-            guardarCarrito();
-            mostrarCarrito();
-            actualizarContador();
-          };
-          li.appendChild(btnEliminar);
-          listaCarrito.appendChild(li);
-        });
-      }
-      modalCarrito.classList.add('active');
-      modalCarrito.focus();
-    }
-
-    // Guardar carrito
-    function guardarCarrito() {
-      localStorage.setItem('voguecrest_carrito', JSON.stringify(carrito));
-    }
-
-    // Agregar producto al carrito
-    function agregarAlCarrito(nombre) {
-      carrito.push({ nombre });
-      guardarCarrito();
-      actualizarContador();
-      alert(`${nombre} agregado al carrito.`);
-    }
-
-    // Evento para abrir modal carrito
-    btnCarrito.addEventListener('click', mostrarCarrito);
-
-    // Evento para cerrar modal carrito
-    cerrarModal.addEventListener('click', () => {
-      modalCarrito.classList.remove('active');
-    });
-    // Cerrar modal con ESC
-    window.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && modalCarrito.classList.contains('active')) {
-        modalCarrito.classList.remove('active');
-      }
+    document.getElementById('today-date').textContent = new Date().toLocaleDateString('es-ES', {
+      weekday:'long', year:'numeric', month:'long', day:'numeric'
     });
 
-    // Agregar eventos botones productos
-    document.querySelectorAll('.producto button').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        const nombreProducto = btn.parentElement.querySelector('h3').textContent;
-        agregarAlCarrito(nombreProducto);
-      });
+    const drops = [
+      { nombre:"Dreamguard – Edición Limitada", desc:"Fusión urbana y etérea en una sola pieza.", img:"Think (1).png" },
+      { nombre:"Éter Pulse", desc:"Corte limpio con vibraciones futuristas.", img:"6.png" },
+      { nombre:"Luz Fractal", desc:"Estampado geométrico inspirado en arte digital.", img:"3.png" },
+      { nombre:"Vórtice Ámbar", desc:"Textura premium en tonalidades cálidas.", img:"3.png" }
+    ];
+
+    const cont = document.querySelector('.productos-drop');
+    drops.slice(0,3).forEach((p,i) => {
+      const art = document.createElement('article');
+      art.className = 'producto'; art.tabIndex = 0;
+      art.innerHTML = `
+        <img src="${p.img}" alt="${p.nombre}" />
+        <h3>${p.nombre}</h3>
+        <p>${p.desc}</p>
+        <div class="btn-group">
+          <button class="btn-cart">Carrito</button>
+          <button class="btn-reserve">Reservar</button>
+        </div>`;
+      cont.appendChild(art);
     });
 
-    // Inicialización
-    actualizarContador();
+    let carrito = JSON.parse(localStorage.getItem('vc_carrito'))||[];
+    let reservas = JSON.parse(localStorage.getItem('vc_reservas'))||[];
+    const cntC = document.getElementById('contador-carrito');
+    const cntR = document.getElementById('contador-reservas');
+    function save(){
+      localStorage.setItem('vc_carrito', JSON.stringify(carrito));
+      localStorage.setItem('vc_reservas', JSON.stringify(reservas));
+    }
+    function updCnt(){
+      cntC.textContent=carrito.length||'';
+      cntR.textContent=reservas.length||'';
+    }
+    updCnt();
+
+    document.querySelectorAll('.btn-cart').forEach((b,i)=>{
+      b.onclick = ()=>{
+        carrito.push(drops[i].nombre); save(); updCnt();
+        alert(`${drops[i].nombre} agregado al carrito.`);
+      };
+    });
+    document.querySelectorAll('.btn-reserve').forEach((b,i)=>{
+      b.onclick = ()=>{
+        reservas.push({ nombre:drops[i].nombre, fecha:new Date().toISOString().split('T')[0] });
+        save(); updCnt();
+        alert(`${drops[i].nombre} reservado.`);
+      };
+    });
+
+    const end = new Date(Date.now()+3*24*60*60*1000);
+    function updateTimer(){
+      const d = end - new Date();
+      if(d<=0) return clearInterval(iv), document.getElementById('temporizador').textContent="¡Drops finalizados!";
+      const days = Math.floor(d/86400000),
+            hrs = Math.floor((d%86400000)/3600000),
+            mins = Math.floor((d%3600000)/60000),
+            secs = Math.floor((d%60000)/1000);
+      document.getElementById('dias').textContent = days;
+      document.getElementById('horas').textContent = hrs;
+      document.getElementById('minutos').textContent = mins;
+      document.getElementById('segundos').textContent = secs;
+    }
+    updateTimer();
+    const iv = setInterval(updateTimer,1000);
   </script>
 </body>
 </html>
