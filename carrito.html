@@ -142,7 +142,7 @@
       background: #ff856f;
     }
 
-    /* Formulario pago modal */
+    /* Modal de pago */
     #modalPago {
       position: fixed;
       inset: 0;
@@ -232,13 +232,13 @@
   </header>
 
   <main id="carrito-contenedor">
-    <!-- Aquí se listarán los productos -->
+    <!-- Productos aquí -->
   </main>
 
   <div class="total" id="total">Total: $0.00</div>
   <button id="pagar">Pagar</button>
 
-  <!-- Modal pago -->
+  <!-- Modal de pago -->
   <div id="modalPago" role="dialog" aria-modal="true" aria-labelledby="tituloPago">
     <form id="formPago">
       <h2 id="tituloPago">Completa tu compra</h2>
@@ -303,7 +303,6 @@
     totalDisplay.textContent = `Total: $${total.toFixed(2)}`;
   }
 
-  // Eventos para aumentar/disminuir cantidad
   carritoContenedor.addEventListener('click', e => {
     if(e.target.classList.contains('btn-aumentar')){
       const i = parseInt(e.target.dataset.index);
@@ -325,17 +324,14 @@
     renderizarCarrito();
   }
 
-  // Mostrar modal pago
   btnPagar.addEventListener('click', () => {
     modalPago.classList.add('active');
   });
 
-  // Cerrar modal
   cerrarModal.addEventListener('click', () => {
     modalPago.classList.remove('active');
   });
 
-  // Enviar formulario pago
   formPago.addEventListener('submit', (e) => {
     e.preventDefault();
     const nombre = formPago.nombre.value.trim();
@@ -349,15 +345,14 @@
 
     alert(`Gracias por tu compra, ${nombre}!\nTu pedido será enviado a:\n${direccion}\nMétodo de pago: ${metodoPago}`);
 
-    // Vaciar carrito
     carrito = [];
     localStorage.removeItem('vc_carrito');
     renderizarCarrito();
     modalPago.classList.remove('active');
   });
 
-  // Cargar carrito al inicio
   renderizarCarrito();
 </script>
+
 </body>
 </html>
