@@ -12,6 +12,309 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VogueCrest - Carrito</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #111;
+    color: #eee;
+    padding: 1rem;
+    min-height: 100vh;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  header img {
+    width: 100px;
+    filter: drop-shadow(0 0 6px #fff);
+    border-radius: 15px;
+  }
+  .brand-name {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-top: 0.5rem;
+  }
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    background: #222;
+    border-radius: 12px;
+    padding: 1rem;
+  }
+  .item {
+    display: flex;
+    gap: 1rem;
+    background: #333;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    align-items: center;
+  }
+  .item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .item-info {
+    flex: 1;
+  }
+  .item-info h3 {
+    margin-bottom: 0.2rem;
+  }
+  .item-info p {
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  .cantidad-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .cantidad-control button {
+    background: #444;
+    border: none;
+    color: #eee;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cantidad-control span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 700;
+  }
+  .precio {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .total {
+    text-align: right;
+    font-size: 1.3rem;
+    font-weight: 900;
+    margin-top: 1rem;
+  }
+  button.pagar-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: #0a74da;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  button.pagar-btn:hover {
+    background: #084aad;
+  }
+  /* Formulario de pago modal */
+  .modal-bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .modal {
+    background: #222;
+    padding: 1.5rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    color: #eee;
+  }
+  .modal h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  .modal label {
+    display: block;
+    margin: 0.5rem 0 0.2rem;
+  }
+  .modal input, .modal textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+  }
+  .modal textarea {
+    resize: vertical;
+  }
+  .modal button {
+    margin-top: 1rem;
+    background: #0a74da;
+    border: none;
+    padding: 0.75rem;
+    width: 100%;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .modal button:hover {
+    background: #084aad;
+  }
+  @media (max-width: 480px) {
+    main {
+      padding: 1rem 0.5rem;
+    }
+    .item img {
+      width: 64px;
+      height: 64px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="Think-removebg-preview.png" alt="VogueCrest Logo" />
+  <div class="brand-name">VOGUECREST</div>
+</header>
+<main>
+  <div id="carrito-contenido"></div>
+  <div class="total" id="total-pago">Total: $0.00</div>
+  <button class="pagar-btn" id="btn-pagar">Pagar</button>
+</main>
+
+<!-- Modal Pago -->
+<div class="modal-bg" id="modal-pago">
+  <div class="modal">
+    <h2>Completa tus datos</h2>
+    <label for="nombre">Nombre completo:</label>
+    <input type="text" id="nombre" placeholder="Tu nombre" required />
+    <label for="direccion">Dirección:</label>
+    <textarea id="direccion" placeholder="Tu dirección" rows="3" required></textarea>
+    <label for="correo">Correo electrónico:</label>
+    <input type="email" id="correo" placeholder="Tu correo" required />
+    <button id="confirmar-pago">Confirmar pago</button>
+  </div>
+</div>
+
+<script>
+  const carritoContenido = document.getElementById('carrito-contenido');
+  const totalPago = document.getElementById('total-pago');
+  const btnPagar = document.getElementById('btn-pagar');
+  const modalPago = document.getElementById('modal-pago');
+  const confirmarPagoBtn = document.getElementById('confirmar-pago');
+
+  let carrito = JSON.parse(localStorage.getItem('vc_carrito')) || [];
+
+  function mostrarCarrito(){
+    carritoContenido.innerHTML = '';
+    if(carrito.length === 0){
+      carritoContenido.innerHTML = '<p>Tu carrito está vacío.</p>';
+      totalPago.textContent = 'Total: $0.00';
+      btnPagar.style.display = 'none';
+      return;
+    }
+    btnPagar.style.display = 'block';
+
+    carrito.forEach((prod, index) => {
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.innerHTML = `
+        <img src="${prod.img}" alt="${prod.nombre}" />
+        <div class="item-info">
+          <h3>${prod.nombre}</h3>
+          <p class="precio">$${prod.precio.toFixed(2)}</p>
+          <div class="cantidad-control" aria-label="Control de cantidad">
+            <button aria-label="Disminuir cantidad" class="btn-disminuir" data-index="${index}">−</button>
+            <span>${prod.cantidad}</span>
+            <button aria-label="Aumentar cantidad" class="btn-aumentar" data-index="${index}">+</button>
+          </div>
+        </div>
+      `;
+      carritoContenido.appendChild(item);
+    });
+
+    actualizarTotal();
+    agregarEventosCantidad();
+  }
+
+  function actualizarTotal(){
+    const total = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
+    totalPago.textContent = `Total: $${total.toFixed(2)}`;
+  }
+
+  function agregarEventosCantidad(){
+    document.querySelectorAll('.btn-disminuir').forEach(btn => {
+      btn.onclick = () => {
+        const i = parseInt(btn.dataset.index);
+        if(carrito[i].cantidad > 1){
+          carrito[i].cantidad--;
+        } else {
+          carrito.splice(i, 1);
+        }
+        guardarCarrito();
+        mostrarCarrito();
+      }
+    });
+    document.querySelectorAll('.btn-aumentar').forEach(btn => {
+      btn.onclick = () => {
+        const i = parseInt(btn.dataset.index);
+        carrito[i].cantidad++;
+        guardarCarrito();
+        mostrarCarrito();
+      }
+    });
+  }
+
+  function guardarCarrito(){
+    localStorage.setItem('vc_carrito', JSON.stringify(carrito));
+  }
+
+  btnPagar.onclick = () => {
+    modalPago.style.display = 'flex';
+  };
+
+  confirmarPagoBtn.onclick = () => {
+    const nombre = document.getElementById('nombre').value.trim();
+    const direccion = document.getElementById('direccion').value.trim();
+    const correo = document.getElementById('correo').value.trim();
+    if(!nombre || !direccion || !correo){
+      alert('Por favor, completa todos los campos.');
+      return;
+    }
+    // Aquí puedes agregar lógica para enviar datos a servidor o procesar pago...
+    alert(`Gracias por tu compra, ${nombre}.\n\nTotal pagado: ${totalPago.textContent.replace('Total: ', '')}`);
+
+    // Vaciar carrito y cerrar modal
+    carrito = [];
+    guardarCarrito();
+    mostrarCarrito();
+    modalPago.style.display = 'none';
+
+    // Limpiar formulario
+    document.getElementById('nombre').value = '';
+    document.getElementById('direccion').value = '';
+    document.getElementById('correo').value = '';
+  };
+
+  // Cerrar modal si se da click fuera
+  modalPago.onclick = (e) => {
+    if(e.target === modalPago){
+      modalPago.style.display = 'none';
+    }
+  };
+
+  mostrarCarrito();
+</script>
+</body>
+</html>
 
   <style>
     body {
@@ -243,3 +546,34 @@
   </script>
 </body>
 </html>
+<!-- Modal pago -->
+  <div class="modal" id="modal-pago" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+      <button class="close-btn" aria-label="Cerrar formulario">&times;</button>
+      <h2 id="modalTitle">Formulario de Pago</h2>
+      <form id="form-pago">
+        <label for="nombre-completo">Nombre Completo</label>
+        <input type="text" id="nombre-completo" name="nombreCompleto" required />
+
+        <label for="direccion">Dirección de envío</label>
+        <textarea id="direccion" name="direccion" required></textarea>
+
+        <label for="correo">Correo Electrónico</label>
+        <input type="email" id="correo" name="correo" required />
+
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" required pattern="[\d\s()+-]{7,}" title="Ingrese un número válido" />
+
+        <label for="metodo-pago">Método de pago</label>
+        <select id="metodo-pago" name="metodoPago" required>
+          <option value="" disabled selected>Seleccione un método</option>
+          <option value="tarjeta">Tarjeta de crédito/débito</option>
+          <option value="paypal">PayPal</option>
+          <option value="transferencia">Transferencia bancaria</option>
+        </select>
+
+        <button type="submit" class="submit-btn">Confirmar Pago</button>
+      </form>
+      <div class="mensaje-exito" id="mensaje-exito">¡Pago realizado con éxito! Gracias por tu compra.</div>
+    </div>
+  </div>

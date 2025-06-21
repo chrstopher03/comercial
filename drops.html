@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
     :root {
-      --bg-img: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
+      --bg-img: url("a0179811e0c526f493ff36a50012d7b7.jpg");
       --clr-text: #101010;
       --clr-accent: #ffffff;
       --clr-shadow: rgba(0,0,0,0.4);
@@ -22,8 +22,6 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-
-    /* Splash */
     #splash {
       position: fixed; inset:0;
       background-image: var(--bg-img);
@@ -45,7 +43,6 @@
     @keyframes textIn { to { opacity:1; transform:translateY(0); } }
     @keyframes fadeOut { to { opacity:0; visibility:hidden; } }
 
-    /* Contenido */
     #content {
       display: none;
       flex-direction: column;
@@ -68,7 +65,7 @@
       color:#c9c9c7; letter-spacing:1px;
     }
     .today-date {
-      margin-top:6px; font-size:1rem; color:#555;
+      margin-top:6px; font-size:1rem; color:#ffffff;
     }
     #temporizador {
       display:flex; gap:12px; margin:20px 0 25px;
@@ -124,6 +121,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      position: relative;
     }
     #btn-carrito { background: var(--clr-accent); color: var(--clr-text); }
     #btn-reservas { background: #ff6a59; color: var(--clr-text); }
@@ -178,7 +176,7 @@
     <section class="productos-drop"></section>
 
     <div class="btn-fijos">
-      <button id="btn-carrito" aria-label="Abrir carrito">
+      <button id="btn-carrito" aria-label="Abrir carrito" onclick="window.location.href='carrito.html'">
         <i class="bi bi-cart-fill"></i>
         <div id="contador-carrito" class="contador"></div>
       </button>
@@ -207,20 +205,20 @@
     });
 
     const drops = [
-      { nombre:"Dreamguard – Edición Limitada", desc:"Fusión urbana y etérea en una sola pieza.", img:"Think (1).png" },
-      { nombre:"Éter Pulse", desc:"Corte limpio con vibraciones futuristas.", img:"6.png" },
-      { nombre:"Luz Fractal", desc:"Estampado geométrico inspirado en arte digital.", img:"3.png" },
-      { nombre:"Vórtice Ámbar", desc:"Textura premium en tonalidades cálidas.", img:"3.png" }
+      { nombre:"Dreamguard – Edición Limitada", precio:49.99, desc:"Fusión urbana y etérea en una sola pieza.", img:"Think (1).png" },
+      { nombre:"Éter Pulse", precio:59.99, desc:"Corte limpio con vibraciones futuristas.", img:"6.png" },
+      { nombre:"Luz Fractal", precio:39.99, desc:"Estampado geométrico inspirado en arte digital.", img:"3.png" },
     ];
 
     const cont = document.querySelector('.productos-drop');
-    drops.slice(0,3).forEach((p,i) => {
+    drops.forEach((p, i) => {
       const art = document.createElement('article');
       art.className = 'producto'; art.tabIndex = 0;
       art.innerHTML = `
         <img src="${p.img}" alt="${p.nombre}" />
         <h3>${p.nombre}</h3>
         <p>${p.desc}</p>
+        <p><strong>Precio: $${p.precio.toFixed(2)}</strong></p>
         <div class="btn-group">
           <button class="btn-cart">Carrito</button>
           <button class="btn-reserve">Reservar</button>
@@ -228,8 +226,8 @@
       cont.appendChild(art);
     });
 
-    let carrito = JSON.parse(localStorage.getItem('vc_carrito'))||[];
-    let reservas = JSON.parse(localStorage.getItem('vc_reservas'))||[];
+    let carrito = JSON.parse(localStorage.getItem('vc_carrito')) || [];
+    let reservas = JSON.parse(localStorage.getItem('vc_reservas')) || [];
     const cntC = document.getElementById('contador-carrito');
     const cntR = document.getElementById('contador-reservas');
     function save(){
@@ -237,20 +235,28 @@
       localStorage.setItem('vc_reservas', JSON.stringify(reservas));
     }
     function updCnt(){
-      cntC.textContent=carrito.length||'';
-      cntR.textContent=reservas.length||'';
+      cntC.textContent = carrito.length || '';
+      cntR.textContent = reservas.length || '';
     }
     updCnt();
 
     document.querySelectorAll('.btn-cart').forEach((b,i)=>{
-      b.onclick = ()=>{
-        carrito.push(drops[i].nombre); save(); updCnt();
-        alert(`${drops[i].nombre} agregado al carrito.`);
+      b.onclick = () => {
+        // Al agregar al carrito, verificamos si ya está para aumentar cantidad
+        const item = carrito.find(x => x.nombre === drops[i].nombre);
+        if(item) {
+          item.cantidad++;
+        } else {
+          carrito.push({ nombre: drops[i].nombre, precio: drops[i].precio, cantidad: 1, img: drops[i].img });
+        }
+        save(); updCnt();
+        window.location.href = `carrito.html`;
       };
     });
+
     document.querySelectorAll('.btn-reserve').forEach((b,i)=>{
-      b.onclick = ()=>{
-        reservas.push({ nombre:drops[i].nombre, fecha:new Date().toISOString().split('T')[0] });
+      b.onclick = () => {
+        reservas.push({ nombre: drops[i].nombre, fecha: new Date().toISOString().split('T')[0] });
         save(); updCnt();
         alert(`${drops[i].nombre} reservado.`);
       };
@@ -270,7 +276,7 @@
       document.getElementById('segundos').textContent = secs;
     }
     updateTimer();
-    const iv = setInterval(updateTimer,1000);
+    const iv = setInterval(updateTimer, 1000);
   </script>
 </body>
 </html>

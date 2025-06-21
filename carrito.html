@@ -3,234 +3,337 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carrito - VogueCrest</title>
+  <title>VogueCrest - Carrito</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #eee;
+      --accent-color: #ff6a59;
+      --btn-bg: #333;
+      --btn-hover-bg: #ff6a59;
+      --shadow: rgba(0,0,0,0.5);
+      --font-main: 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
-      color: #fff;
+      font-family: var(--font-main);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      padding: 1.5rem 1rem 4.5rem;
+      gap: 20px;
     }
-
-    h1 {
+    header {
       text-align: center;
-      margin-bottom: 1.5rem;
-      color: #d19e00;
+      margin-bottom: 10px;
     }
-
-    .cart-container {
-      max-width: 500px;
-      margin: 0 auto;
-      background-color: #111;
-      padding: 1.5rem;
+    header img {
+      width: 110px;
+      filter: drop-shadow(0 0 6px var(--accent-color));
+      border-radius: 20px;
+    }
+    h1 {
+      margin-top: 10px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      color: var(--accent-color);
+    }
+    .producto-item {
+      background: #222;
       border-radius: 12px;
-      box-shadow: 0 0 12px #222;
-    }
-
-    .cart-item {
+      padding: 12px;
       display: flex;
-      justify-content: space-between;
+      gap: 12px;
       align-items: center;
-      padding: 0.8rem 0;
-      border-bottom: 1px solid #333;
+      box-shadow: 0 4px 10px var(--shadow);
+      flex-wrap: wrap;
     }
-
-    .cart-item:last-child {
-      border-bottom: none;
+    .producto-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 12px;
+      flex-shrink: 0;
     }
-
-    .cart-item-name {
-      font-weight: 600;
-    }
-
-    .cart-item-price {
-      color: #bbb;
-    }
-
-    .remove-btn {
-      background: none;
-      border: none;
-      color: #ff4444;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    .total {
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      text-align: right;
-    }
-
-    .cart-actions {
+    .producto-info {
+      flex: 1 1 auto;
+      color: var(--text-color);
       display: flex;
-      justify-content: space-between;
-      margin-top: 1.5rem;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 4px;
     }
-
-    .cart-actions button {
-      flex: 1;
-      padding: 0.7rem;
+    .producto-info h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .producto-info p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .cantidad-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .cantidad-control button {
+      background: var(--btn-bg);
       border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1rem;
+      border-radius: 6px;
+      color: var(--text-color);
+      font-size: 1.2rem;
+      padding: 4px 10px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
     }
-
-    .clear-btn {
-      background-color: #444;
+    .cantidad-control button:hover {
+      background: var(--btn-hover-bg);
       color: #fff;
     }
-
-    .clear-btn:hover {
-      background-color: #666;
-    }
-
-    .checkout-btn {
-      background-color: #d19e00;
-      color: #111;
-    }
-
-    .checkout-btn:hover {
-      background-color: #a67c00;
-    }
-
-    .empty-msg {
+    .cantidad-control span {
+      min-width: 30px;
       text-align: center;
-      color: #aaa;
-      font-style: italic;
+      font-weight: 700;
+      font-size: 1rem;
     }
-
-    .bottom-nav {
+    .precio {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 6px;
+      color: var(--accent-color);
+    }
+    .btn-pagar {
+      background: var(--accent-color);
+      border: none;
+      color: var(--text-color);
+      font-weight: 900;
+      font-size: 1.2rem;
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      max-width: 400px;
+      align-self: center;
+    }
+    .btn-pagar:hover {
+      background: #ff3e20;
+    }
+    .total {
+      font-size: 1.4rem;
+      font-weight: 900;
+      margin-top: 12px;
+      text-align: right;
+      color: var(--accent-color);
+    }
+    /* Responsive */
+    @media (max-width: 480px) {
+      .producto-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .producto-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+      }
+      .producto-info {
+        width: 100%;
+      }
+      .cantidad-control {
+        justify-content: flex-start;
+      }
+    }
+    /* Modal */
+    .modal-bg {
       position: fixed;
-      bottom: 0;
-      left: 0; right: 0;
-      height: 56px;
-      background-color: #111;
-      border-top: 2px solid #d19e00;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 -2px 10px #d19e00aa;
-    }
-
-    .bottom-nav a {
-      color: #d19e00;
-      font-size: 24px;
-      text-decoration: none;
-      display: flex;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
       justify-content: center;
       align-items: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      z-index: 3000;
     }
-
-    .bottom-nav a:hover {
-      background-color: #d19e00;
-      color: #111;
+    .modal-bg.active {
+      display: flex;
     }
-
-    .bottom-nav a[aria-current="page"] {
-      background-color: #d19e00;
-      color: #111;
-      pointer-events: none;
+    .modal {
+      background: var(--bg-color);
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 8px 30px var(--shadow);
+      color: var(--text-color);
+    }
+    .modal h2 {
+      margin-bottom: 20px;
+      color: var(--accent-color);
+      text-align: center;
+    }
+    .modal label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .modal input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+    .modal button {
+      background: var(--accent-color);
+      border: none;
+      color: var(--text-color);
+      font-weight: 900;
+      font-size: 1.1rem;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+    }
+    .modal button:hover {
+      background: #ff3e20;
+    }
+    .modal .btn-cerrar {
+      background: #555;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Tu Carrito</h1>
+  <header>
+    <img src="Think-removebg-preview.png" alt="VogueCrest Logo" />
+    <h1>Tu Carrito</h1>
+  </header>
 
-  <div class="cart-container" id="cartContainer">
-    <p class="empty-msg" id="emptyMsg">Tu carrito está vacío.</p>
-    <div id="cartItems"></div>
-    <div class="total" id="total"></div>
-    <div class="cart-actions" id="cartActions" style="display:none;">
-      <button class="clear-btn" onclick="vaciarCarrito()">Vaciar</button>
-      <button class="checkout-btn" onclick="finalizarCompra()">Finalizar</button>
+  <main id="carrito-container">
+    <!-- Aquí se mostrarán los productos -->
+  </main>
+
+  <div class="total" id="total-general">Total: $0.00</div>
+
+  <button class="btn-pagar" id="btn-pagar">PAGAR</button>
+
+  <!-- Modal para formulario de pago -->
+  <div class="modal-bg" id="modal-pago">
+    <div class="modal">
+      <h2>Información de Pago</h2>
+      <form id="form-pago">
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" required />
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" required />
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" required />
+        <label for="tarjeta">Número de tarjeta</label>
+        <input type="text" id="tarjeta" maxlength="16" pattern="\d{16}" placeholder="Ej: 1234123412341234" required />
+        <button type="submit">Confirmar pago</button>
+        <button type="button" class="btn-cerrar" id="btn-cerrar">Cancelar</button>
+      </form>
     </div>
   </div>
 
-  <nav class="bottom-nav">
-    <a href="scanner.html"><i class="bi bi-upc-scan"></i></a>
-    <a href="catalogo.html"><i class="bi bi-shop-window"></i></a>
-    <a href="drops.html"><i class="bi bi-gift-fill"></i></a>
-    <a href="carrito.html" aria-current="page"><i class="bi bi-bag-fill"></i></a>
-    <a href="perfil.html"><i class="bi bi-person-circle"></i></a>
-  </nav>
-
   <script>
-    const cartItemsEl = document.getElementById('cartItems');
-    const emptyMsgEl = document.getElementById('emptyMsg');
-    const totalEl = document.getElementById('total');
-    const cartActions = document.getElementById('cartActions');
+    let carrito = JSON.parse(localStorage.getItem('vc_carrito')) || [];
 
-    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const cont = document.getElementById('carrito-container');
+    const totalEl = document.getElementById('total-general');
+    const btnPagar = document.getElementById('btn-pagar');
+    const modalPago = document.getElementById('modal-pago');
+    const formPago = document.getElementById('form-pago');
+    const btnCerrar = document.getElementById('btn-cerrar');
+
+    function guardarCarrito() {
+      localStorage.setItem('vc_carrito', JSON.stringify(carrito));
+    }
 
     function renderCarrito() {
-      cartItemsEl.innerHTML = '';
-      let total = 0;
-
-      if (carrito.length === 0) {
-        emptyMsgEl.style.display = 'block';
-        cartActions.style.display = 'none';
-        totalEl.textContent = '';
+      cont.innerHTML = '';
+      if(carrito.length === 0){
+        cont.innerHTML = '<p>Tu carrito está vacío.</p>';
+        totalEl.textContent = 'Total: $0.00';
+        btnPagar.style.display = 'none';
         return;
       }
-
-      emptyMsgEl.style.display = 'none';
-      cartActions.style.display = 'flex';
-
-      carrito.forEach((item, index) => {
+      btnPagar.style.display = 'block';
+      let total = 0;
+      carrito.forEach((item, i) => {
+        total += item.precio * item.cantidad;
         const div = document.createElement('div');
-        div.className = 'cart-item';
+        div.className = 'producto-item';
         div.innerHTML = `
-          <div>
-            <div class="cart-item-name">${item.nombre}</div>
-            <div class="cart-item-price">$${item.precio.toFixed(2)}</div>
+          <img src="${item.img}" alt="${item.nombre}">
+          <div class="producto-info">
+            <h3>${item.nombre}</h3>
+            <p>Precio unitario: $${item.precio.toFixed(2)}</p>
+            <div class="cantidad-control">
+              <button aria-label="Disminuir cantidad" data-index="${i}" class="btn-disminuir">−</button>
+              <span>${item.cantidad}</span>
+              <button aria-label="Aumentar cantidad" data-index="${i}" class="btn-aumentar">+</button>
+            </div>
+            <p class="precio">Subtotal: $${(item.precio * item.cantidad).toFixed(2)}</p>
           </div>
-          <button class="remove-btn" onclick="eliminarItem(${index})">&times;</button>
         `;
-        cartItemsEl.appendChild(div);
-        total += item.precio;
+        cont.appendChild(div);
       });
-
       totalEl.textContent = `Total: $${total.toFixed(2)}`;
+
+      // Agregar eventos para botones
+      document.querySelectorAll('.btn-aumentar').forEach(btn => {
+        btn.onclick = e => {
+          const idx = e.target.dataset.index;
+          carrito[idx].cantidad++;
+          guardarCarrito();
+          renderCarrito();
+        };
+      });
+      document.querySelectorAll('.btn-disminuir').forEach(btn => {
+        btn.onclick = e => {
+          const idx = e.target.dataset.index;
+          if(carrito[idx].cantidad > 1) {
+            carrito[idx].cantidad--;
+          } else {
+            // eliminar del carrito si llega a 0
+            carrito.splice(idx,1);
+          }
+          guardarCarrito();
+          renderCarrito();
+        };
+      });
     }
 
-    function eliminarItem(index) {
-      carrito.splice(index, 1);
-      guardarCarrito();
-      renderCarrito();
-    }
+    btnPagar.onclick = () => {
+      if(carrito.length === 0) return alert("Tu carrito está vacío.");
+      modalPago.classList.add('active');
+    };
 
-    function vaciarCarrito() {
+    btnCerrar.onclick = () => {
+      modalPago.classList.remove('active');
+    };
+
+    formPago.onsubmit = e => {
+      e.preventDefault();
+      // Aquí puedes agregar validaciones extras si quieres
+      alert(`Gracias por tu compra, ${formPago.nombre.value}!`);
       carrito = [];
       guardarCarrito();
       renderCarrito();
-    }
-
-    function finalizarCompra() {
-      alert('¡Gracias por tu compra! Esto es solo una demostración.');
-      vaciarCarrito();
-    }
-
-    function guardarCarrito() {
-      localStorage.setItem('carrito', JSON.stringify(carrito));
-    }
+      modalPago.classList.remove('active');
+    };
 
     renderCarrito();
   </script>
-
 </body>
 </html>
