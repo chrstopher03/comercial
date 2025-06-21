@@ -21,12 +21,39 @@
       color: var(--clr-text);
       min-height: 100vh;
       overflow-x: hidden;
-    }
-    #content {
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+    #splash {
+      position: fixed; inset:0;
+      background-image: var(--bg-img);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; z-index:2000;
+      animation: fadeIn 0.6s ease forwards;
+    }
+    #splash img {
+      width:120px; opacity:0; transform:scale(0.5);
+      animation: logoIn 1s ease forwards; animation-delay:0.3s;
+    }
+    #splash h1 {
+      margin-top:16px; font-size:32px; letter-spacing:4px; color:#fff;
+      opacity:0; transform:translateY(20px);
+      animation: textIn 1s ease forwards; animation-delay:0.8s;
+    }
+    @keyframes fadeIn { to { opacity:1; visibility:visible; } }
+    @keyframes logoIn { to { opacity:1; transform:scale(1); } }
+    @keyframes textIn { to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeOut { to { opacity:0; visibility:hidden; } }
+
+    #content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
       padding-bottom:80px;
+      width: 100%;
+      max-width: 1024px;
+      margin: 0 auto;
     }
     header.page-header {
       text-align:center; margin:30px 0 15px;
@@ -46,9 +73,19 @@
     .today-date {
       margin-top:6px; font-size:1rem; color:#ffffff;
     }
+    #temporizador {
+      display:flex; gap:12px; margin:20px 0 25px;
+      font-weight:700; font-size:1.5rem; flex-wrap: wrap; justify-content: center;
+      color: #fff;
+    }
+    #temporizador span {
+      background:rgba(255,255,255,0.8); padding:6px 10px;
+      border-radius:6px; min-width:40px; text-align:center;
+      color:var(--clr-text);
+    }
     .productos-drop {
       display:flex; flex-wrap:wrap; justify-content:center;
-      gap:20px; width:100%; max-width:1024px; padding:0 15px 30px;
+      gap:20px; width:100%; padding:0 15px 30px;
     }
     .producto {
       background:rgba(255,255,255,0.9);
@@ -91,7 +128,6 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      position: relative;
     }
     #btn-carrito { background: var(--clr-accent); color: var(--clr-text); }
     #btn-reservas { background: #ff6a59; color: var(--clr-text); }
@@ -123,7 +159,12 @@
 </head>
 <body>
 
-  <div id="content">
+  <div id="splash">
+    <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
+    <h1>Origen</h1>
+  </div>
+
+  <div id="content" aria-live="polite">
     <header class="page-header">
       <img src="Think-removebg-preview.png" alt="VogueCrest Logo"/>
       <div class="brand-name">VOGUECREST</div>
@@ -131,9 +172,16 @@
       <div class="today-date" id="today-date"></div>
     </header>
 
-    <section class="productos-drop"></section>
+    <div id="temporizador" role="timer" aria-live="polite">
+      <span id="dias">0</span>d
+      <span id="horas">0</span>h
+      <span id="minutos">0</span>m
+      <span id="segundos">0</span>s
+    </div>
 
-    <div class="btn-fijos">
+    <section class="productos-drop" aria-label="Lista de productos de drops"></section>
+
+    <div class="btn-fijos" aria-label="Botones de acceso rápido">
       <button id="btn-carrito" aria-label="Abrir carrito" onclick="window.location.href='carrito.html'">
         <i class="bi bi-cart-fill"></i>
         <div id="contador-carrito" class="contador"></div>
@@ -146,39 +194,45 @@
   </div>
 
   <script>
+    const splash = document.getElementById('splash');
+    const content = document.getElementById('content');
+    splash.style.opacity = '1'; splash.style.visibility = 'visible';
+
+    setTimeout(() => {
+      splash.style.animation = 'fadeOut 0.6s ease forwards';
+      setTimeout(() => {
+        splash.style.display = 'none';
+        content.style.display = 'flex';
+      }, 600);
+    }, 2000);
+
     document.getElementById('today-date').textContent = new Date().toLocaleDateString('es-ES', {
       weekday:'long', year:'numeric', month:'long', day:'numeric'
     });
 
-    // Datos de drops: agrega propiedad precio y asegúrate de usar tus imágenes con ruta correcta
     const drops = [
-      { id:1, nombre:"Dreamguard – Edición Limitada", desc:"Fusión urbana y etérea en una sola pieza.", img:"Think (1).png", precio:49.99 },
-      { id:2, nombre:"Éter Pulse", desc:"Corte limpio con vibraciones futuristas.", img:"6.png", precio:59.99 },
-      { id:3, nombre:"Luz Fractal", desc:"Estampado geométrico inspirado en arte digital.", img:"3.png", precio:39.99 },
+      { nombre:"Dreamguard – Edición Limitada", desc:"Fusión urbana y etérea en una sola pieza.", img:"Think (1).png", precio: 55.00 },
+      { nombre:"Éter Pulse", desc:"Corte limpio con vibraciones futuristas.", img:"6.png", precio: 40.00 },
+      { nombre:"Luz Fractal", desc:"Estampado geométrico inspirado en arte digital.", img:"3.png", precio: 50.00 },
     ];
 
     const cont = document.querySelector('.productos-drop');
-
-    // Mostrar productos
-    drops.forEach((p) => {
+    drops.forEach((p, i) => {
       const art = document.createElement('article');
       art.className = 'producto'; art.tabIndex = 0;
       art.innerHTML = `
         <img src="${p.img}" alt="${p.nombre}" />
         <h3>${p.nombre}</h3>
         <p>${p.desc}</p>
-        <p><strong>Precio: $${p.precio.toFixed(2)}</strong></p>
         <div class="btn-group">
-          <button class="btn-cart" data-id="${p.id}">Agregar al carrito</button>
-          <button class="btn-reserve" data-id="${p.id}">Reservar</button>
+          <button class="btn-cart" aria-label="Agregar ${p.nombre} al carrito">Carrito</button>
+          <button class="btn-reserve" aria-label="Reservar ${p.nombre}">Reservar</button>
         </div>`;
       cont.appendChild(art);
     });
 
-    // Cargar carrito y reservas desde localStorage
     let carrito = JSON.parse(localStorage.getItem('vc_carrito')) || [];
     let reservas = JSON.parse(localStorage.getItem('vc_reservas')) || [];
-
     const cntC = document.getElementById('contador-carrito');
     const cntR = document.getElementById('contador-reservas');
 
@@ -186,42 +240,61 @@
       localStorage.setItem('vc_carrito', JSON.stringify(carrito));
       localStorage.setItem('vc_reservas', JSON.stringify(reservas));
     }
+
     function updCnt(){
-      const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
-      cntC.textContent = totalCantidad > 0 ? totalCantidad : '';
+      cntC.textContent = carrito.length || '';
       cntR.textContent = reservas.length || '';
     }
     updCnt();
 
-    // Agregar al carrito: si ya existe aumenta cantidad, si no agrega producto
-    cont.addEventListener('click', (e) => {
-      if(e.target.classList.contains('btn-cart')){
-        const id = parseInt(e.target.dataset.id);
-        const producto = drops.find(p => p.id === id);
-        if(!producto) return;
-
-        const idx = carrito.findIndex(item => item.id === id);
-        if(idx >= 0) {
+    document.querySelectorAll('.btn-cart').forEach((b,i)=>{
+      b.onclick = () => {
+        // Ver si ya existe el producto en carrito
+        const idx = carrito.findIndex(item => item.nombre === drops[i].nombre);
+        if(idx !== -1) {
           carrito[idx].cantidad++;
         } else {
-          carrito.push({...producto, cantidad:1});
+          carrito.push({
+            nombre: drops[i].nombre,
+            img: drops[i].img,
+            precio: drops[i].precio,
+            cantidad: 1
+          });
         }
-        save();
-        updCnt();
-        alert(`"${producto.nombre}" agregado al carrito.`);
-      }
-
-      if(e.target.classList.contains('btn-reserve')){
-        const id = parseInt(e.target.dataset.id);
-        const producto = drops.find(p => p.id === id);
-        if(!producto) return;
-
-        reservas.push({ nombre: producto.nombre, fecha: new Date().toISOString().split('T')[0] });
-        save();
-        updCnt();
-        alert(`"${producto.nombre}" reservado.`);
-      }
+        save(); updCnt();
+        // Redirigir al carrito con info
+        window.location.href = 'carrito.html';
+      };
     });
+
+    document.querySelectorAll('.btn-reserve').forEach((b,i)=>{
+      b.onclick = () => {
+        reservas.push({ nombre: drops[i].nombre, fecha: new Date().toISOString().split('T')[0] });
+        save(); updCnt();
+        alert(`Has reservado: ${drops[i].nombre}`);
+      };
+    });
+
+    // Temporizador cuenta regresiva 3 días
+    const end = new Date(Date.now()+3*24*60*60*1000);
+    function updateTimer(){
+      const d = end - new Date();
+      if(d<=0) {
+        clearInterval(iv);
+        document.getElementById('temporizador').textContent="¡Drops finalizados!";
+        return;
+      }
+      const days = Math.floor(d/86400000),
+            hrs = Math.floor((d%86400000)/3600000),
+            mins = Math.floor((d%3600000)/60000),
+            secs = Math.floor((d%60000)/1000);
+      document.getElementById('dias').textContent = days;
+      document.getElementById('horas').textContent = hrs;
+      document.getElementById('minutos').textContent = mins;
+      document.getElementById('segundos').textContent = secs;
+    }
+    updateTimer();
+    const iv = setInterval(updateTimer, 1000);
   </script>
 </body>
 </html>
