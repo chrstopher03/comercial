@@ -340,9 +340,6 @@
     <h1>VOGUECREST</h1>
   </div>
 
-  <!-- Música para splash -->
-  <audio id="splash-audio" src="intro.mp3" preload="auto"></audio>
-
   <!-- Formulario login -->
   <section id="login-section" aria-label="Formulario de inicio de sesión">
     <form id="login-form" aria-describedby="error-msg" novalidate>
@@ -431,7 +428,6 @@
 
     // DOM Elements
     const splash = document.getElementById('splash');
-    const splashAudio = document.getElementById('splash-audio');
     const loginSection = document.getElementById('login-section');
     const loginForm = document.getElementById('login-form');
     const errorMsg = document.getElementById('error-msg');
@@ -443,41 +439,15 @@
     // Mostrar splash y luego login o main según sesión
     function showSplashThenPage() {
       splash.classList.add('active');
-
-      // Intenta reproducir la música (puede fallar si no hubo interacción)
-      splashAudio.play().catch(() => {
-        // Si falla autoplay, espera interacción para reproducir
-        const playOnInteraction = () => {
-          splashAudio.play();
-          window.removeEventListener('click', playOnInteraction);
-          window.removeEventListener('keydown', playOnInteraction);
-        };
-        window.addEventListener('click', playOnInteraction);
-        window.addEventListener('keydown', playOnInteraction);
-      });
-
-      // Duración splash + fadeout: 4400 + 600 = 5000 ms = 5 segundos
+      // Duración total splash (3.2s anim + 0.6s fadeout)
       setTimeout(() => {
         splash.style.animation = 'splashFadeOut 0.6s ease forwards';
-        splashAudio.pause();
-        splashAudio.currentTime = 0;
-
         setTimeout(() => {
           splash.classList.remove('active');
           splash.style.animation = '';
           decidePage();
         }, 600);
-      }, 4400);
-    }
-
-    // Decide mostrar login o contenido principal
-    function decidePage() {
-      const user = getSession();
-      if (user) {
-        showMainContent(user);
-      } else {
-        showLogin();
-      }
+      }, 3200);
     }
 
     // Mostrar login
@@ -485,21 +455,31 @@
       loginSection.classList.add('active');
       mainContent.classList.remove('active');
       bottomNav.style.display = 'none';
-      loginForm.reset();
-      errorMsg.style.display = 'none';
-      loginForm.querySelector('input').focus();
+      document.body.style.overflow = 'auto';
+      loginForm.nombre.focus();
     }
 
-    // Mostrar main con nombre de usuario
-    function showMainContent(user) {
-      loginSection.classList.remove('active');
+    // Mostrar main (ya logueado)
+    function showMain(user) {
+      welcomeMsg.textContent = `Bienvenido, ${user.nombre} ${user.apellido}`;
       mainContent.classList.add('active');
+      loginSection.classList.remove('active');
       bottomNav.style.display = 'flex';
-      welcomeMsg.textContent = `¡Bienvenido, ${user.nombre} ${user.apellido}!`;
+      document.body.style.overflow = 'auto';
       mainContent.focus();
     }
 
-    // Validar formulario login
+    // Decidir qué mostrar según sesión
+    function decidePage() {
+      const user = getSession();
+      if (user) {
+        showMain(user);
+      } else {
+        showLogin();
+      }
+    }
+
+    // Validar login básico
     loginForm.addEventListener('submit', e => {
       e.preventDefault();
       errorMsg.style.display = 'none';
@@ -508,26 +488,21 @@
       const apellido = loginForm.apellido.value.trim();
       const correo = loginForm.correo.value.trim();
 
-      // Validaciones básicas
       if (!nombre || !apellido || !correo) {
-        errorMsg.textContent = 'Por favor, completa todos los campos.';
+        errorMsg.textContent = 'Por favor completa todos los campos.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+      // Validar correo simple
+      if (!correo.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        errorMsg.textContent = 'Introduce un correo válido.';
         errorMsg.style.display = 'block';
         return;
       }
 
-      // Validar correo con expresión sencilla
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(correo)) {
-        errorMsg.textContent = 'Correo electrónico inválido.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-
-      // Guardar sesión simulada
+      // Guardar sesión y mostrar main
       setSession({ nombre, apellido, correo });
-
-      // Mostrar contenido principal
-      showMainContent({ nombre, apellido, correo });
+      showMain({ nombre, apellido, correo });
     });
 
     // Logout
@@ -536,11 +511,15 @@
       showLogin();
     });
 
-    // Al cargar la página mostrar splash y luego decidir página
-    window.addEventListener('load', () => {
-      showSplashThenPage();
+    // Al cargar la página, si no hay sesión mostrar splash primero
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!getSession()) {
+        // Mostrar splash con animación
+        showSplashThenPage();
+      } else {
+        decidePage();
+      }
     });
-
   </script>
 </body>
 </html>
