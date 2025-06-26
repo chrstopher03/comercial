@@ -1,173 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VogueCrest - Presentación Oficial</title>
+  <meta charset="UTF‑8">
+  <meta name="viewport" content="width=device‑width,initial‑scale=1">
+  <title>VogueCrest</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    /* Estilos personalizados: usa los colores, fuentes y formas que ya tienes */
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #fff;
-      color: #111;
-      line-height: 1.6;
+      background: #f7f7f7;
+      margin: 0;
     }
     header {
       background: #111;
       color: #fff;
-      padding: 40px 20px;
+      padding: 15px;
       text-align: center;
     }
-    header .logo {
-      font-size: 2.5rem;
-      font-weight: bold;
-      letter-spacing: 4px;
+    header .brand {
+      font-size: 28px;
+      font-weight: 800;
     }
-    header p {
-      font-size: 1.1rem;
-      color: #ccc;
+    nav {
+      background: #222;
+      padding: 10px;
     }
-
-    section.hero {
-      position: relative;
+    nav a {
+      color: #ddd;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 16px;
     }
-    section.hero img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    section.hero .overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-      background: rgba(0,0,0,0.6);
+    nav a:hover {
       color: #fff;
-      padding: 1.5rem 2.5rem;
-      font-size: 1.8rem;
-      font-weight: bold;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 90%;
     }
-
-    section.intro, section.vision, section.mision, section.valores {
-      padding: 60px 20px;
-      max-width: 900px;
-      margin: auto;
-      text-align: center;
-    }
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-      color: #111;
-    }
-    section p {
-      font-size: 1.1rem;
-      color: #333;
-    }
-
-    section.valores {
-      background: #f8f8f8;
-    }
-    .valores-grid {
+    .hero {
+      background: url('tu-imagen‑hero.jpg') center/cover no-repeat;
+      height: 300px;
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
-      gap: 30px;
-      margin-top: 30px;
+      color: #fff;
+      font-size: 36px;
+      font-weight: 700;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.7);
     }
-    .valor {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 25px;
-      width: 260px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    .section {
+      padding: 60px 15px;
     }
-    .valor h3 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
-      color: #000;
+    .section h2 {
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 700;
     }
-
+    .cards .card {
+      border: none;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform .2s;
+    }
+    .cards .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
     footer {
       background: #111;
-      color: #fff;
+      color: #aaa;
+      padding: 20px;
       text-align: center;
-      padding: 30px 15px;
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 600px) {
-      header .logo { font-size: 2rem; }
-      section.hero .overlay { font-size: 1.2rem; padding: 1rem 1.5rem; }
-      .valor { width: 100%; }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">VOGUECREST</div>
-    <p>Moda con identidad • Hecho en Nicaragua</p>
+    <div class="brand">VOGUECREST</div>
   </header>
 
+  <nav class="text-center">
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="drops.html">Drops</a>
+    <a href="carrito.html">Carrito</a>
+    <a href="perfil.html">Perfil</a>
+  </nav>
+
   <section class="hero">
-    <img src="https://via.placeholder.com/1200x500?text=VogueCrest+Colección+Origen" alt="Imagen principal VogueCrest">
-    <div class="overlay">A continuación descubrirás el universo VogueCrest</div>
+    Bienvenido a VogueCrest
   </section>
 
-  <section class="intro">
-    <h2>¿Qué es VogueCrest?</h2>
-    <p>
-      VogueCrest es una marca de moda nicaragüense que busca redefinir la manera en que vestimos y nos expresamos. Más que una línea de ropa, es un movimiento que conecta la creatividad, la sostenibilidad y el orgullo nacional. Nuestra esencia es vestir con propósito, diseñar con alma y representar con fuerza nuestros orígenes.
-    </p>
-  </section>
-
-  <section class="vision">
-    <h2>Visión</h2>
-    <p>
-      Ser la marca de moda referente en Nicaragua y Centroamérica por su impacto cultural, su autenticidad y su propuesta estética que trasciende tendencias, inspirando una nueva generación de consumidores conscientes.
-    </p>
-  </section>
-
-  <section class="mision">
-    <h2>Misión</h2>
-    <p>
-      Crear colecciones únicas que fusionen el arte, la moda y las raíces culturales de Nicaragua. Brindar productos de calidad elaborados localmente con principios de ética, innovación y conexión emocional con quienes los visten.
-    </p>
-  </section>
-
-  <section class="valores">
-    <h2>Valores que nos definen</h2>
-    <div class="valores-grid">
-      <div class="valor">
-        <h3>Identidad</h3>
-        <p>Inspiramos nuestras colecciones en la historia, la cultura y la diversidad de Nicaragua.</p>
-      </div>
-      <div class="valor">
-        <h3>Sostenibilidad</h3>
-        <p>Trabajamos con materiales responsables y procesos que cuidan el entorno.</p>
-      </div>
-      <div class="valor">
-        <h3>Exclusividad</h3>
-        <p>Diseños únicos, producciones limitadas, piezas que cuentan una historia.</p>
-      </div>
-      <div class="valor">
-        <h3>Innovación</h3>
-        <p>Integramos tecnología como QR y plataformas digitales para una experiencia completa.</p>
-      </div>
-      <div class="valor">
-        <h3>Talento Local</h3>
-        <p>Creemos en el poder de los creadores nicaragüenses para transformar la industria.</p>
+  <section class="section">
+    <h2>Nuestros Productos</h2>
+    <div class="container cards">
+      <div class="row">
+        <!-- Aquí insertas tu row de tarjetas Bootstrap con imagen, título, descripción -->
       </div>
     </div>
   </section>
 
   <footer>
-    &copy; 2025 VogueCrest. Todos los derechos reservados. | Hecho en Nicaragua con visión global.
+    &copy; 2025 VogueCrest | Creado en Nicaragua
   </footer>
 
 </body>
 </html>
+
+
+    
