@@ -3,60 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VogueCrest</title>
+  <title>VogueCrest - Presentación Oficial</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Segoe UI', sans-serif; background:#fff; color:#111; }
-    header {
-      background:#111;
-      color:#fff;
-      padding:20px;
-      text-align:center;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #111;
+      line-height: 1.6;
     }
-    header .logo { font-size:2rem; font-weight:bold; letter-spacing:3px; }
-    section.hero { position:relative; }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    header .logo {
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    section.hero {
+      position: relative;
+    }
     section.hero img {
-      width:100%; height:auto; display:block;
+      width: 100%;
+      height: auto;
+      display: block;
     }
     section.hero .overlay {
-      position:absolute; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      background:rgba(17,17,17,0.6);
-      color:#ffd700;
-      padding:1rem 2rem;
-      font-size:1.5rem; font-weight:700;
-      border-radius:8px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 1.5rem 2.5rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 90%;
     }
-    section.intro {
-      padding:40px 20px;
-      max-width:800px; margin:auto;
-      text-align:center;
+
+    section.intro, section.vision, section.mision, section.valores {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
     }
-    section.intro h2 { font-size:1.8rem; margin-bottom:0.8rem; }
-    section.intro p { font-size:1rem; line-height:1.6; color:#333; }
-    section.values {
-      display:flex; flex-wrap:wrap;
-      justify-content:center; gap:20px;
-      padding:40px 20px;
-      background:#f9f9f9;
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #111;
     }
-    .value-card {
-      background:#fff; border:1px solid #ddd;
-      border-radius:8px;
-      padding:20px;
-      max-width:240px; text-align:center;
+    section p {
+      font-size: 1.1rem;
+      color: #333;
     }
-    .value-card h3 { margin-bottom:0.6rem; }
-    .value-card p { font-size:0.9rem; color:#555; }
+
+    section.valores {
+      background: #f8f8f8;
+    }
+    .valores-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .valor {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 25px;
+      width: 260px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+    .valor h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: #000;
+    }
+
     footer {
-      padding:20px; text-align:center;
-      background:#111; color:#fff;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 30px 15px;
+      font-size: 0.95rem;
     }
-    @media (max-width:600px) {
-      section.hero .overlay {
-        font-size:1.2rem; padding:0.8rem 1.2rem;
-      }
-      .value-card { flex:1 1 100%; max-width:100%; }
+
+    @media (max-width: 600px) {
+      header .logo { font-size: 2rem; }
+      section.hero .overlay { font-size: 1.2rem; padding: 1rem 1.5rem; }
+      .valor { width: 100%; }
     }
   </style>
 </head>
@@ -64,35 +110,63 @@
 
   <header>
     <div class="logo">VOGUECREST</div>
+    <p>Moda con identidad • Hecho en Nicaragua</p>
   </header>
 
   <section class="hero">
-    <img src="tu-hero.jpg" alt="Colección VogueCrest">
-    <div class="overlay">Descubrí el lujo hecho en Nicaragua</div>
+    <img src="https://via.placeholder.com/1200x500?text=VogueCrest+Colección+Origen" alt="Imagen principal VogueCrest">
+    <div class="overlay">A continuación descubrirás el universo VogueCrest</div>
   </section>
 
   <section class="intro">
-    <h2>Bienvenido a VogueCrest</h2>
-    <p>VogueCrest es un proyecto nicaragüense dedicado a la moda con identidad propia. Fusionamos diseño contemporáneo con la esencia cultural local, promoviendo materiales de alta calidad y confección ética. A través de cada colección buscamos destacar el talento nacional y ofrecer piezas únicas que hablen por sí mismas.</p>
+    <h2>¿Qué es VogueCrest?</h2>
+    <p>
+      VogueCrest es una marca de moda nicaragüense que busca redefinir la manera en que vestimos y nos expresamos. Más que una línea de ropa, es un movimiento que conecta la creatividad, la sostenibilidad y el orgullo nacional. Nuestra esencia es vestir con propósito, diseñar con alma y representar con fuerza nuestros orígenes.
+    </p>
   </section>
 
-  <section class="values">
-    <div class="value-card">
-      <h3>Diseño Exclusivo</h3>
-      <p>Ediciones limitadas con un estilo distintivo que resalta personalidad.</p>
-    </div>
-    <div class="value-card">
-      <h3>Hecho en Nicaragua</h3>
-      <p>Valoramos la producción local y apoyamos a artesanos de casa.</p>
-    </div>
-    <div class="value-card">
-      <h3>Sostenible</h3>
-      <p>Utilizamos materiales eco-responsables y procesos conscientes.</p>
+  <section class="vision">
+    <h2>Visión</h2>
+    <p>
+      Ser la marca de moda referente en Nicaragua y Centroamérica por su impacto cultural, su autenticidad y su propuesta estética que trasciende tendencias, inspirando una nueva generación de consumidores conscientes.
+    </p>
+  </section>
+
+  <section class="mision">
+    <h2>Misión</h2>
+    <p>
+      Crear colecciones únicas que fusionen el arte, la moda y las raíces culturales de Nicaragua. Brindar productos de calidad elaborados localmente con principios de ética, innovación y conexión emocional con quienes los visten.
+    </p>
+  </section>
+
+  <section class="valores">
+    <h2>Valores que nos definen</h2>
+    <div class="valores-grid">
+      <div class="valor">
+        <h3>Identidad</h3>
+        <p>Inspiramos nuestras colecciones en la historia, la cultura y la diversidad de Nicaragua.</p>
+      </div>
+      <div class="valor">
+        <h3>Sostenibilidad</h3>
+        <p>Trabajamos con materiales responsables y procesos que cuidan el entorno.</p>
+      </div>
+      <div class="valor">
+        <h3>Exclusividad</h3>
+        <p>Diseños únicos, producciones limitadas, piezas que cuentan una historia.</p>
+      </div>
+      <div class="valor">
+        <h3>Innovación</h3>
+        <p>Integramos tecnología como QR y plataformas digitales para una experiencia completa.</p>
+      </div>
+      <div class="valor">
+        <h3>Talento Local</h3>
+        <p>Creemos en el poder de los creadores nicaragüenses para transformar la industria.</p>
+      </div>
     </div>
   </section>
 
   <footer>
-    &copy; 2025 VogueCrest – Todos los derechos reservados.
+    &copy; 2025 VogueCrest. Todos los derechos reservados. | Hecho en Nicaragua con visión global.
   </footer>
 
 </body>
