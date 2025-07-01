@@ -2,524 +2,175 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Inicio</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VogueCrest - Nueva Colección</title>
   <style>
-    /* Reset y básicos */
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
+      font-family: 'Helvetica Neue', sans-serif;
     }
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url("a0179811e0c526f493ff36a50012d7b7.jpg");
-      color: #fff;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Splash */
-    #splash {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: url("a0179811e0c526f493ff36a50012d7b7.jpg");
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      pointer-events: none;
-      opacity: 0;
-      visibility: hidden;
-    }
-    #splash.active {
-      pointer-events: all;
-      opacity: 1;
-      visibility: visible;
-      animation: splashFadeIn 1.2s ease forwards;
-    }
-    #splash img {
-      width: 140px;
-      opacity: 0;
-      transform: scale(0.6);
-      animation: splashLogoIn 1.5s ease forwards;
-      animation-delay: 0.3s;
-    }
-    #splash h1 {
-      font-size: 40px;
-      margin-top: 20px;
-      letter-spacing: 4px;
-      color: #ffffff;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: splashTextIn 1.5s ease forwards;
-      animation-delay: 0.9s;
-      user-select: none;
-    }
-    @keyframes splashFadeIn {
-      from { opacity: 0; visibility: hidden;}
-      to { opacity: 1; visibility: visible;}
-    }
-    @keyframes splashLogoIn {
-      0% {opacity: 0; transform: scale(0.6);}
-      60% {opacity: 1; transform: scale(1.1);}
-      100% {opacity: 1; transform: scale(1);}
-    }
-    @keyframes splashTextIn {
-      0% {opacity: 0; transform: translateY(20px);}
-      100% {opacity: 1; transform: translateY(0);}
-    }
-    @keyframes splashFadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-      }
-    }
-
-    /* Contenedores principales */
-    #login-section, #main-content {
-      flex-grow: 1;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-      overflow-y: auto;
-    }
-    #login-section.active, #main-content.active {
-      display: flex;
-    }
-
-    /* Login Form */
-    #login-form {
-      background-image: url("a0179811e0c526f493ff36a50012d7b7.jpg");
-      padding: 30px 25px;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 0 15px #ffffff;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    #login-form h2 {
-      text-align: center;
-      margin-bottom: 10px;
-      font-weight: 700;
-      color: #fffcf3;
-      letter-spacing: 2px;
-      user-select: none;
-    }
-    #login-form input {
-      background-image: url("a0179811e0c526f493ff36a50012d7b7.jpg");
-      border: none;
-      border-radius: 10px;
-      padding: 12px 15px;
-      font-size: 16px;
-      color: #eee;
-      transition: box-shadow 0.3s;
-    }
-    #login-form input::placeholder {
-      color: #bbb;
-    }
-    #login-form input:focus {
-      outline: none;
-      box-shadow: 0 0 8px #fffefd;
-    }
-    #login-form button {
-      margin-top: 10px;
-      background: linear-gradient(45deg, #fffbf0, #fffefd);
-      border: none;
-      color: #111;
-      font-weight: 700;
-      font-size: 18px;
-      padding: 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.3s;
-      user-select: none;
-    }
-    #login-form button:hover {
-      background: linear-gradient(45deg, #fffcf3, #fffcf4);
-    }
-
-    /* Feedback error */
-    #error-msg {
-      background: #b32929;
-      padding: 10px;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: 600;
-      text-align: center;
-      display: none;
-      user-select: none;
-    }
-
-    /* Main content */
-    #main-content {
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20px;
-      padding-bottom: 80px; /* espacio para barra inferior */
-    }
-    .logo-container {
-      text-align: center;
-      margin-bottom: 15px;
-      user-select: none;
-    }
-    .logo-container img {
-      width: 110px;
-      filter: drop-shadow(0 0 3px #fff7e0);
-      user-select: none;
-    }
-    .brand-name {
-      font-size: 34px;
-      font-weight: 800;
-      color: #fffefd;
-      letter-spacing: 3px;
-      user-select: none;
-    }
-    .welcome-msg {
-      margin-top: 12px;
-      font-weight: 700;
-      font-size: 20px;
-      color: #fff;
-      user-select: none;
-    }
-
-    .main-buttons {
-      background-color: #f8f6f2;
+      background: url('https://images.unsplash.com/photo-1532274402917-5aadf881bdf4') no-repeat center center;
+      background-size: cover;
       color: #000;
-      border-radius: 15px;
-      margin: 20px auto;
-      padding: 25px 25px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 0 15px #ffffffaa;
-      user-select: none;
     }
-    .main-buttons a {
-      display: block;
-      color: #000000;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+    }
+    .logo {
       font-size: 20px;
-      text-decoration: none;
-      padding: 16px 12px;
-      border-bottom: 1px solid #ccc;
-      transition: background-color 0.3s;
-      border-radius: 8px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    nav i {
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .hero {
+      background: url('https://i.pinimg.com/originals/9d/60/1b/9d601b1e9fe76f4aa364b267c2fa7739.jpg') no-repeat center center;
+      background-size: cover;
+      padding: 100px 30px;
+      text-align: center;
+      color: white;
+    }
+    .hero h1 {
+      font-size: 36px;
       margin-bottom: 10px;
     }
-    .main-buttons a:hover,
-    .main-buttons a:focus {
-      background-color: #d19e0011;
-      outline: none;
-    }
-    .main-buttons a:last-child {
-      border-bottom: none;
-    }
-    .main-buttons a i {
-      float: right;
-      font-size: 24px;
-    }
-
-    .qr-box {
-      background-image: url("a0179811e0c526f493ff36a50012d7b7.jpg");
-      text-align: center;
-      padding: 20px;
-      width: 100%;
-      max-width: 380px;
-      border-radius: 15px;
-      box-sizing: border-box;
-      margin-bottom: 15px;
-      box-shadow: 0 0 15px #ffffffaa;
-      user-select: none;
-    }
-    .qr-box p {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      user-select: none;
-    }
-    .qr-box img {
-      width: 140px;
-      user-select: none;
-      filter: drop-shadow(0 0 4px #ffffff);
-    }
-
-    /* Logout button */
-    .logout-btn {
-      background-color: #ffffff;
-      border: none;
-      color: #111;
-      width: 100%;
-      max-width: 380px;
-      padding: 14px 0;
-      border-radius: 15px;
-      cursor: pointer;
-      font-weight: 700;
+    .hero p {
       font-size: 18px;
-      box-shadow: 0 0 15px #ffffff;
-      transition: background-color 0.3s;
-      user-select: none;
+      margin-bottom: 20px;
     }
-    .logout-btn:hover,
-    .logout-btn:focus {
-      background-color: #ffffff;
-      outline: none;
+    .hero button {
+      padding: 10px 25px;
+      font-size: 14px;
+      border: none;
+      background-color: white;
+      color: black;
+      cursor: pointer;
     }
-
-    /* Barra inferior fija con todos los botones */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0; 
-      right: 0;
-      height: 56px;
-      background-image: url("a0179811e0c526f493ff36a50012d7b7.jpg");
-      border-top: 2px solid #fffffe;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 -2px 10px #fffffd;
-      z-index: 10000;
-      user-select: none;
+    .section {
+      background-color: #fff;
+      padding: 40px 20px;
     }
-    .bottom-nav a {
-      color: #ffffff;
-      font-size: 26px;
-      text-decoration: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      transition: background-color 0.3s ease, color 0.3s ease;
+    .section h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
     }
-    .bottom-nav a:hover,
-    .bottom-nav a:focus {
-      background-color: #fffffd;
-      color: #111;
-      outline: none;
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px;
     }
-    .bottom-nav a[aria-current="page"] {
-      background-color: #ffffff;
-      color: #111;
-      cursor: default;
-      pointer-events: none;
+    .product {
+      text-align: center;
     }
-
-    /* Responsive */
-    @media (max-width: 480px) {
-      #login-form, .main-buttons, .qr-box, .logout-btn {
-        max-width: 90vw;
-      }
-      .main-buttons a {
-        font-size: 18px;
-        padding: 12px 10px;
-      }
-      .bottom-nav a {
-        font-size: 22px;
-        width: 40px;
-        height: 40px;
+    .product img {
+      width: 100%;
+      height: auto;
+    }
+    .product-name {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .price {
+      font-weight: bold;
+      font-size: 14px;
+    }
+    .categories {
+      margin-top: 40px;
+    }
+    .categories h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .categories ul {
+      list-style: none;
+    }
+    .categories ul li {
+      padding: 8px 0;
+      border-bottom: 1px solid #ddd;
+    }
+    .lookbook {
+      background: white;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    .lookbook img {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .lookbook p {
+      font-size: 14px;
+    }
+    @media(max-width: 768px) {
+      .hero h1 {
+        font-size: 28px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Splash animado -->
-  <div id="splash" role="alert" aria-live="assertive" aria-label="Animación de carga VogueCrest">
-    <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
-    <h1>VOGUECREST</h1>
+  <header>
+    <span>YUDAEV SCHOOL</span>
+    <span class="logo">VOGUECREST</span>
+    <span>2024</span>
+  </header>
+
+  <div class="hero">
+    <h1>NEW COLLECTION</h1>
+    <p>SPRING 2024</p>
+    <button>SHOP NOW</button>
   </div>
 
-  <!-- Formulario login -->
-  <section id="login-section" aria-label="Formulario de inicio de sesión">
-    <form id="login-form" aria-describedby="error-msg" novalidate>
-      <h2>Iniciar sesión</h2>
-      <input type="text" id="nombre" name="nombre" placeholder="Nombre" autocomplete="given-name" required aria-required="true" />
-      <input type="text" id="apellido" name="apellido" placeholder="Apellido" autocomplete="family-name" required aria-required="true" />
-      <input type="email" id="correo" name="correo" placeholder="Correo electrónico" autocomplete="email" required aria-required="true" />
-      <button type="submit">Entrar</button>
-      <div id="error-msg" role="alert" aria-live="assertive"></div>
-    </form>
-  </section>
-
-  <!-- Contenido principal (visible solo tras login) -->
-  <main id="main-content" tabindex="-1" aria-label="Contenido principal de VogueCrest">
-    <div class="logo-container" aria-label="Logo y nombre VogueCrest">
-      <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
-      <div class="brand-name">VOGUECREST</div>
-      <div id="carouselExample" class="carousel slide">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="12.jpeg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="14.jpeg" class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="13.jpeg" class="d-block w-100" alt="...">
-          </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+  <div class="section">
+    <h2>READY-TO-WEAR</h2>
+    <div class="products">
+      <div class="product">
+        <img src="https://i.imgur.com/oyQwZ8I.png" alt="Twisted Kleid" />
+        <div class="product-name">twisted kleid</div>
+        <div class="price">3500 $</div>
       </div>
-      <div class="welcome-msg" id="welcome-msg"></div>
+      <div class="product">
+        <img src="https://i.imgur.com/n3N55Ue.png" alt="Layered Kleid" />
+        <div class="product-name">layered kleid</div>
+        <div class="price">1200 $</div>
+      </div>
+      <div class="product">
+        <img src="https://i.imgur.com/VFPCFEe.png" alt="Leather Bomber" />
+        <div class="product-name">leather bomber</div>
+        <div class="price">7200 $</div>
+      </div>
+      <div class="product">
+        <img src="https://i.imgur.com/5X8c4cU.png" alt="Black Turtleneck" />
+        <div class="product-name">black turtleneck</div>
+        <div class="price">1950 $</div>
+      </div>
     </div>
 
-    <section class="main-buttons" role="navigation" aria-label="Navegación principal">
-      <a href="scaner.html" tabindex="0" aria-label="Ir a escáner"><i class="bi bi-upc-scan"></i> Escáner</a>
-      <a href="catalogo.html" tabindex="0" aria-label="Ir a catálogo"><i class="bi bi-shop-window"></i> Catálogo</a>
-      <a href="drops.html" tabindex="0" aria-label="Ir a drops"><i class="bi bi-gift-fill"></i> Drops</a>
-      <a href="perfil.html" tabindex="0" aria-label="Ir a perfil"><i class="bi bi-person-circle"></i> Perfil</a>
-      <a href="carrito.html" tabindex="0" aria-label="Ir a carrito"><i class="bi bi-bag-fill"></i> Carrito</a>
-    </section>
+    <div class="categories">
+      <h3>CATEGORIES</h3>
+      <ul>
+        <li>CLOTHES</li>
+        <li>SHOES</li>
+        <li>BAGS</li>
+        <li>ACCESSORIES</li>
+      </ul>
+    </div>
 
-    <section class="qr-box" aria-label="Código QR de VogueCrest">
-      <p>Escanea el QR para más info</p>
-      <img src="11.jpeg" alt="Código QR VogueCrest" />
-    </section>
+    <div class="lookbook">
+      <img src="https://i.imgur.com/Z7g1x3r.png" alt="Lookbook" />
+      <p>The Spring 24 collection is composed of two categories: Garib-Robe (Balenciaga’s line of refined wardrobe essentials) and seasonal ready-to-wear components.</p>
+    </div>
+  </div>
 
-    <button class="logout-btn" aria-label="Cerrar sesión">Cerrar sesión</button>
-  </main>
-
-  <!-- Barra inferior fija con todos los botones -->
-  <nav class="bottom-nav" aria-label="Navegación inferior" style="display:none;">
-    <a href="scanner.html" aria-label="Escáner" tabindex="0" title="Escáner"><i class="bi bi-upc-scan"></i></a>
-    <a href="catalogo.html" aria-label="Catálogo" tabindex="0" title="Catálogo"><i class="bi bi-shop-window"></i></a>
-    <a href="drops.html" aria-label="Drops" tabindex="0" title="Drops"><i class="bi bi-gift-fill"></i></a>
-    <a href="carrito.html" aria-label="Carrito" tabindex="0" title="Carrito"><i class="bi bi-bag-fill"></i></a>
-    <a href="perfil.html" aria-label="Perfil" tabindex="0" title="Perfil"><i class="bi bi-person-circle"></i></a>
-  </nav>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    
-    // Función para simular "guardar sesión" en localStorage
-    function setSession(user) {
-      localStorage.setItem('voguecrestUser', JSON.stringify(user));
-    }
-    function getSession() {
-      const userStr = localStorage.getItem('voguecrestUser');
-      if (!userStr) return null;
-      try {
-        return JSON.parse(userStr);
-      } catch {
-        return null;
-      }
-    }
-    function clearSession() {
-      localStorage.removeItem('voguecrestUser');
-    }
-
-    // DOM Elements
-    const splash = document.getElementById('splash');
-    const loginSection = document.getElementById('login-section');
-    const loginForm = document.getElementById('login-form');
-    const errorMsg = document.getElementById('error-msg');
-    const mainContent = document.getElementById('main-content');
-    const welcomeMsg = document.getElementById('welcome-msg');
-    const logoutBtn = document.querySelector('.logout-btn');
-    const bottomNav = document.querySelector('.bottom-nav');
-
-    // Mostrar splash y luego login o main según sesión
-    function showSplashThenPage() {
-      splash.classList.add('active');
-      // Duración total splash (3.2s anim + 0.6s fadeout)
-      setTimeout(() => {
-        splash.style.animation = 'splashFadeOut 0.6s ease forwards';
-        setTimeout(() => {
-          splash.classList.remove('active');
-          splash.style.animation = '';
-          decidePage();
-        }, 600);
-      }, 3200);
-    }
-
-    // Mostrar login
-    function showLogin() {
-      loginSection.classList.add('active');
-      mainContent.classList.remove('active');
-      bottomNav.style.display = 'none';
-      document.body.style.overflow = 'auto';
-      loginForm.nombre.focus();
-    }
-
-    // Mostrar main (ya logueado)
-    function showMain(user) {
-      welcomeMsg.textContent = `Bienvenido, ${user.nombre} ${user.apellido}`;
-      mainContent.classList.add('active');
-      loginSection.classList.remove('active');
-      bottomNav.style.display = 'flex';
-      document.body.style.overflow = 'auto';
-      mainContent.focus();
-    }
-
-    // Decidir qué mostrar según sesión
-    function decidePage() {
-      const user = getSession();
-      if (user) {
-        showMain(user);
-      } else {
-        showLogin();
-      }
-    }
-
-    // Validar login básico
-    loginForm.addEventListener('submit', e => {
-      e.preventDefault();
-      errorMsg.style.display = 'none';
-
-      const nombre = loginForm.nombre.value.trim();
-      const apellido = loginForm.apellido.value.trim();
-      const correo = loginForm.correo.value.trim();
-
-      if (!nombre || !apellido || !correo) {
-        errorMsg.textContent = 'Por favor completa todos los campos.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-      // Validar correo simple
-      if (!correo.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-        errorMsg.textContent = 'Introduce un correo válido.';
-        errorMsg.style.display = 'block';
-        return;
-      }
-
-      // Guardar sesión y mostrar main
-      setSession({ nombre, apellido, correo });
-      showMain({ nombre, apellido, correo });
-    });
-
-    // Logout
-    logoutBtn.addEventListener('click', () => {
-      clearSession();
-      showLogin();
-    });
-
-    // Al cargar la página, si no hay sesión mostrar splash primero
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!getSession()) {
-        // Mostrar splash con animación
-        showSplashThenPage();
-      } else {
-        decidePage();
-      }
-    });
-  </script>
 </body>
-  </html>
+</html>
