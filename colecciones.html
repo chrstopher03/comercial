@@ -1,218 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Colecciones</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #121212;
-      color: white;
-      font-family: 'Arial', sans-serif;
-    }
-    header {
-      padding: 20px;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      border-bottom: 1px solid #333;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VogueCrest - Colecciones</title>
+<style>
+  body {
+    margin: 0;
+    background: #121212;
+    font-family: 'Arial', sans-serif;
+  }
+  nav {
+    background: #1a1a1a;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  nav a {
+    color: #eee;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+  }
+  nav a:hover, nav a[aria-current="page"] {
+    color: #f0a500;
+  }
 
-    /* Grid de colecciones */
-    .grid-colecciones {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
-      gap: 20px;
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 10px;
-    }
+  .colecciones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+    gap: 10px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 10px;
+  }
 
-    .item-coleccion {
-      cursor: pointer;
-      text-align: center;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(255 255 255 / 0.1);
-      background-color: #1e1e1e;
-      transition: box-shadow 0.3s ease;
-    }
-    .item-coleccion:hover {
-      box-shadow: 0 6px 20px rgba(255 255 255 / 0.25);
-    }
+  .colecciones-grid img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .colecciones-grid img:hover {
+    transform: scale(1.15);
+    z-index: 2;
+    position: relative;
+  }
 
-    .item-coleccion img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-bottom: 1px solid #333;
-      transition: transform 0.3s ease;
-    }
-    .item-coleccion:hover img {
-      transform: scale(1.1);
-    }
+  /* Modal */
+  #modalZoom {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0; top: 0; width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+  }
+  #modalZoom img {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 10px;
+  }
+  #cerrarModal {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  #cerrarModal:hover {
+    color: #bbb;
+  }
 
-    .nombre {
-      margin: 10px 0 4px 0;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #eee;
+  @media (max-width: 600px) {
+    .colecciones-grid {
+      grid-template-columns: repeat(auto-fit,minmax(80px,1fr));
     }
-    .precio {
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-      color: #bbb;
+    .colecciones-grid img {
+      height: 110px;
     }
-
-    /* Modal styles */
-    .modal-zoom {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      padding-top: 60px;
-      left: 0; top: 0; width: 100%; height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.9);
-    }
-    .modal-contenido {
-      margin: auto;
-      display: block;
-      max-width: 90%;
-      max-height: 80vh;
-      border-radius: 10px;
-      box-shadow: 0 0 25px #fff;
-    }
-    .cerrar-modal {
-      position: absolute;
-      top: 20px;
-      right: 35px;
-      color: #fff;
-      font-size: 40px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-    .cerrar-modal:hover {
-      color: #bbb;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .grid-colecciones {
-        grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
-      }
-    }
-
-    /* Navegación simple */
-    nav {
-      background: #1a1a1a;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-    }
-    nav a {
-      color: #eee;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: color 0.3s ease;
-    }
-    nav a:hover {
-      color: #f0a500;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="colecciones.html" aria-current="page">Colecciones</a>
-    <a href="perfil.html">Perfil</a>
-    <a href="carrito.html">Carrito</a>
-  </nav>
+<nav>
+  <a href="index.html">Inicio</a>
+  <a href="colecciones.html" aria-current="page">Colecciones</a>
+  <a href="perfil.html">Perfil</a>
+  <a href="carrito.html">Carrito</a>
+</nav>
 
-  <header>Colecciones VogueCrest</header>
+<section class="colecciones-grid">
+  <!-- Aquí agrega tus imágenes -->
+  <img src="1.jpeg" alt="Prenda 1" />
+  <img src="1.jpeg" alt="Prenda 2" />
+  <img src="1.jpeg" alt="Prenda 3" />
+  <img src="1.jpeg" alt="Prenda 4" />
+  <img src="1.jpeg" alt="Prenda 5" />
+  <img src="1.jpeg" alt="Prenda 6" />
+  <img src="1.jpeg" alt="Prenda 7" />
+  <img src="1.jpeg" alt="Prenda 8" />
+  <img src="1.jpeg" alt="Prenda 9" />
+  <img src="1.jpeg" alt="Prenda 10" />
+  <!-- Repite o cambia según tus prendas -->
+</section>
 
-  <main>
-    <section class="grid-colecciones">
-      <div class="item-coleccion">
-        <img src="1.jpeg" alt="Prenda 1" />
-        <p class="nombre">Chaqueta Urbana</p>
-        <p class="precio">$120.00</p>
-      </div>
+<!-- Modal para zoom -->
+<div id="modalZoom" role="dialog" aria-modal="true" aria-labelledby="caption">
+  <span id="cerrarModal" aria-label="Cerrar">&times;</span>
+  <img id="imgModal" alt="" />
+</div>
 
-      <div class="item-coleccion">
-        <img src="https://via.placeholder.com/300x400?text=Prenda+2" alt="Prenda 2" />
-        <p class="nombre">Pantalón Denim</p>
-        <p class="precio">$95.00</p>
-      </div>
+<script>
+  const modal = document.getElementById('modalZoom');
+  const modalImg = document.getElementById('imgModal');
+  const cerrar = document.getElementById('cerrarModal');
 
-      <div class="item-coleccion">
-        <img src="https://via.placeholder.com/300x400?text=Prenda+3" alt="Prenda 3" />
-        <p class="nombre">Sudadera Minimal</p>
-        <p class="precio">$80.00</p>
-      </div>
-
-      <div class="item-coleccion">
-        <img src="https://via.placeholder.com/300x400?text=Prenda+4" alt="Prenda 4" />
-        <p class="nombre">Camiseta Básica</p>
-        <p class="precio">$45.00</p>
-      </div>
-
-      <div class="item-coleccion">
-        <img src="https://via.placeholder.com/300x400?text=Prenda+5" alt="Prenda 5" />
-        <p class="nombre">Zapatos Clásicos</p>
-        <p class="precio">$140.00</p>
-      </div>
-
-      <!-- Agrega más prendas aquí -->
-    </section>
-  </main>
-
-  <!-- Modal para zoom -->
-  <div id="modalZoom" class="modal-zoom" role="dialog" aria-modal="true" aria-labelledby="caption">
-    <span class="cerrar-modal" id="cerrarModal" aria-label="Cerrar">&times;</span>
-    <img class="modal-contenido" id="imgModal" alt="" />
-    <div id="caption" style="color: white; text-align: center; margin-top: 10px; font-size: 1.2rem;"></div>
-  </div>
-
-  <script>
-    // Modal zoom funcionalidad
-    const modal = document.getElementById('modalZoom');
-    const modalImg = document.getElementById('imgModal');
-    const captionText = document.getElementById('caption');
-    const cerrar = document.getElementById('cerrarModal');
-
-    // Al hacer clic en cualquier imagen del grid
-    document.querySelectorAll('.item-coleccion img').forEach(img => {
-      img.addEventListener('click', () => {
-        modal.style.display = 'block';
-        modalImg.src = img.src;
-        modalImg.alt = img.alt;
-        captionText.innerText = img.alt;
-      });
+  document.querySelectorAll('.colecciones-grid img').forEach(img => {
+    img.addEventListener('click', () => {
+      modal.style.display = 'block';
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
     });
+  });
 
-    // Cerrar modal al hacer click en la X
-    cerrar.onclick = () => {
+  cerrar.onclick = () => {
+    modal.style.display = 'none';
+  };
+
+  modal.onclick = e => {
+    if(e.target === modal){
+      modal.style.display = 'none';
+    }
+  };
+
+  document.addEventListener('keydown', e => {
+    if(e.key === "Escape") {
       modal.style.display = "none";
-    };
+    }
+  });
+</script>
 
-    // Cerrar modal al hacer click fuera de la imagen
-    modal.onclick = (e) => {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
-    };
-
-    // Cerrar modal con tecla ESC
-    document.addEventListener('keydown', e => {
-      if(e.key === "Escape") {
-        modal.style.display = "none";
-      }
-    });
-  </script>
 </body>
-        </html>
+</html>
