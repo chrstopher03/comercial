@@ -1,365 +1,141 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE html><html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>VogueCrest - Colecciones</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colecciones | VogueCrest</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+    }header {
+  text-align: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
 
-<!-- Swiper CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
-/>
+header img {
+  height: 40px;
+}
 
-<style>
-  body {
-    margin: 0;
-    background: #121212;
-    font-family: 'Arial', sans-serif;
-    color: #fff;
-  }
+nav {
+  text-align: center;
+  margin: 10px 0;
+}
 
-  nav {
-    background: #1a1a1a;
-    padding: 12px 24px;
-    display: flex;
-    justify-content: center;
-    gap: 36px;
-  }
-  nav a {
-    color: #ddd;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: color 0.25s ease;
-  }
-  nav a:hover,
-  nav a[aria-current="page"] {
-    color: #f0a500;
-  }
+nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+}
 
-  /* Swiper container */
-  .swiper {
-    width: 90vw;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding-bottom: 60px; /* espacio para flechas y texto */
-  }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
 
-  /* Slides */
-  .swiper-slide {
-    width: 150px !important;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
+.product {
+  text-align: center;
+}
 
-  .swiper-slide img {
-    width: 150px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 0 8px #f0a500;
-    transition: transform 0.3s ease;
-    user-select: none;
-  }
+.product img {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 10px;
+}
 
-  .swiper-slide:hover img {
-    transform: scale(1.1);
-    box-shadow: 0 0 18px #f0a500;
-    z-index: 10;
-  }
+.product-name {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
 
-  /* Texto bajo imagen */
-  .producto-nombre {
-    font-weight: 600;
-    font-size: 1rem;
-    color: #f0a500;
-    text-align: center;
-  }
+.sold-out {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+}
 
-  .producto-precio {
-    font-size: 0.9rem;
-    color: #ccc;
-    text-align: center;
-  }
-
-  /* Navigation arrows */
-  .swiper-button-next,
-  .swiper-button-prev {
-    color: #f0a500;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.6);
-    top: 50%;
-  }
-  .swiper-button-next:hover,
-  .swiper-button-prev:hover {
-    background: #f0a500;
-    color: #121212;
-  }
-
-  /* Modal */
-  #modalZoom {
-    display: none;
-    position: fixed;
-    z-index: 1100;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.95);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  #modalZoom img {
-    max-width: 85vw;
-    max-height: 80vh;
-    border-radius: 14px;
-    box-shadow: 0 0 35px #f0a500;
-    transition: transform 0.3s ease;
-    user-select: none;
-  }
-  #cerrarModal {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 42px;
-    font-weight: bold;
-    color: #fff;
-    cursor: pointer;
-    user-select: none;
-    transition: color 0.25s ease;
-    z-index: 1110;
-  }
-  #cerrarModal:hover {
-    color: #f0a500;
-  }
-
-  /* Zoom controls */
-  #zoomControls {
-    margin-top: 18px;
-    display: flex;
-    gap: 18px;
-  }
-  #zoomControls button {
-    background: #f0a500;
-    border: none;
-    color: #121212;
-    font-weight: 700;
-    font-size: 1.6rem;
-    padding: 8px 22px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-  }
-  #zoomControls button:hover {
-    background: #ffb800;
-  }
-
-  @media (max-width: 600px) {
-    .swiper-slide {
-      width: 120px !important;
-    }
-    .swiper-slide img {
-      width: 120px;
-      height: 145px;
-    }
-    .producto-nombre {
-      font-size: 0.9rem;
-    }
-    .producto-precio {
-      font-size: 0.8rem;
-    }
-  }
-</style>
+  </style>
 </head>
-<body>
-
-<nav>
-  <a href="index.html">Inicio</a>
-  <a href="colecciones.html" aria-current="page">Colecciones</a>
-  <a href="perfil.html">Perfil</a>
-  <a href="carrito.html">Carrito</a>
-</nav>
-
-<div class="swiper">
-  <div class="swiper-wrapper">
-    <!-- Repite cada prenda aquí con imagen, nombre y precio -->
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Camisa Clásica" />
-      <div class="producto-nombre">Camisa Clásica</div>
-      <div class="producto-precio">$29.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Chaqueta Urbana" />
-      <div class="producto-nombre">Chaqueta Urbana</div>
-      <div class="producto-precio">$49.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Pantalón Casual" />
-      <div class="producto-nombre">Pantalón Casual</div>
-      <div class="producto-precio">$39.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Vestido Elegante" />
-      <div class="producto-nombre">Vestido Elegante</div>
-      <div class="producto-precio">$59.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Blusa Vintage" />
-      <div class="producto-nombre">Blusa Vintage</div>
-      <div class="producto-precio">$24.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Camisa de Lino" />
-      <div class="producto-nombre">Camisa de Lino</div>
-      <div class="producto-precio">$34.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Chaleco Moderno" />
-      <div class="producto-nombre">Chaleco Moderno</div>
-      <div class="producto-precio">$44.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Jeans Ajustados" />
-      <div class="producto-nombre">Jeans Ajustados</div>
-      <div class="producto-precio">$39.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Sudadera Cómoda" />
-      <div class="producto-nombre">Sudadera Cómoda</div>
-      <div class="producto-precio">$29.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Falda Larga" />
-      <div class="producto-nombre">Falda Larga</div>
-      <div class="producto-precio">$34.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Camisa a Rayas" />
-      <div class="producto-nombre">Camisa a Rayas</div>
-      <div class="producto-precio">$27.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Chaqueta de Cuero" />
-      <div class="producto-nombre">Chaqueta de Cuero</div>
-      <div class="producto-precio">$69.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Top Básico" />
-      <div class="producto-nombre">Top Básico</div>
-      <div class="producto-precio">$19.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Pantalones Cortos" />
-      <div class="producto-nombre">Pantalones Cortos</div>
-      <div class="producto-precio">$29.99</div>
-    </div>
-    <div class="swiper-slide" tabindex="0">
-      <img src="1.jpeg" alt="Camisa Formal" />
-      <div class="producto-nombre">Camisa Formal</div>
-      <div class="producto-precio">$39.99</div>
-    </div>
-  </div>
-  <div class="swiper-button-prev" aria-label="Anterior"></div>
-  <div class="swiper-button-next" aria-label="Siguiente"></div>
+<body>  <header>
+    <img src="1.jpeg" alt="VogueCrest Logo">
+  </header>  <nav>
+    <a href="#">VER TODO</a>
+    <a href="#">CAMISETAS</a>
+    <a href="#">PANTALONES CORTOS</a>
+    <a href="#">PANTALONES</a>
+    <a href="#">SUDADERAS</a>
+  </nav>  <section class="grid"><div class="product">
+  <img src="1.jpeg" alt="Producto 1">
+  <div class="product-name">Producto 1</div>
+  <div class="sold-out">SOLD OUT</div>
 </div>
 
-<!-- Modal -->
-<div id="modalZoom" role="dialog" aria-modal="true" aria-labelledby="caption">
-  <span id="cerrarModal" aria-label="Cerrar">&times;</span>
-  <img id="imgModal" alt="" />
-  <div id="zoomControls">
-    <button id="zoomIn" aria-label="Acercar">+</button>
-    <button id="zoomOut" aria-label="Alejar">−</button>
-  </div>
+<div class="product">
+  <img src="1.jpeg" alt="Producto 2">
+  <div class="product-name">Producto 2</div>
 </div>
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script>
-  const swiper = new Swiper('.swiper', {
-    slidesPerView: 6,
-    spaceBetween: 18,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    grabCursor: true,
-    breakpoints: {
-      320: {
-        slidesPerView: 2,
-        spaceBetween: 10,
-      },
-      480: {
-        slidesPerView: 3,
-        spaceBetween: 12,
-      },
-      768: {
-        slidesPerView: 4,
-        spaceBetween: 14,
-      },
-      1024: {
-        slidesPerView: 5,
-        spaceBetween: 16,
-      },
-      1280: {
-        slidesPerView: 6,
-        spaceBetween: 18,
-      },
-    },
-  });
+<div class="product">
+  <img src="1.jpeg" alt="Producto 3">
+  <div class="product-name">Producto 3</div>
+</div>
 
-  // Modal zoom
-  const modal = document.getElementById('modalZoom');
-  const modalImg = document.getElementById('imgModal');
-  const cerrar = document.getElementById('cerrarModal');
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
+<div class="product">
+  <img src="1.jpeg" alt="Producto 4">
+  <div class="product-name">Producto 4</div>
+  <div class="sold-out">SOLD OUT</div>
+</div>
 
-  let zoomLevel = 1;
+<div class="product">
+  <img src="1.jpeg" alt="Producto 5">
+  <div class="product-name">Producto 5</div>
+</div>
 
-  document.querySelectorAll('.swiper-slide img').forEach(img => {
-    img.addEventListener('click', () => {
-      modal.style.display = 'flex';
-      modalImg.src = img.src;
-      modalImg.alt = img.alt;
-      zoomLevel = 1;
-      modalImg.style.transform = `scale(${zoomLevel})`;
-    });
-  });
+<div class="product">
+  <img src="1.jpeg" alt="Producto 6">
+  <div class="product-name">Producto 6</div>
+</div>
 
-  cerrar.onclick = () => {
-    modal.style.display = 'none';
-  };
+<div class="product">
+  <img src="1.jpeg" alt="Producto 7">
+  <div class="product-name">Producto 7</div>
+  <div class="sold-out">SOLD OUT</div>
+</div>
 
-  modal.onclick = e => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
-  };
+<div class="product">
+  <img src="1.jpeg" alt="Producto 8">
+  <div class="product-name">Producto 8</div>
+</div>
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      modal.style.display = 'none';
-    }
-  });
+<div class="product">
+  <img src="1.jpeg" alt="Producto 9">
+  <div class="product-name">Producto 9</div>
+</div>
 
-  zoomInBtn.onclick = () => {
-    zoomLevel = Math.min(zoomLevel + 0.2, 3);
-    modalImg.style.transform = `scale(${zoomLevel})`;
-  };
+<div class="product">
+  <img src="1.jpeg" alt="Producto 10">
+  <div class="product-name">Producto 10</div>
+</div>
 
-  zoomOutBtn.onclick = () => {
-    zoomLevel = Math.max(zoomLevel - 0.2, 1);
-    modalImg.style.transform = `scale(${zoomLevel})`;
-  };
-</script>
+<div class="product">
+  <img src="1.jpeg" alt="Producto 11">
+  <div class="product-name">Producto 11</div>
+  <div class="sold-out">SOLD OUT</div>
+</div>
 
-</body>
-  </html>
+<div class="product">
+  <img src="1.jpeg" alt="Producto 12">
+  <div class="product-name">Producto 12</div>
+</div>
+
+  </section></body>
+</html>
+
+  
