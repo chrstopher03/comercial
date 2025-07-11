@@ -11,32 +11,36 @@
       color: #000;
     }header {
   text-align: center;
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
+  padding: 20px 0;
 }
 
 header img {
-  height: 40px;
+  height: 50px;
 }
 
 nav {
   text-align: center;
-  margin: 10px 0;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  margin-bottom: 20px;
 }
 
 nav a {
-  margin: 0 15px;
+  margin: 0 10px;
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  font-size: 14px;
+  color: #000;
+  font-weight: 600;
+  font-size: 13px;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  padding: 40px;
+  gap: 30px;
+  padding: 0 20px 40px;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .product {
@@ -46,19 +50,19 @@ nav a {
 .product img {
   width: 100%;
   max-width: 200px;
-  border-radius: 10px;
 }
 
 .product-name {
   margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .sold-out {
-  color: red;
-  font-size: 12px;
+  font-size: 11px;
+  color: #000;
   font-weight: bold;
+  margin-top: 3px;
 }
 
   </style>
@@ -90,12 +94,12 @@ nav a {
 <div class="product">
   <img src="1.jpeg" alt="Producto 4">
   <div class="product-name">Producto 4</div>
-  <div class="sold-out">SOLD OUT</div>
 </div>
 
 <div class="product">
   <img src="1.jpeg" alt="Producto 5">
   <div class="product-name">Producto 5</div>
+  <div class="sold-out">SOLD OUT</div>
 </div>
 
 <div class="product">
@@ -106,7 +110,6 @@ nav a {
 <div class="product">
   <img src="1.jpeg" alt="Producto 7">
   <div class="product-name">Producto 7</div>
-  <div class="sold-out">SOLD OUT</div>
 </div>
 
 <div class="product">
@@ -117,6 +120,7 @@ nav a {
 <div class="product">
   <img src="1.jpeg" alt="Producto 9">
   <div class="product-name">Producto 9</div>
+  <div class="sold-out">SOLD OUT</div>
 </div>
 
 <div class="product">
@@ -127,7 +131,6 @@ nav a {
 <div class="product">
   <img src="1.jpeg" alt="Producto 11">
   <div class="product-name">Producto 11</div>
-  <div class="sold-out">SOLD OUT</div>
 </div>
 
 <div class="product">
@@ -137,5 +140,3 @@ nav a {
 
   </section></body>
 </html>
-
-  
