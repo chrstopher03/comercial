@@ -16,24 +16,25 @@
     margin: 0;
     background: #121212;
     font-family: 'Arial', sans-serif;
-    color: white;
+    color: #fff;
   }
+
   nav {
     background: #1a1a1a;
-    padding: 10px 20px;
+    padding: 12px 24px;
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 36px;
   }
   nav a {
-    color: #eee;
+    color: #ddd;
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
-    transition: color 0.3s ease;
+    transition: color 0.25s ease;
   }
   nav a:hover,
-  nav a[aria-current='page'] {
+  nav a[aria-current="page"] {
     color: #f0a500;
   }
 
@@ -41,60 +42,56 @@
   .swiper {
     width: 90vw;
     max-width: 1200px;
-    padding: 40px 0;
     margin: 40px auto;
+    padding-bottom: 60px; /* espacio para flechas y texto */
   }
 
   /* Slides */
   .swiper-slide {
-    width: 180px !important;
+    width: 150px !important;
     cursor: pointer;
-    background: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(240, 165, 0, 0.15);
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.3s ease;
+    gap: 6px;
   }
 
   .swiper-slide img {
-    width: 100%;
-    height: 260px;
+    width: 150px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 10px 10px 0 0;
+    border-radius: 12px;
+    box-shadow: 0 0 8px #f0a500;
     transition: transform 0.3s ease;
     user-select: none;
   }
+
   .swiper-slide:hover img {
     transform: scale(1.1);
+    box-shadow: 0 0 18px #f0a500;
+    z-index: 10;
   }
 
-  /* Texto debajo de imagen */
-  .producto-info {
-    padding: 10px 15px 20px;
-    width: 100%;
-    box-sizing: border-box;
+  /* Texto bajo imagen */
+  .producto-nombre {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #f0a500;
     text-align: center;
   }
-  .producto-info h3 {
-    margin: 0 0 6px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: #f0a500;
-  }
-  .producto-info p {
-    margin: 0;
-    font-size: 0.95rem;
+
+  .producto-precio {
+    font-size: 0.9rem;
     color: #ccc;
+    text-align: center;
   }
 
   /* Navigation arrows */
   .swiper-button-next,
   .swiper-button-prev {
     color: #f0a500;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.6);
     top: 50%;
@@ -109,37 +106,35 @@
   #modalZoom {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1100;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
+    background: rgba(0,0,0,0.95);
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
   }
-
   #modalZoom img {
     max-width: 85vw;
-    max-height: 75vh;
-    border-radius: 12px;
-    box-shadow: 0 0 30px #f0a500;
+    max-height: 80vh;
+    border-radius: 14px;
+    box-shadow: 0 0 35px #f0a500;
     transition: transform 0.3s ease;
     user-select: none;
   }
-
   #cerrarModal {
     position: absolute;
     top: 20px;
-    right: 35px;
-    font-size: 40px;
+    right: 30px;
+    font-size: 42px;
     font-weight: bold;
-    color: white;
+    color: #fff;
     cursor: pointer;
     user-select: none;
-    transition: color 0.3s ease;
-    z-index: 1001;
+    transition: color 0.25s ease;
+    z-index: 1110;
   }
   #cerrarModal:hover {
     color: #f0a500;
@@ -147,10 +142,9 @@
 
   /* Zoom controls */
   #zoomControls {
-    margin-top: 20px;
-    user-select: none;
+    margin-top: 18px;
     display: flex;
-    gap: 20px;
+    gap: 18px;
   }
   #zoomControls button {
     background: #f0a500;
@@ -158,21 +152,28 @@
     color: #121212;
     font-weight: 700;
     font-size: 1.6rem;
-    padding: 8px 20px;
+    padding: 8px 22px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.25s ease;
   }
   #zoomControls button:hover {
-    background: #ffaa00;
+    background: #ffb800;
   }
 
   @media (max-width: 600px) {
     .swiper-slide {
-      width: 140px !important;
+      width: 120px !important;
     }
     .swiper-slide img {
-      height: 200px;
+      width: 120px;
+      height: 145px;
+    }
+    .producto-nombre {
+      font-size: 0.9rem;
+    }
+    .producto-precio {
+      font-size: 0.8rem;
     }
   }
 </style>
@@ -186,123 +187,90 @@
   <a href="carrito.html">Carrito</a>
 </nav>
 
-<!-- Swiper -->
 <div class="swiper">
   <div class="swiper-wrapper">
-    <!-- Ejemplo con 15 prendas -->
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 1" />
-      <div class="producto-info">
-        <h3>Camisa Clásica</h3>
-        <p>$29.99</p>
-      </div>
+    <!-- Repite cada prenda aquí con imagen, nombre y precio -->
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Camisa Clásica" />
+      <div class="producto-nombre">Camisa Clásica</div>
+      <div class="producto-precio">$29.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 2" />
-      <div class="producto-info">
-        <h3>Chaqueta Urbana</h3>
-        <p>$49.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Chaqueta Urbana" />
+      <div class="producto-nombre">Chaqueta Urbana</div>
+      <div class="producto-precio">$49.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 3" />
-      <div class="producto-info">
-        <h3>Pantalón Casual</h3>
-        <p>$39.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Pantalón Casual" />
+      <div class="producto-nombre">Pantalón Casual</div>
+      <div class="producto-precio">$39.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 4" />
-      <div class="producto-info">
-        <h3>Vestido Elegante</h3>
-        <p>$59.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Vestido Elegante" />
+      <div class="producto-nombre">Vestido Elegante</div>
+      <div class="producto-precio">$59.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 5" />
-      <div class="producto-info">
-        <h3>Blusa Vintage</h3>
-        <p>$24.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Blusa Vintage" />
+      <div class="producto-nombre">Blusa Vintage</div>
+      <div class="producto-precio">$24.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 6" />
-      <div class="producto-info">
-        <h3>Camisa de Lino</h3>
-        <p>$34.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Camisa de Lino" />
+      <div class="producto-nombre">Camisa de Lino</div>
+      <div class="producto-precio">$34.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 7" />
-      <div class="producto-info">
-        <h3>Chaleco Moderno</h3>
-        <p>$44.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Chaleco Moderno" />
+      <div class="producto-nombre">Chaleco Moderno</div>
+      <div class="producto-precio">$44.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 8" />
-      <div class="producto-info">
-        <h3>Jeans Ajustados</h3>
-        <p>$39.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Jeans Ajustados" />
+      <div class="producto-nombre">Jeans Ajustados</div>
+      <div class="producto-precio">$39.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 9" />
-      <div class="producto-info">
-        <h3>Sudadera Cómoda</h3>
-        <p>$29.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Sudadera Cómoda" />
+      <div class="producto-nombre">Sudadera Cómoda</div>
+      <div class="producto-precio">$29.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 10" />
-      <div class="producto-info">
-        <h3>Falda Larga</h3>
-        <p>$34.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Falda Larga" />
+      <div class="producto-nombre">Falda Larga</div>
+      <div class="producto-precio">$34.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 11" />
-      <div class="producto-info">
-        <h3>Camisa a Rayas</h3>
-        <p>$27.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Camisa a Rayas" />
+      <div class="producto-nombre">Camisa a Rayas</div>
+      <div class="producto-precio">$27.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 12" />
-      <div class="producto-info">
-        <h3>Chaqueta de Cuero</h3>
-        <p>$69.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Chaqueta de Cuero" />
+      <div class="producto-nombre">Chaqueta de Cuero</div>
+      <div class="producto-precio">$69.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 13" />
-      <div class="producto-info">
-        <h3>Top Básico</h3>
-        <p>$19.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Top Básico" />
+      <div class="producto-nombre">Top Básico</div>
+      <div class="producto-precio">$19.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 14" />
-      <div class="producto-info">
-        <h3>Pantalones Cortos</h3>
-        <p>$29.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Pantalones Cortos" />
+      <div class="producto-nombre">Pantalones Cortos</div>
+      <div class="producto-precio">$29.99</div>
     </div>
-    <div class="swiper-slide">
-      <img src="1.jpeg" alt="Prenda 15" />
-      <div class="producto-info">
-        <h3>Camisa Formal</h3>
-        <p>$39.99</p>
-      </div>
+    <div class="swiper-slide" tabindex="0">
+      <img src="1.jpeg" alt="Camisa Formal" />
+      <div class="producto-nombre">Camisa Formal</div>
+      <div class="producto-precio">$39.99</div>
     </div>
   </div>
-
-  <!-- Navegación -->
   <div class="swiper-button-prev" aria-label="Anterior"></div>
   <div class="swiper-button-next" aria-label="Siguiente"></div>
 </div>
 
-<!-- Modal zoom -->
+<!-- Modal -->
 <div id="modalZoom" role="dialog" aria-modal="true" aria-labelledby="caption">
   <span id="cerrarModal" aria-label="Cerrar">&times;</span>
   <img id="imgModal" alt="" />
@@ -314,11 +282,10 @@
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-
 <script>
   const swiper = new Swiper('.swiper', {
-    slidesPerView: 5,
-    spaceBetween: 20,
+    slidesPerView: 6,
+    spaceBetween: 18,
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
@@ -329,17 +296,21 @@
         slidesPerView: 2,
         spaceBetween: 10,
       },
-      640: {
+      480: {
         slidesPerView: 3,
-        spaceBetween: 15,
+        spaceBetween: 12,
       },
-      900: {
+      768: {
         slidesPerView: 4,
-        spaceBetween: 18,
+        spaceBetween: 14,
       },
-      1100: {
+      1024: {
         slidesPerView: 5,
-        spaceBetween: 20,
+        spaceBetween: 16,
+      },
+      1280: {
+        slidesPerView: 6,
+        spaceBetween: 18,
       },
     },
   });
@@ -380,14 +351,12 @@
   });
 
   zoomInBtn.onclick = () => {
-    zoomLevel += 0.2;
-    if (zoomLevel > 3) zoomLevel = 3;
+    zoomLevel = Math.min(zoomLevel + 0.2, 3);
     modalImg.style.transform = `scale(${zoomLevel})`;
   };
 
   zoomOutBtn.onclick = () => {
-    zoomLevel -= 0.2;
-    if (zoomLevel < 1) zoomLevel = 1;
+    zoomLevel = Math.max(zoomLevel - 0.2, 1);
     modalImg.style.transform = `scale(${zoomLevel})`;
   };
 </script>
