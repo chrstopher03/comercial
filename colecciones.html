@@ -1,142 +1,368 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Colecciones | VogueCrest</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Colecciones - VogueCrest</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #fff;
+      background: #fff;
       color: #000;
-    }header {
-  text-align: center;
-  padding: 20px 0;
-}
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+    }
 
-header img {
-  height: 50px;
-}
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      border-bottom: 1px solid #ddd;
+      z-index: 1000;
+    }
 
-nav {
-  text-align: center;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
-  margin-bottom: 20px;
-}
+    .menu-label, .cart-label {
+      cursor: pointer;
+      text-transform: uppercase;
+    }
 
-nav a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #000;
-  font-weight: 600;
-  font-size: 13px;
-}
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 40px;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 30px;
-  padding: 0 20px 40px;
-  max-width: 1200px;
-  margin: auto;
-}
+    nav.menu-mobile {
+      display: none;
+      flex-direction: column;
+      background: #000;
+      color: #fff;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
 
-.product {
-  text-align: center;
-}
+    nav.menu-mobile a {
+      padding: 15px;
+      border-bottom: 1px solid #222;
+      color: white;
+      text-decoration: none;
+    }
 
-.product img {
-  width: 100%;
-  max-width: 200px;
-}
+    nav.menu-mobile a:hover {
+      background: #333;
+    }
 
-.product-name {
-  margin-top: 10px;
-  font-size: 13px;
-  font-weight: 500;
-}
+    /* FILTRO tipo texto horizontal simple */
+    .filter-text {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 70px; /* espacio para header fijo */
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      padding: 0 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+    }
+    .filter-text span {
+      cursor: pointer;
+      position: relative;
+      color: #000;
+      transition: color 0.3s;
+    }
+    .filter-text span.active,
+    .filter-text span:hover {
+      color: #000;
+      font-weight: 900;
+    }
+    .filter-text span.active::after,
+    .filter-text span:hover::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #000;
+      border-radius: 2px;
+    }
 
-.sold-out {
-  font-size: 11px;
-  color: #000;
-  font-weight: bold;
-  margin-top: 3px;
-}
+    .carousel-section {
+      margin-top: 0; /* sin margen extra */
+      padding: 20px 0;
+    }
 
+    .carousel-container {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 20px;
+      animation: scroll 30s linear infinite;
+      padding-left: 20px;
+      flex-wrap: nowrap;
+    }
+
+    .carousel-track.pause {
+      animation-play-state: paused;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+      width: 240px;
+      height: 340px;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s;
+      display: block;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .carousel-item:hover img {
+      transform: scale(1.05);
+    }
+
+    a.carousel-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @media (min-width: 768px) {
+      header {
+        justify-content: center;
+      }
+
+      .menu-label, .cart-label {
+        display: none;
+      }
+
+      nav.menu-mobile {
+        display: none !important;
+      }
+    }
   </style>
 </head>
-<body>  <header>
-    <img src="1.jpeg" alt="VogueCrest Logo">
-  </header>  <nav>
-    <a href="#">VER TODO</a>
-    <a href="#">CAMISETAS</a>
-    <a href="#">PANTALONES CORTOS</a>
-    <a href="#">PANTALONES</a>
-    <a href="#">SUDADERAS</a>
-  </nav>  <section class="grid"><div class="product">
-  <img src="1.jpeg" alt="Producto 1">
-  <div class="product-name">Producto 1</div>
-  <div class="sold-out">SOLD OUT</div>
-</div>
+<body>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 2">
-  <div class="product-name">Producto 2</div>
-</div>
+<header>
+  <div class="menu-label" id="menu-toggle">MENÚ</div>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo">
+  <div class="cart-label">CESTA</div>
+</header>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 3">
-  <div class="product-name">Producto 3</div>
-</div>
+<nav class="menu-mobile" id="mobileMenu">
+  <a href="#">Inicio</a>
+  <a href="#">Colección</a>
+  <a href="#">Catálogo</a>
+  <a href="#">Perfil</a>
+  <a href="#">Cerrar</a>
+</nav>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 4">
-  <div class="product-name">Producto 4</div>
-</div>
+<main>
+  <!-- FILTRO tipo texto -->
+  <div class="filter-text" id="filterText">
+    <span class="active" data-filter="all">Mostrar todo</span>
+    <span data-filter="camisetas">Camisetas</span>
+    <span data-filter="pantalones">Pantalones</span>
+    <span data-filter="chaquetas">Chaquetas</span>
+  </div>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 5">
-  <div class="product-name">Producto 5</div>
-  <div class="sold-out">SOLD OUT</div>
-</div>
+  <!-- CARRUSEL 1 -->
+  <section class="carousel-section">
+    <div class="carousel-container">
+      <div class="carousel-track" id="carousel1">
+        <div class="carousel-item" data-category="camisetas">
+          <a href="producto.html?producto=prenda1" class="carousel-link">
+            <img src="21 (1).png" alt="Prenda 1" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="camisetas">
+          <a href="producto.html?producto=prenda2" class="carousel-link">
+            <img src="45.png" alt="Prenda 2" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="pantalones">
+          <a href="producto.html?producto=prenda3" class="carousel-link">
+            <img src="21 (3).png" alt="Prenda 3" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="pantalones">
+          <a href="producto.html?producto=prenda4" class="carousel-link">
+            <img src="21 (4).png" alt="Prenda 4" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="chaquetas">
+          <a href="producto.html?producto=prenda5" class="carousel-link">
+            <img src="30.png" alt="Prenda 5" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="chaquetas">
+          <a href="producto.html?producto=prenda6" class="carousel-link">
+            <img src="33.png" alt="Prenda 6" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="camisetas">
+          <a href="producto.html?producto=prenda7" class="carousel-link">
+            <img src="26.png" alt="Prenda 7" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="pantalones">
+          <a href="producto.html?producto=prenda8" class="carousel-link">
+            <img src="27.png" alt="Prenda 8" />
+          </a>
+        </div>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 6">
-  <div class="product-name">Producto 6</div>
-</div>
+        <!-- Duplicado para animacion -->
+        <div class="carousel-item" data-category="camisetas">
+          <a href="producto.html?producto=prenda1" class="carousel-link">
+            <img src="21 (1).png" alt="Prenda 1" />
+          </a>
+        </div>
+        <div class="carousel-item" data-category="camisetas">
+          <a href="producto.html?producto=prenda2" class="carousel-link">
+            <img src="21 (2).png" alt="Prenda 2" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 7">
-  <div class="product-name">Producto 7</div>
-</div>
+  <!-- CARRUSEL 2 (sin filtro) -->
+  <section class="carousel-section">
+    <div class="carousel-container">
+      <div class="carousel-track" id="carousel2">
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaA" class="carousel-link">
+            <img src="42.png" alt="Prenda A" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaB" class="carousel-link">
+            <img src="43.jpg" alt="Prenda B" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaC" class="carousel-link">
+            <img src="44.jpeg" alt="Prenda C" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaD" class="carousel-link">
+            <img src="4.jpeg" alt="Prenda D" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaE" class="carousel-link">
+            <img src="5.jpeg" alt="Prenda E" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaF" class="carousel-link">
+            <img src="6.jpeg" alt="Prenda F" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaG" class="carousel-link">
+            <img src="7.jpeg" alt="Prenda G" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaH" class="carousel-link">
+            <img src="8.jpeg" alt="Prenda H" />
+          </a>
+        </div>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 8">
-  <div class="product-name">Producto 8</div>
-</div>
+        <!-- Duplicado -->
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaA" class="carousel-link">
+            <img src="42.png" alt="Prenda A" />
+          </a>
+        </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaB" class="carousel-link">
+            <img src="2.jpeg" alt="Prenda B" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 9">
-  <div class="product-name">Producto 9</div>
-  <div class="sold-out">SOLD OUT</div>
-</div>
+<script>
+  const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+  });
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 10">
-  <div class="product-name">Producto 10</div>
-</div>
+  // Pausar scroll al pasar mouse o tocar
+  const setupCarouselPause = (carouselId) => {
+    const track = document.getElementById(carouselId);
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 11">
-  <div class="product-name">Producto 11</div>
-</div>
+    track.addEventListener('mouseenter', () => track.classList.add('pause'));
+    track.addEventListener('mouseleave', () => track.classList.remove('pause'));
 
-<div class="product">
-  <img src="1.jpeg" alt="Producto 12">
-  <div class="product-name">Producto 12</div>
-</div>
+    // En móviles: tocar para pausar
+    track.addEventListener('touchstart', () => track.classList.add('pause'));
+    track.addEventListener('touchend', () => setTimeout(() => track.classList.remove('pause'), 3000));
+  };
 
-  </section></body>
+  setupCarouselPause('carousel1');
+  setupCarouselPause('carousel2');
+
+  // FILTRO texto
+  const filterTextSpans = document.querySelectorAll('#filterText span');
+  const carousel1 = document.getElementById('carousel1');
+
+  filterTextSpans.forEach(span => {
+    span.addEventListener('click', () => {
+      filterTextSpans.forEach(s => s.classList.remove('active'));
+      span.classList.add('active');
+
+      const filter = span.getAttribute('data-filter');
+      const items = carousel1.querySelectorAll('.carousel-item');
+
+      items.forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
 </html>

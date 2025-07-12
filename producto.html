@@ -1,276 +1,510 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VogueCrest - Catálogo</title>
-
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
-
+  <title>Producto - VogueCrest</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding-top: 70px; /* espacio para header fijo */
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 15px;
-      padding-right: 15px;
+      font-family: 'Arial', sans-serif;
+      margin: 0; padding: 0; background: #fff; color: #000;
     }
-    header#header-fijo {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 60px;
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      border-bottom: 1px solid #222;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      z-index: 1200;
-    }
-    #logo-header {
-      height: 40px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 22px;
+    a {
+      color: #000;
       text-decoration: none;
     }
-    #logo-header img {
-      height: 40px;
-      border-radius: 6px;
+    a:hover {
+      text-decoration: underline;
     }
-    main {
-      margin-top: 20px;
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-    /* Flexbox para productos: tarjetas en filas responsivas */
-    #listaProductos {
+    .back-link {
+      font-size: 14px;
+      margin-bottom: 25px;
+      display: inline-block;
+    }
+    .product-detail {
       display: flex;
+      gap: 40px;
       flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
     }
-    .producto {
-      background-image: url("8ee0abc8ad42280b6db91544cbe58e6e.jpg");
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 10px #222;
-      text-align: center;
-      transition: transform 0.2s ease;
-      flex: 1 1 250px; /* ancho flexible mínimo 250px */
-      max-width: 280px;
+    .gallery {
+      flex: 1 1 480px;
+      max-width: 480px;
+    }
+    .main-image {
+      width: 100%;
+      height: 480px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    .thumbnails {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+    }
+    .thumbnails img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+      flex-shrink: 0;
+    }
+    .thumbnails img.selected {
+      border-color: black;
+    }
+    .details {
+      flex: 1 1 480px;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
-    .producto:hover {
-      transform: scale(1.03);
-    }
-    .producto img {
-      width: 100%;
-      border-radius: 8px;
+    .details h1 {
+      font-size: 2rem;
+      margin-top: 0;
       margin-bottom: 10px;
-      height: 180px;
-      object-fit: cover;
-    }
-    .producto h3 {
-      margin: 0.4rem 0;
       font-weight: 700;
-      font-size: 1.3rem;
-      color: #f8c630;
     }
-    .descripcion {
-      font-size: 0.9rem;
-      margin-bottom: 0.8rem;
-      color: #ddd;
-      flex-grow: 1;
+    .price {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 20px;
     }
-    .precio {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: #ffffff;
-      margin-bottom: 0.8rem;
+    label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+      font-size: 1rem;
     }
-    button.mostrar-qr {
-      background-color: #f7f3ea;
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      margin-bottom: 25px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      background: #fff;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    button {
+      background-color: black;
+      color: white;
       border: none;
-      color: #000;
+      padding: 15px 0;
       font-weight: 700;
-      padding: 10px 15px;
+      font-size: 1.2rem;
       border-radius: 8px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      margin-bottom: 40px;
+    }
+    button:hover {
+      background-color: #222;
+    }
+    /* ACORDEÓN detalle */
+    .accordion {
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+    .accordion::after {
+      content: "▼";
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+    .accordion.active::after {
+      transform: rotate(180deg);
+    }
+    .panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      font-weight: 400;
+      font-size: 1rem;
+      color: #444;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .panel.open {
+      max-height: 500px; /* suficiente para el texto */
+    }
+    .product-info {
       margin-top: auto;
     }
-    button.mostrar-qr:hover {
-      background-color: #faf9f5;
+    .related-section {
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
     }
-
-    /* Texto QR, oculto por defecto */
-    .texto-qr-info {
-      color: #fffcf2;
-      font-size: 0.85rem;
-      margin-top: 6px;
-      min-height: 18px;
+    .related-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      font-weight: 700;
+      border-bottom: 2px solid #000;
+      display: inline-block;
+      padding-bottom: 6px;
     }
-
-    /* Responsive ajustes */
-    @media (max-width: 600px) {
-      .producto {
-        flex: 1 1 100%;
+    .related-products {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+    .related-product {
+      min-width: 180px;
+      cursor: pointer;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .related-product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 8px;
+      transition: transform 0.3s ease;
+    }
+    .related-product:hover img {
+      transform: scale(1.05);
+    }
+    .related-product p {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #111;
+      margin: 0;
+    }
+    @media (max-width: 900px) {
+      .product-detail {
+        flex-direction: column;
+        align-items: center;
+      }
+      .gallery, .details {
         max-width: 100%;
+        flex: none;
       }
-      .producto img {
-        height: 220px;
+      .main-image {
+        height: auto;
+        max-height: 400px;
       }
-      #logo-header {
-        font-size: 18px;
+      .thumbnails img {
+        width: 60px;
+        height: 60px;
+      }
+      button {
+        font-size: 1rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <header id="header-fijo">
-    <a href="inicio.html" id="logo-header" aria-label="Volver a página principal">
-      <img src="Think-removebg-preview.png" alt="Logo VogueCrest" />
-      VOGUECREST
-    </a>
-  </header>
+  <div class="container">
+    <a href="colecciones.html" class="back-link">&larr; Volver a Colecciones</a>
 
-  <main>
-    <h1 style="text-align:center; margin-bottom: 1.5rem;">Catálogo de Prendas</h1>
+    <div class="product-detail">
+      <div class="gallery">
+        <img id="mainImage" class="main-image" src="" alt="Imagen principal producto" />
+        <div id="thumbnails" class="thumbnails"></div>
+      </div>
+      <div class="details">
+        <h1 id="productName">Cargando...</h1>
+        <div class="price" id="productPrice"></div>
 
-    <div id="listaProductos">
-      <!-- Productos insertados por JS -->
-    </div>
-  </main>
+        <label for="sizeSelect">Selecciona talla:</label>
+        <select id="sizeSelect"></select>
 
-  <footer style="text-align:center; padding: 15px 0; color: #fff;">
-    &copy; 2025 VogueCrest. Todos los derechos reservados.
-  </footer>
+        <label for="colorSelect">Selecciona color:</label>
+        <select id="colorSelect"></select>
 
-  <!-- Librería QR -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+        <button id="addToCartBtn">Añadir a la cesta</button>
 
-  <script>
-    const productos = [
-      {
-        id: 1,
-        nombre: "Playera Oversized Blanco",
-        descripcion: "Playera amplia con diseño moderno y cómoda para el verano.",
-        precio: 520,
-        imagen: "1.jpeg",
-        url: "prenda.html?id=1"
-      },
-      {
-        id: 2,
-        nombre: "Playera Cebra",
-        descripcion: "Playera con estampado de cebra, ideal para destacar en la multitud.",
-        precio: 620,
-        imagen: "descarga.jpg",
-        url: "prenda.html?id=2"
-      },
-      {
-        id: 3,
-        nombre: "Playera Semi Oversized Negra",
-        descripcion: "Playera semi oversized color negro, elegante y versátil.",
-        precio: 570,
-        imagen: "Semi Oversized Summer Rugby T-shirt_Black.jpg",
-        url: "prenda.html?id=3"
-      }
-    ];
-
-    const listaProductos = document.getElementById('listaProductos');
-
-    function mostrarModalQR(url, textoElemento) {
-      // Crear un canvas temporal para el QR
-      QRCode.toCanvas(url, { width: 120 }, function (error, canvas) {
-        if (error) {
-          textoElemento.textContent = 'Error generando QR.';
-          return;
-        }
-        // Limpiar y añadir canvas
-        textoElemento.innerHTML = '';
-        textoElemento.appendChild(canvas);
-        // Click abre la URL
-        canvas.style.cursor = 'pointer';
-        canvas.title = 'Haz clic para abrir el enlace del producto';
-        canvas.onclick = () => window.open(url, '_blank');
-      });
-    }
-
-    function renderizarProductos() {
-      listaProductos.innerHTML = '';
-      productos.forEach(producto => {
-        const div = document.createElement('div');
-        div.classList.add('producto');
-
-        div.innerHTML = `
-          <img src="${producto.imagen}" alt="Imagen de ${producto.nombre}" loading="lazy" />
-          <h3>${producto.nombre}</h3>
-          <p class="descripcion">${producto.descripcion}</p>
-          <p class="precio">$${producto.precio.toFixed(2)}</p>
-          <button class="mostrar-qr" aria-label="Mostrar código QR de ${producto.nombre}">Mostrar QR</button>
-          <p class="texto-qr-info" aria-live="polite" aria-atomic="true"></p>
-        `;
-
-        listaProductos.appendChild(div);
-
-        const btnQR = div.querySelector('.mostrar-qr');
-        const textoQR = div.querySelector('.texto-qr-info');
-
-        btnQR.addEventListener('click', () => {
-          mostrarModalQR(producto.url, textoQR);
-        });
-      });
-    }
-
-    renderizarProductos();
-  </script>
-</body>
-</html>
-<!-- Modal pago -->
-  <div class="modal" id="modal-pago" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
-    <div class="modal-content">
-      <button class="close-btn" aria-label="Cerrar formulario">&times;</button>
-      <h2 id="modalTitle">Formulario de Pago</h2>
-      <form id="form-pago">
-        <label for="nombre-completo">Nombre Completo</label>
-        <input type="text" id="nombre-completo" name="nombreCompleto" required />
-
-        <label for="direccion">Dirección de envío</label>
-        <textarea id="direccion" name="direccion" required></textarea>
-
-        <label for="correo">Correo Electrónico</label>
-        <input type="email" id="correo" name="correo" required />
-
-        <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" required pattern="[\d\s()+-]{7,}" title="Ingrese un número válido" />
-
-        <label for="metodo-pago">Método de pago</label>
-        <select id="metodo-pago" name="metodoPago" required>
-          <option value="" disabled selected>Seleccione un método</option>
-          <option value="tarjeta">Tarjeta de crédito/débito</option>
-          <option value="paypal">PayPal</option>
-          <option value="transferencia">Transferencia bancaria</option>
-        </select>
-
-        <button type="submit" class="submit-btn">Confirmar Pago</button>
-      </form>
-      <div class="mensaje-exito" id="mensaje-exito">¡Pago realizado con éxito! Gracias por tu compra.</div>
+        <div class="accordion" id="accordionDetalle">DETALLE DEL PRODUCTO</div>
+        <div class="panel" id="productDescription"></div>
+      </div>
     </div>
   </div>
+
+  <section class="related-section">
+    <h2>Productos relacionados</h2>
+    <div id="relatedProducts" class="related-products"></div>
+  </section>
+
+  <script>
+    const productos = {
+      prenda1: {
+        nombre: "Camiseta Blanca",
+        imagenesPorColor: {
+          Blanco: ["40.png", "21 (2).png", "26.png"],
+          Negro: ["camiseta_negra1.png", "camiseta_negra2.png"],
+          Rojo: ["camiseta_roja1.png", "camiseta_roja2.png"]
+        },
+        imagenPrincipal: "40.png", // imagen fija para el producto, independientemente de color
+        descripcion: "Camiseta blanca de algodón 100%, cómoda y fresca. Ideal para cualquier ocasión casual.",
+        precio: "$20.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Blanco", "Negro", "Rojo"],
+        relacionados: ["prenda2", "prenda3"]
+      },
+      prenda2: {
+        nombre: "Camiseta Negra",
+        imagenesPorColor: {
+          Negro: ["41.png", "26.png"],
+          Gris: ["camiseta_gris1.png", "camiseta_gris2.png"]
+        },
+        imagenPrincipal: "21 (2).png",
+        descripcion: "Camiseta negra elegante con buen ajuste.",
+        precio: "$22.00",
+        tallas: ["M", "L", "XL"],
+        colores: ["Negro", "Gris"],
+        relacionados: ["prenda1", "prenda5"]
+      },
+      prenda3: {
+        nombre: "Pantalón Azul",
+        imagenesPorColor: {
+          Azul: ["21 (3).png", "27.png"],
+          Negro: ["pantalon_negro1.png", "pantalon_negro2.png"]
+        },
+        imagenPrincipal: "21 (3).png",
+        descripcion: "Pantalón casual azul, tela resistente y cómoda.",
+        precio: "$30.00",
+        tallas: ["S", "M", "L"],
+        colores: ["Azul", "Negro"],
+        relacionados: ["prenda4"]
+      },
+      prenda4: {
+        nombre: "Chaqueta Negra",
+        imagenesPorColor: {
+          Negro: ["30.png", "33.png"],
+          Gris: ["chaqueta_gris1.png"]
+        },
+        imagenPrincipal: "21 (4).png",
+        descripcion: "Chaqueta elegante y cálida para invierno.",
+        precio: "$55.00",
+        tallas: ["M", "L", "XL"],
+        colores: ["Negro", "Gris"],
+        relacionados: ["prenda3", "prenda1"]
+      },
+      prenda5: {
+        nombre: "Camisa Roja",
+        imagenesPorColor: {
+          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
+          Blanco: ["camisa_blanca1.png"]
+        },
+        imagenPrincipal: "30.png",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Rojo", "Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prenda6: {
+        nombre: "Camisa Roja",
+        imagenesPorColor: {
+          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
+          Blanco: ["camisa_blanca1.png"]
+        },
+        imagenPrincipal: "33.png",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Rojo", "Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prenda7: {
+        nombre: "Camisa Roja",
+        imagenesPorColor: {
+          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
+          Blanco: ["camisa_blanca1.png"]
+        },
+        imagenPrincipal: "26.png",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Rojo", "Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+       prenda8: {
+        nombre: "Camisa Roja",
+        imagenesPorColor: {
+          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
+          Blanco: ["camisa_blanca1.png"]
+        },
+        imagenPrincipal: "27.png",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Rojo", "Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+       prendaA: {
+        nombre: "Camisa Roja",
+        imagenesPorColor: {
+          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
+          Blanco: ["camisa_blanca1.png"]
+        },
+        imagenPrincipal: "42.png",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Rojo", "Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prendaB: {
+        nombre: "Camisa Roja",
+        imagenesPorColor: {
+          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
+          Blanco: ["camisa_blanca1.png"]
+        },
+        imagenPrincipal: "43.png",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Rojo", "Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      }
+    };
+
+    // Obtener parámetro producto de URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const productoId = getQueryParam("producto");
+    const producto = productos[productoId];
+
+    // Referencias a elementos DOM
+    const mainImage = document.getElementById("mainImage");
+    const thumbnailsContainer = document.getElementById("thumbnails");
+    const productName = document.getElementById("productName");
+    const productPrice = document.getElementById("productPrice");
+    const productDescription = document.getElementById("productDescription");
+    const sizeSelect = document.getElementById("sizeSelect");
+    const colorSelect = document.getElementById("colorSelect");
+    const relatedProductsContainer = document.getElementById("relatedProducts");
+    const addToCartBtn = document.getElementById("addToCartBtn");
+    const accordionDetalle = document.getElementById("accordionDetalle");
+    const panelDetalle = productDescription;
+
+    if (!producto) {
+      productName.textContent = "Producto no encontrado";
+      mainImage.style.display = "none";
+      productPrice.textContent = "";
+      productDescription.textContent = "";
+      sizeSelect.style.display = "none";
+      colorSelect.style.display = "none";
+      addToCartBtn.style.display = "none";
+    } else {
+      productName.textContent = producto.nombre;
+      productPrice.textContent = producto.precio;
+      productDescription.textContent = producto.descripcion;
+
+      // Llenar tallas
+      producto.tallas.forEach(talla => {
+        const option = document.createElement("option");
+        option.value = talla;
+        option.textContent = talla;
+        sizeSelect.appendChild(option);
+      });
+
+      // Llenar colores
+      producto.colores.forEach(color => {
+        const option = document.createElement("option");
+        option.value = color;
+        option.textContent = color;
+        colorSelect.appendChild(option);
+      });
+
+      // Cargar imágenes de miniaturas según color
+      function cargarImagenes(color) {
+        thumbnailsContainer.innerHTML = "";
+        const imgs = producto.imagenesPorColor[color] || [];
+        imgs.forEach((src, index) => {
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = producto.nombre + " " + color + " " + (index + 1);
+          if (index === 0) img.classList.add("selected");
+          img.addEventListener("click", () => {
+            mainImage.src = src;
+            thumbnailsContainer.querySelectorAll("img").forEach(i => i.classList.remove("selected"));
+            img.classList.add("selected");
+          });
+          thumbnailsContainer.appendChild(img);
+        });
+      }
+
+      // Mostrar imagen principal fija (aunque cambie color)
+      mainImage.src = producto.imagenPrincipal;
+      mainImage.alt = producto.nombre;
+
+      // Carga inicial miniaturas del primer color
+      cargarImagenes(producto.colores[0]);
+      colorSelect.value = producto.colores[0];
+
+      // Cambiar color y miniaturas pero la imagen principal sigue fija
+      colorSelect.addEventListener("change", (e) => {
+        cargarImagenes(e.target.value);
+        // La imagen principal siempre es la imagen fija
+        mainImage.src = producto.imagenPrincipal;
+      });
+
+      // Productos relacionados
+      producto.relacionados.forEach(relId => {
+        const relProd = productos[relId];
+        if (relProd) {
+          const div = document.createElement("div");
+          div.className = "related-product";
+          div.innerHTML = `
+            <a href="producto.html?producto=${relId}">
+              <img src="${relProd.imagenesPorColor[relProd.colores[0]][0]}" alt="${relProd.nombre}">
+              <p>${relProd.nombre}</p>
+            </a>
+          `;
+          relatedProductsContainer.appendChild(div);
+        }
+      });
+    }
+
+    addToCartBtn.addEventListener("click", () => {
+      const talla = sizeSelect.value;
+      const color = colorSelect.value;
+      alert(`Añadido a la cesta:\n${producto.nombre}\nTalla: ${talla}\nColor: ${color}`);
+      // Aquí puedes añadir funcionalidad para guardar el carrito real
+    });
+
+    // ACORDEÓN DETALLE
+    accordionDetalle.addEventListener("click", () => {
+      accordionDetalle.classList.toggle("active");
+      if (panelDetalle.classList.contains("open")) {
+        panelDetalle.classList.remove("open");
+      } else {
+        panelDetalle.classList.add("open");
+      }
+    });
+  </script>
+
+</body>
+</html>
