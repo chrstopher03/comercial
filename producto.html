@@ -12,6 +12,71 @@
       font-family: 'Arial', sans-serif;
       margin: 0; padding: 0; background: #fff; color: #000;
     }
+     /* HEADER MODERNO */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      background: white;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .menu-label, .cart-label {
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 40px;
+      object-fit: contain;
+    }
+
+    /* Menú móvil */
+    nav.menu-mobile {
+      position: fixed;
+      top: 60px;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: white;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 18px;
+      z-index: 9999;
+      transition: left 0.3s ease-in-out;
+    }
+
+    nav.menu-mobile.show {
+      left: 0;
+    }
+
+    nav.menu-mobile a {
+     
+      color: black;
+      text-decoration: none;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    nav.menu-mobile a:hover {
+      background: #f0f0f0;
+    }
     a {
       color: #000;
       text-decoration: none;
@@ -23,6 +88,7 @@
       max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
+      position: relative; /* para el boton flotante */
     }
     .back-link {
       font-size: 14px;
@@ -41,7 +107,6 @@
     .main-image {
       width: 100%;
       height: 480px;
-      border: 1px solid #ddd;
       border-radius: 8px;
       object-fit: cover;
       margin-bottom: 15px;
@@ -70,6 +135,8 @@
       max-width: 480px;
       display: flex;
       flex-direction: column;
+      margin-bottom: 40px; /* para espacio debajo */
+      position: relative; /* para posicionar el boton flotante */
     }
     .details h1 {
       font-size: 2rem;
@@ -91,7 +158,6 @@
     select {
       width: 100%;
       padding: 12px;
-      font-size: 1rem;
       margin-bottom: 25px;
       border-radius: 6px;
       border: 1px solid #ccc;
@@ -102,8 +168,7 @@
       -moz-appearance: none;
     }
     button {
-      background-color: black;
-      color: white;
+      background-color:#eeeeee;
       border: none;
       padding: 15px 0;
       font-weight: 700;
@@ -113,9 +178,7 @@
       transition: background-color 0.3s ease;
       margin-bottom: 40px;
     }
-    button:hover {
-      background-color: #222;
-    }
+  
     /* ACORDEÓN detalle */
     .accordion {
       border-top: 1px solid #ddd;
@@ -131,25 +194,26 @@
     }
     .accordion::after {
       content: "▼";
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       transition: transform 0.3s;
     }
     .accordion.active::after {
       transform: rotate(180deg);
     }
-    .panel {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease;
-      font-weight: 400;
-      font-size: 1rem;
-      color: #444;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-    .panel.open {
-      max-height: 500px; /* suficiente para el texto */
-    }
+   .panel {
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0;
+  font-size: 1rem;
+  white-space: normal;
+  margin-bottom: 20px;
+  word-break: break-word;
+}
+.panel.open {
+  max-height: none;
+  padding: 10px 0;
+}
+
+    /* Para que el contenedor de .details se expanda y empuje el carrusel */
     .product-info {
       margin-top: auto;
     }
@@ -190,12 +254,6 @@
     .related-product:hover img {
       transform: scale(1.05);
     }
-    .related-product p {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #111;
-      margin: 0;
-    }
     @media (max-width: 900px) {
       .product-detail {
         flex-direction: column;
@@ -216,10 +274,193 @@
       button {
         font-size: 1rem;
       }
+      .detalle-flotante {
+        position: static !important;
+        margin-top: 15px;
+      }
     }
+
+    .carousel-grande-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      width: 100%;
+      margin-top: 30px;
+      scroll-snap-type: x mandatory;
+    }
+    .carousel-grande-track {
+      display: flex;
+      gap: 24px;
+    }
+    .carousel-grande-item {
+      flex: 0 0 auto;
+      width: 320px;
+      height: 480px;
+      border-radius: 0;
+      overflow: visible;
+      border: none;
+      background: transparent;
+    }
+    .carousel-grande-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      user-select: none;
+      pointer-events: none;
+      transition: transform 0.3s ease;
+    }
+    .carousel-grande-item img:hover {
+      transform: scale(1.03);
+    }
+    @media (max-width: 768px) {
+      .carousel-grande-item {
+        width: 240px;
+        height: 360px;
+      }
+    }
+/* BOTÓN + DETALLE flotante */
+.detalle-flotante {
+  position: absolute;
+  top: 15px;
+  right: -130px;
+  border-radius: 30px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+
+
+@media (max-width: 900px) {
+  .detalle-flotante {
+    position: fixed !important;
+    right: 20px;
+    z-index: 10000;
+    white-space: nowrap;
+    font-size: 1rem;
+    border-radius: 35px;
+  }
+}
+
+    /* MODAL ESTILO GNG */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.75);
+      overflow-y: auto;
+      padding: 40px 15px;
+    }
+    .modal-content {
+      background-color: #fff;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 10px;
+      padding: 30px 30px 40px;
+      position: relative;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    }
+    .close-modal {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #666;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .close-modal:hover {
+      color: #000;
+    }
+    .tabs-nav {
+      gap: 15px;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .tabs-nav button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s ease, color 0.3s ease;
+    }
+    .tabs-nav button:hover {
+      color: black;
+    }
+    .tabs-nav button.active {
+      border-color: black;
+      color: black;
+    }
+    .tab-content {
+      display: none;
+      font-size: 1rem;
+      line-height: 1.5;
+      max-height: 450px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .tab-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    .tab-content::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 4px;
+    }
+    .look-images {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .look-images img {
+      width: 120px;
+      border-radius: 8px;
+      cursor: pointer;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .look-images img:hover {
+      transform: scale(1.05);
+    }
+    
+
   </style>
 </head>
 <body>
+<!-- HEADER MODERNO -->
+<header>
+  <div class="menu-label" id="menu-toggle">MENÚ</div>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo" />
+  <div class="cart-label">CESTA</div>
+</header>
+
+<!-- MENÚ MÓVIL DESLIZANTE -->
+<nav class="menu-mobile" id="mobileMenu">
+  <a href="index.html">INICIO</a>
+  <a href="colecciones.html">COLECCIONES</a>
+  <a href="acerca.html">ACERCA DE</a>
+  <a href="editorial.html">EDITORIAL</a>
+    <a href="looks.html">LOOKS</a>
+        <a href="contacto.html">CONTACTANOS</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
+</nav>
+
 
   <div class="container">
     <a href="colecciones.html" class="back-link">&larr; Volver a Colecciones</a>
@@ -241,16 +482,111 @@
 
         <button id="addToCartBtn">Añadir a la cesta</button>
 
+        <!-- Acordeón detalle producto -->
         <div class="accordion" id="accordionDetalle">DETALLE DEL PRODUCTO</div>
         <div class="panel" id="productDescription"></div>
+
+        <!-- NUEVO + DETALLES -->
+        <div class="" id="accordionMasDetalles"></div>
+        <div class="panel" id="masDetalles">
+          
+        </div>
+
+        <!-- BOTÓN + DETALLE flotante -->
+        <div class="detalle-flotante" id="openModalBtn">+ DETALLE</div>
       </div>
     </div>
   </div>
 
+  <!-- Carrusel grande estilo GNG -->
   <section class="related-section">
-    <h2>Productos relacionados</h2>
-    <div id="relatedProducts" class="related-products"></div>
+    <div class="carousel-grande-container">
+      <div class="carousel-grande-track" id="carouselGrande">
+        <div class="carousel-grande-item">
+  <img src="03.png" alt="Look 1" tabindex="0" />
+</div>
+        <div class="carousel-grande-item">
+          <img src="02.png" alt="Look 2" />
+        </div>
+        <div class="carousel-grande-item">
+          <img src="Copia de Copia de Copia de Copia de Think (12).png" alt="Look 3" />
+        </div>
+        <div class="carousel-grande-item">
+          <img src="06.png" alt="Look 4" />
+        </div>
+        <div class="carousel-grande-item">
+          <img src="010.jpeg" alt="Look 5" />
+        </div>
+      </div>
+    </div>
   </section>
+
+  <!-- MODAL + DETALLE -->
+  <div class="modal" id="modalDetalle" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModalBtn" aria-label="Cerrar">&times;</span>
+
+      <nav class="tabs-nav" role="tablist">
+        <button class="tab-btn active" data-tab="info" role="tab" aria-selected="true" aria-controls="info">Información de la prenda</button>
+        <button class="tab-btn" data-tab="envios" role="tab" aria-selected="false" aria-controls="envios">Envíos y devoluciones</button>
+        <button class="tab-btn" data-tab="tallas" role="tab" aria-selected="false" aria-controls="tallas">Guía de tallas</button>
+        <button class="tab-btn" data-tab="looks" role="tab" aria-selected="false" aria-controls="looks">Ver looks</button>
+        <button class="tab-btn" data-tab="contacto" role="tab" aria-selected="false" aria-controls="contacto">Contacta con nosotros</button>
+      </nav>
+
+      <section id="info" class="tab-content active" role="tabpanel" tabindex="0" aria-labelledby="info-tab">
+        <h2 id="modalTitle">Información de la prenda</h2>
+        <p id="modalInfoContent">Cargando información...</p>
+      </section>
+
+      <section id="envios" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="envios-tab">
+        <h2>Envíos y devoluciones</h2>
+        <ul>
+          <li>Envío estándar: 3-5 días hábiles.</li>
+          <li>Envío exprés: 1-2 días hábiles.</li>
+          <li>Devoluciones gratuitas hasta 30 días después de la compra.</li>
+          <li>Para devolver un producto, contacta con soporte.</li>
+        </ul>
+      </section>
+
+      <section id="tallas" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="tallas-tab">
+        <h2>Guía de tallas</h2>
+        <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr><th>Talla</th><th>Pecho (cm)</th><th>Cintura (cm)</th><th>Largo (cm)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>S</td><td>88-92</td><td>74-78</td><td>68</td></tr>
+            <tr><td>M</td><td>92-96</td><td>78-82</td><td>70</td></tr>
+            <tr><td>L</td><td>96-100</td><td>82-86</td><td>72</td></tr>
+            <tr><td>XL</td><td>100-104</td><td>86-90</td><td>74</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="looks" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="looks-tab">
+        <h2>Ver looks</h2>
+        <div class="look-images">
+          <img src="03.png" alt="Look 1" />
+          <img src="02.png" alt="Look 2" />
+          <img src="04.png" alt="Look 3" />
+          <img src="06.png" alt="Look 4" />
+          <img src="0." alt="Look 5" />
+        </div>
+      </section>
+
+      <section id="contacto" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="contacto-tab">
+<a href="contacto.html" class="back-link">&larr; Contactanos</a>
+        <p>Para consultas y soporte, escríbenos:</p>
+        <ul>
+          <li>Email: <a href="mailto:soporte@voguecrest.com">soporte@voguecrest.com</a></li>
+          <li>Teléfono: +505 1234 5678</li>
+          <li>Horario: Lunes a Viernes, 9am - 6pm</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
 
   <script>
     const productos = {
@@ -273,8 +609,8 @@ La camiseta VOGUECREST en color negro está confeccionada en algodón premium de
       prenda2: {
         nombre: "VOGUECREST T-SHIRT BLACK",
         imagenesPorColor: {
-          Negro: ["2.png", "26.png"],
-          Gris: ["camiseta_gris1.png", "camiseta_gris2.png"]
+          Negro: ["2.png"],
+         
         },
         imagenPrincipal: "2.png",
       descripcion: `
@@ -282,33 +618,33 @@ La camiseta VOGUECREST en color negro está confeccionada en algodón premium de
 La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Su silueta recta y cuello reforzado brindan estructura y comodidad. Lleva el logotipo VogueCrest en contraste blanco al frente, destacando con un diseño limpio y atemporal. Pensada para quienes caminan con propósito, esta pieza es versátil y esencial en cualquier guardarropa..`,
         precio: "C$800",
         tallas: ["M", "L", "XL"],
-        colores: ["Negro", "Gris"],
+        colores: ["Negro"],
         relacionados: ["prenda1", "prenda5"]
       },
       prenda3: {
-        nombre: "Pantalón Azul",
+        nombre: "VOGUECREST T-SHIRT EARTH BROWN",
         imagenesPorColor: {
-          Azul: ["3.png", "27.png","26.png"],
-          Negro: ["pantalon_negro1.png", "pantalon_negro2.png"]
+          Cafe: ["3.png"],
+          Negro: ["1.png"],
+          Rojo:["5.png"]
         },
         imagenPrincipal: "3.png",
-        descripcion: "Pantalón casual azul, tela resistente y cómoda.",
+        descripcion: "Una camiseta esencial en tono café tierra que equilibra elegancia y carácter. Diseñada para quienes conectan con lo natural sin perder el estilo urbano, su tejido suave y corte limpio la convierten en una pieza versátil para cualquier ocasión. Viste con intención, camina con propósito.",
         precio: "C$800",
         tallas: ["S", "M", "L"],
-        colores: ["Azul", "Negro"],
+        colores: ["Cafe", "Negro","Rojo"],
         relacionados: ["prenda4"]
       },
       prenda4: {
         nombre: "VOGUECREST LIGHT DENIM SHORTS",
         imagenesPorColor: {
-          Negro: ["30.png", "33.png"],
-          Gris: ["chaqueta_gris1.png"]
+          Celeste: ["30.png"],
         },
         imagenPrincipal: "4.png",
         descripcion: "El short de mezclilla clara de VogueCrest fusiona lo clásico con el estilo contemporáneo. Confeccionado en denim suave y resistente, presenta un corte relajado por encima de la rodilla que brinda libertad de movimiento y frescura. Los detalles desgastados estratégicos y el logo VogueCrest en la parte trasera elevan su diseño urbano. Perfecto para un look casual con identidad propia..",
         precio: "C$800",
         tallas: ["M", "L", "XL"],
-        colores: ["Negro", "Gris"],
+        colores: ["Celeste"],
         relacionados: ["prenda3", "prendaH"]
       },
       prenda5: {
@@ -356,26 +692,25 @@ Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
        prenda8: {
         nombre: "VOGUECREST V-NECK BLOUSE WHITE",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Blanco: ["8.png"]
         },
         imagenPrincipal: "8.png",
         descripcion: "La blusa blanca con cuello en V de VogueCrest está pensada para resaltar la elegancia natural y la comodidad femenina. Confeccionada en un tejido liviano y suave al tacto, su corte fluido se adapta al cuerpo con gracia. El escote en V estiliza el cuello, mientras que el diseño minimalista la convierte en una prenda ideal para ocasiones casuales o semi-formales. Perfecta para combinar con jeans, faldas o shorts de la colección VogueCrest.",
         precio: "$28.00",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Blanco"],
         relacionados: ["prenda2", "prenda4"]
       }, prenda9: {
         nombre: "VOGUECREST BLACK PLATE CAP",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Negro: ["15.png", "42.png"],
+          Crema: ["22.png"]
         },
         imagenPrincipal: "15.png",
         descripcion: "La gorra negra con placa VogueCrest es una pieza distintiva que combina sobriedad y carácter. Confeccionada en algodón estructurado de alta calidad, presenta una visera curva y paneles reforzados para un ajuste firme. El detalle más icónico es su placa metálica negra con el logo VogueCrest, integrada con elegancia en el centro frontal. Ideal para elevar cualquier outfit urbano con una presencia moderna y sofisticada.",
         precio: "$28.00",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Negro", "Crema"],
         relacionados: ["prenda2", "prenda4"]
       },
       prenda10: {
@@ -418,14 +753,14 @@ El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad 
        prendaA: {
         nombre: "SUEDE LOGO CAP NEGRO",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Negro: ["42.png", "15.png"],
+          Crema: ["22.png"]
         },
         imagenPrincipal: "42.png",
         descripcion: "La gorra SUEDE LOGO en color negro está confeccionada en ante sintético estructurado, con un acabado suave tipo terciopelo. Presenta un diseño minimalista con el logotipo en blanco al frente, aportando contraste y distinción. Cuenta con visera curva, paneles reforzados y cierre ajustable en la parte trasera para un calce cómodo. Ideal para uso diario o complementar cualquier look urbano.",
         precio: "$28.00",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Negro", "Crema"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaB: {
@@ -456,81 +791,78 @@ El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad 
         relacionados: ["prenda2", "prenda4"]
       },
       prendaD: {
-        nombre: "Camisa Roja",
+        nombre: "VOGUECREST PRO ATHLETIC TEE BLACK",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Negro: ["80.png"]
         },
         imagenPrincipal: "80.png",
-        descripcion: "Camisa casual roja para uso diario.",
-        precio: "$28.00",
+        descripcion: "Diseñada para el rendimiento y el estilo, la VOGUECREST PRO ATHLETIC TEE BLACK combina comodidad y tecnología deportiva avanzada. Confeccionada en tejido transpirable y de secado rápido, esta camiseta negra presenta el icónico logo VogueCrest en el centro, garantizando una apariencia moderna y sofisticada para tus entrenamientos o actividades diarias. Perfecta para quienes buscan destacar sin sacrificar funcionalidad.",
+        precio: "C$600",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Negro"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaE: {
-        nombre: "Camisa Roja",
+        nombre: "VOGUECREST PRO ATHLETIC SHORT BLACK",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Negro: ["82.png"]
         },
         imagenPrincipal: "82.png",
-        descripcion: "Camisa casual roja para uso diario.",
-        precio: "$28.00",
+        descripcion: "Máximo confort y libertad de movimiento con el VOGUECREST PRO ATHLETIC SHORT BLACK. Confeccionado en un tejido ligero y resistente que absorbe la humedad, este short negro incluye detalles sutiles y el logo VogueCrest para un look deportivo y moderno. Ideal para entrenamientos intensos o para un estilo casual activo, diseñado para acompañarte en cada paso con estilo y funcionalidad.",
+        precio: "C$400",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Negro"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaF: {
-        nombre: "Camisa Roja",
+        nombre: "VOGUECREST SIGNATURE CAP CREAM",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Crema: ["22.png"],
+          Negro: ["42.png","15.png"]
         },
         imagenPrincipal: "22.png",
-        descripcion: "Camisa casual roja para uso diario.",
-        precio: "$28.00",
+        descripcion: "Eleva tu estilo urbano con la VOGUECREST SIGNATURE CAP CREAM. Esta gorra color crema está equipada con una placa metálica negra que exhibe el icónico logo VogueCrest, combinando elegancia y actitud. Fabricada con materiales de alta calidad, ofrece ajuste cómodo y duradero, perfecta para complementar cualquier outfit con un toque sofisticado y contemporáneo.",
+        precio: "C$450",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Crema", "Negro"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaG: {
-        nombre: "Camisa Roja",
+        nombre: "VOGUECREST DENIM SHORT BLACK",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Negro: ["10.png"],
         },
         imagenPrincipal: "10.png",
-        descripcion: "Camisa casual roja para uso diario.",
-        precio: "$28.00",
+        descripcion: "Un básico reinventado con estilo urbano: el VOGUECREST DENIM SHORT BLACK combina la resistencia clásica del jean con un diseño moderno. Este short negro presenta el nombre VogueCrest estampado en la parte inferior, aportando un detalle distintivo y elegante. Perfecto para looks casuales y urbanos, ofrece comodidad y durabilidad para el día a día con la esencia auténtica de VogueCrest.",
+        precio: "C$700",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Negro"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaH: {
-        nombre: "Camisa Roja",
+        nombre: "VOGUECREST BLACK ZIPPER SWEATER",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Negro: ["11.jpg",],
+          Gris: ["20.png"],
+          Crema: ["21.png"]
         },
         imagenPrincipal: "11.jpg",
-        descripcion: "Camisa casual roja para uso diario.",
-        precio: "$28.00",
+        descripcion: "Un suéter negro con cierre metálico que combina estilo y carácter. Diseñado para quienes prefieren lo simple pero poderoso, esta pieza encarna la esencia urbana de VogueCrest: limpia, sólida y con actitud. Ideal para climas frescos, su tela gruesa y su corte relajado lo convierten en una prenda esencial para dominar la calle con elegancia.",
+        precio: "C$1500",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Blanco"],
+        colores: ["Negro", "Gris","Crema"],
         relacionados: ["prenda2", "prenda4"]
       },
         prendaI: {
-        nombre: "Camisa Roja",
+        nombre: "VOGUECREST OVERSIZE LIGHT GREY LIGHTNING TEE",
         imagenesPorColor: {
-          Rojo: ["camisa_roja1.png", "camisa_roja2.png"],
-          Blanco: ["camisa_blanca1.png"]
+          Gris: ["12.png"]
         },
-        imagenPrincipal: "17.png",
-        descripcion: "Camisa casual roja para uso diario.",
-        precio: "$28.00",
+        imagenPrincipal: "12.png",
+        descripcion: "Marca tendencia con la VOGUECREST OVERSIZE LIGHT GREY LIGHTNING TEE, una camisa gris oversize decorada con impactantes rayos negros que evocan energía y movimiento. El icónico logo VogueCrest resalta en el diseño, fusionando estilo urbano y comodidad en una sola prenda. Perfecta para un look casual pero lleno de personalidad, diseñada para quienes buscan destacar con audacia y comodidad.",
+        precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Rojo", "Negro"],
+        colores: ["Gris"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaJ: {
@@ -551,9 +883,23 @@ Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elás
         relacionados: ["prenda10", "prendaB"]
       },
       
-      
+      prendaK: {
+        nombre:  "VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACKR",
+        imagenesPorColor: {
+          Negro: ["09.png"],
+        },
+        imagenPrincipal: "09.png",
+         descripcion: `
+
+La VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACK es una declaración de estilo y actitud. Con un corte amplio y relajado, esta camisa oversize en negro presenta el icónico logo de VogueCrest al frente y en la espalda, creando un diseño imponente y moderno. Ideal para outfits urbanos con personalidad, su tela suave garantiza comodidad sin perder fuerza visual. Es más que una prenda: es identidad VogueCrest.`,
+        precio: "C$500",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro"],
+        relacionados: ["prenda10", "prendaB"]
+      },
     };
 
+    
     // Obtener parámetro producto de URL
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
@@ -571,10 +917,15 @@ Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elás
     const productDescription = document.getElementById("productDescription");
     const sizeSelect = document.getElementById("sizeSelect");
     const colorSelect = document.getElementById("colorSelect");
-    const relatedProductsContainer = document.getElementById("relatedProducts");
     const addToCartBtn = document.getElementById("addToCartBtn");
     const accordionDetalle = document.getElementById("accordionDetalle");
     const panelDetalle = productDescription;
+    const accordionMasDetalles = document.getElementById("accordionMasDetalles");
+    const panelMasDetalles = document.getElementById("masDetalles");
+    const openModalBtn = document.getElementById("openModalBtn");
+    const modal = document.getElementById("modalDetalle");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const modalInfoContent = document.getElementById("modalInfoContent");
 
     if (!producto) {
       productName.textContent = "Producto no encontrado";
@@ -584,6 +935,7 @@ Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elás
       sizeSelect.style.display = "none";
       colorSelect.style.display = "none";
       addToCartBtn.style.display = "none";
+      openModalBtn.style.display = "none";
     } else {
       productName.textContent = producto.nombre;
       productPrice.textContent = producto.precio;
@@ -634,25 +986,27 @@ Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elás
       // Cambiar color y miniaturas pero la imagen principal sigue fija
       colorSelect.addEventListener("change", (e) => {
         cargarImagenes(e.target.value);
-        // La imagen principal siempre es la imagen fija
         mainImage.src = producto.imagenPrincipal;
       });
 
       // Productos relacionados
-      producto.relacionados.forEach(relId => {
-        const relProd = productos[relId];
-        if (relProd) {
-          const div = document.createElement("div");
-          div.className = "related-product";
-          div.innerHTML = `
-            <a href="producto.html?producto=${relId}">
-              <img src="${relProd.imagenesPorColor[relProd.colores[0]][0]}" alt="${relProd.nombre}">
-              <p>${relProd.nombre}</p>
-            </a>
-          `;
-          relatedProductsContainer.appendChild(div);
-        }
-      });
+      const relatedProductsContainer = document.querySelector(".related-products");
+      if(relatedProductsContainer) {
+        producto.relacionados.forEach(relId => {
+          const relProd = productos[relId];
+          if (relProd) {
+            const div = document.createElement("div");
+            div.className = "related-product";
+            div.innerHTML = `
+              <a href="producto.html?producto=${relId}">
+                <img src="${relProd.imagenesPorColor[relProd.colores[0]][0]}" alt="${relProd.nombre}">
+                <p>${relProd.nombre}</p>
+              </a>
+            `;
+            relatedProductsContainer.appendChild(div);
+          }
+        });
+      }
     }
 
     addToCartBtn.addEventListener("click", () => {
@@ -662,16 +1016,86 @@ Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elás
       // Aquí puedes añadir funcionalidad para guardar el carrito real
     });
 
-    // ACORDEÓN DETALLE
+    // ACORDEÓN DETALLE con altura dinámica y padding
     accordionDetalle.addEventListener("click", () => {
       accordionDetalle.classList.toggle("active");
-      if (panelDetalle.classList.contains("open")) {
-        panelDetalle.classList.remove("open");
+      if (panelDetalle.style.maxHeight) {
+        panelDetalle.style.maxHeight = null;
+        panelDetalle.style.padding = "0";
       } else {
-        panelDetalle.classList.add("open");
+        panelDetalle.style.maxHeight = panelDetalle.scrollHeight + "px";
+        panelDetalle.style.padding = "10px 0";
       }
     });
-  </script>
 
+    // NUEVO ACORDEÓN + DETALLES
+    accordionMasDetalles.addEventListener("click", () => {
+      accordionMasDetalles.classList.toggle("active");
+      if (panelMasDetalles.style.maxHeight) {
+        panelMasDetalles.style.maxHeight = null;
+        panelMasDetalles.style.padding = "0";
+      } else {
+        panelMasDetalles.style.maxHeight = panelMasDetalles.scrollHeight + "px";
+        panelMasDetalles.style.padding = "10px 0";
+      }
+    });
+
+    // MODAL + DETALLE
+    openModalBtn.addEventListener("click", () => {
+      modal.style.display = "block";
+      // Carga info completa dinámica
+      modalInfoContent.textContent = producto.infoCompleta || "Información no disponible.";
+      // Foco en modal para accesibilidad
+      modal.querySelector(".modal-content").focus();
+    });
+    closeModalBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+      openModalBtn.focus();
+    });
+    window.addEventListener("click", e => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        openModalBtn.focus();
+      }
+    });
+
+    // Navegación tabs modal
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+
+    tabButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        // Quitar active de todos
+        tabButtons.forEach(btn => {
+          btn.classList.remove("active");
+          btn.setAttribute("aria-selected", "false");
+        });
+        tabContents.forEach(tc => tc.classList.remove("active"));
+
+        // Poner active en el clickeado
+        button.classList.add("active");
+        button.setAttribute("aria-selected", "true");
+        const tabId = button.getAttribute("data-tab");
+        const tabContent = document.getElementById(tabId);
+        tabContent.classList.add("active");
+        tabContent.focus();
+      });
+    });
+
+      const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenuBtn = document.getElementById('closeMenu');
+
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('show');
+  });
+
+  closeMenuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove('show');
+  });
+
+  </script>
+  
 </body>
 </html>

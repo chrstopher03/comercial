@@ -10,47 +10,70 @@
     background: #fff;
   }
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
+/* HEADER MODERNO */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      background: white;
+      border-bottom: 1px solid #ccc;
+    }
 
-  .menu-label, .cart-label {
-    cursor: pointer;
-  }
+    .menu-label, .cart-label {
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+    }
 
-  .logo {
-    height: 50px;
-  }
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 40px;
+      object-fit: contain;
+    }
 
-  .menu-mobile {
-    display: none;
-    flex-direction: column;
-    background: white;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    padding: 10px 20px;
-    border-top: 1px solid #ccc;
-  }
+    /* Menú móvil */
+    nav.menu-mobile {
+      position: fixed;
+      top: 60px;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: white;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      z-index: 9999;
+      transition: left 0.3s ease-in-out;
+    }
 
-  .menu-mobile a {
-    text-decoration: none;
-    color: black;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-  }
+    nav.menu-mobile.show {
+      left: 0;
+    }
 
-  .menu-mobile.show {
-    display: flex;
-  }
+    nav.menu-mobile a {
+     
+      color: black;
+      text-decoration: none;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      user-select: none;
+    }
 
+    nav.menu-mobile a:hover {
+      background: #f0f0f0;
+    }
   .container {
     max-width: 1200px;
     margin: 40px auto;
@@ -182,7 +205,9 @@
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
   <a href="editorial.html">EDITORIAL</a>
-  <a href="#" onclick="toggleMenu()">Cerrar</a>
+    <a href="looks.html">LOOKS</a>
+        <a href="contacto.html">CONTACTANOS</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
 
 <div class="container">

@@ -15,51 +15,58 @@
     overflow-x: hidden;
   }
 
-  /* Header estilo GNG */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background: white;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1px solid #ccc;
-  }
-  .menu-label, .cart-label {
-    cursor: pointer;
-    user-select: none;
-  }
-  .logo {
-    height: 50px;
-  }
+  /* Header moderno */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #ccc;
+}
 
-  /* Menú móvil */
-  .menu-mobile {
-    display: none;
-    flex-direction: column;
-    background: white;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    padding: 10px 20px;
-    border-top: 1px solid #ccc;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-  .menu-mobile a {
-    text-decoration: none;
-    color: black;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
-  }
-  .menu-mobile a:last-child {
-    border-bottom: none;
-  }
-  .menu-mobile.show {
-    display: flex;
-  }
+.menu-label, .cart-label {
+  cursor: pointer;
+  user-select: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.logo {
+  height: 50px;
+  object-fit: contain;
+}
+
+/* Menú móvil */
+.menu-mobile {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  transition: left 0.3s ease-in-out;
+  font-size: 18px;
+  z-index: 9999;
+}
+
+.menu-mobile a {
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+}
+
+.menu-mobile.show {
+  left: 0;
+}
 
   /* Splash TikTok style */
   #splash {
@@ -195,8 +202,7 @@
   
   /* Secciones */
   #film video {
-    max-width: 90vw;
-    border-radius: 8px;
+
     display: block;
     margin: 0 auto 40px;
   }
@@ -242,19 +248,24 @@
   </div>
 </div>
 
+<!-- HEADER MODERNO -->
 <header>
   <div class="menu-label" id="menu-toggle">MENÚ</div>
   <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo" />
   <div class="cart-label">CESTA</div>
 </header>
 
+<!-- MENÚ MÓVIL DESLIZANTE -->
 <nav class="menu-mobile" id="mobileMenu">
   <a href="index.html">INICIO</a>
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
   <a href="editorial.html">EDITORIAL</a>
-  <a href="#" onclick="toggleMenu()">Cerrar</a>
+    <a href="looks.html">LOOKS</a>
+        <a href="contacto.html">CONTACTANOS</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
+
 
 <main>
   <section id="gift">

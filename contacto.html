@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto | VogueCrest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+      color: #111;
+      line-height: 1.6;
+    }
+/* HEADER MODERNO */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      background: white;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .menu-label, .cart-label {
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 40px;
+      object-fit: contain;
+    }
+
+    /* Menú móvil */
+    nav.menu-mobile {
+      position: fixed;
+      top: 60px;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: white;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 18px;
+      z-index: 9999;
+      transition: left 0.3s ease-in-out;
+    }
+
+    nav.menu-mobile.show {
+      left: 0;
+    }
+
+    nav.menu-mobile a {
+     
+      color: black;
+      text-decoration: none;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    nav.menu-mobile a:hover {
+      background: #f0f0f0;
+    }
+    header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    main {
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    p.description {
+      max-width: 600px;
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    form {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input, textarea {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button {
+      padding: 14px;
+      font-size: 1rem;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 20px;
+      color: green;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      border-top: 1px solid #ddd;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.6rem;
+      }
+      p.description {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div class="menu-label" id="menu-toggle">MENÚ</div>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo" />
+  <div class="cart-label" id="cartLabel">CESTA</div>
+</header>
+
+<nav class="menu-mobile" id="mobileMenu">
+ <a href="index.html">INICIO</a>
+  <a href="colecciones.html">COLECCIONES</a>
+  <a href="acerca.html">ACERCA DE</a>
+  <a href="editorial.html">EDITORIAL</a>
+    <a href="looks.html">LOOKS</a>
+        <a href="contacto.html">CONTACTANOS</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
+  </nav>
+  <main>
+    <h1>Contáctanos</h1>
+    <p class="description">¿Tienes alguna duda o necesitas ayuda? Rellena el formulario y nos pondremos en contacto contigo lo antes posible.</p>
+
+    <form id="contactForm">
+      <div>
+        <label for="nombre">Nombre completo</label>
+        <input type="text" id="nombre" name="nombre" required />
+      </div>
+      <div>
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div>
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" required></textarea>
+      </div>
+      <button type="submit">Enviar mensaje</button>
+      <div class="success-message" id="successMessage">Tu mensaje ha sido enviado correctamente. ¡Gracias por contactarnos!</div>
+    </form>
+  </main>
+
+  <footer>
+    &copy; 2025 VogueCrest. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Simulación de envío de formulario
+      const successMessage = document.getElementById('successMessage');
+      successMessage.style.display = 'block';
+
+      // Reiniciar campos
+      this.reset();
+
+      // Ocultar después de 4 segundos
+      setTimeout(() => {
+        successMessage.style.display = 'none';
+      }, 4000);
+    });
+
+     const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenuBtn = document.getElementById('closeMenu');
+
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('show');
+  });
+
+  closeMenuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove('show');
+  });
+  </script>
+</body>
+</html>

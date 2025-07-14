@@ -14,7 +14,7 @@
       font-family: Arial, sans-serif;
     }
 
-    /* HEADER */
+    /* HEADER MODERNO */
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -24,11 +24,15 @@
       align-items: center;
       padding: 0 20px;
       z-index: 1000;
+      background: white;
+      border-bottom: 1px solid #ccc;
     }
 
     .menu-label, .cart-label {
       cursor: pointer;
       text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
     }
 
     .logo {
@@ -36,29 +40,44 @@
       left: 50%;
       transform: translateX(-50%);
       height: 40px;
+      object-fit: contain;
     }
 
+    /* Menú móvil */
     nav.menu-mobile {
-      display: none;
-      flex-direction: column;
-      background: #000;
-      color: #fff;
       position: fixed;
       top: 60px;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: white;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 18px;
+      z-index: 9999;
+      transition: left 0.3s ease-in-out;
+    }
+
+    nav.menu-mobile.show {
       left: 0;
-      right: 0;
-      z-index: 999;
     }
 
     nav.menu-mobile a {
-      padding: 15px;
-      border-bottom: 1px solid #222;
-      color: white;
+     
+      color: black;
       text-decoration: none;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      user-select: none;
     }
 
     nav.menu-mobile a:hover {
-      background: #333;
+      background: #f0f0f0;
     }
 
     /* FILTRO tipo texto horizontal simple */
@@ -66,7 +85,7 @@
       display: flex;
       justify-content: center;
       gap: 30px;
-      margin-top: 70px; /* espacio para header fijo */
+      margin-top: 80px; /* espacio para header fijo */
       margin-bottom: 20px;
       flex-wrap: wrap;
       padding: 0 10px;
@@ -99,26 +118,22 @@
     }
 
     .carousel-section {
-      margin-top: 0; /* sin margen extra */
+      overflow: hidden;
+      width: 100%;
       padding: 20px 0;
     }
 
     .carousel-container {
-      overflow: hidden;
       width: 100%;
+      overflow: hidden;
       position: relative;
     }
 
     .carousel-track {
       display: flex;
       gap: 20px;
-      animation: scroll 30s linear infinite;
-      padding-left: 20px;
+      animation: scroll 15s linear infinite;
       flex-wrap: nowrap;
-    }
-
-    .carousel-track.pause {
-      animation-play-state: paused;
     }
 
     .carousel-item {
@@ -129,7 +144,6 @@
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.3s;
-      display: block;
     }
 
     .carousel-item img {
@@ -143,30 +157,31 @@
       transform: scale(1.05);
     }
 
-    a.carousel-link {
-      display: block;
-      width: 100%;
-      height: 100%;
-      text-decoration: none;
-      color: inherit;
-    }
-
     @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
-    @media (min-width: 768px) {
-      header {
-        justify-content: center;
+    /* Ajustes para pantallas móviles */
+    @media (max-width: 600px) {
+      .carousel-track {
+        gap: 10px;
+        padding-left: 10px;
+        animation: none; /* Desactiva animación para scroll manual */
       }
 
-      .menu-label, .cart-label {
-        display: none;
+      .carousel-item {
+        width: 140px;
+        height: 200px;
       }
 
-      nav.menu-mobile {
-        display: none !important;
+      .carousel-item img {
+        height: 200px;
+      }
+
+      .carousel-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
       }
     }
   </style>
@@ -175,17 +190,19 @@
 
 <header>
   <div class="menu-label" id="menu-toggle">MENÚ</div>
-  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo">
-  <div class="cart-label">CESTA</div>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo" />
+  <div class="cart-label" id="cartLabel">CESTA</div>
 </header>
 
 <nav class="menu-mobile" id="mobileMenu">
-  <a href="index.html">INICIO</a>
+<a href="index.html">INICIO</a>
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
   <a href="editorial.html">EDITORIAL</a>
-  <a href="#" onclick="toggleMenu()">Cerrar</a>
-</nav>
+    <a href="looks.html">LOOKS</a>
+        <a href="contacto.html">CONTACTANOS</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
+  </nav>
 <main>
   <!-- FILTRO tipo texto -->
   <div class="filter-text" id="filterText">
@@ -249,7 +266,7 @@
             <img src="19.png" alt="Prenda 8" />
           </a>
         </div>
- <div class="carousel-item" data-category="pantalones">
+        <div class="carousel-item" data-category="pantalones">
           <a href="producto.html?producto=prenda11" class="carousel-link">
             <img src="20.png" alt="Prenda 8" />
           </a>
@@ -325,6 +342,11 @@
             <img src="17.png" alt="Prenda J" />
           </a>
         </div>
+        <div class="carousel-item">
+          <a href="producto.html?producto=prendaK" class="carousel-link">
+            <img src="09.png" alt="Prenda K" />
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -333,8 +355,15 @@
 <script>
   const toggleBtn = document.getElementById('menu-toggle');
   const mobileMenu = document.getElementById('mobileMenu');
+  const closeMenuBtn = document.getElementById('closeMenu');
+
   toggleBtn.addEventListener('click', () => {
-    mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+    mobileMenu.classList.toggle('show');
+  });
+
+  closeMenuBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    mobileMenu.classList.remove('show');
   });
 
   // Pausar scroll al pasar mouse o tocar
