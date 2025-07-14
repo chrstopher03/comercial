@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ACERCA DE </title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background: #fff;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .menu-label, .cart-label {
+    cursor: pointer;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .menu-mobile {
+    display: none;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+  }
+
+  .menu-mobile a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .menu-mobile.show {
+    display: flex;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .image-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 60px;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+
+  .left-img {
+    flex: 1.5;
+    position: relative;
+  }
+
+  .left-img img {
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    display: block;
+    width: 100%;
+  }
+
+  .caption {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+  }
+
+  .right-imgs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+  }
+
+  .right-imgs .big {
+    height: auto;
+    object-fit: cover;
+ 
+    width: 100%;
+  }
+
+  .right-imgs .small-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .right-imgs .small-container img {
+    width: 180px;
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;
+    background: white;
+    margin-top: -40px;
+  }
+
+  .text-section {
+    text-align: center;
+    font-size: 12px;
+    color: #111;
+    line-height: 1.6;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto 60px;
+  }
+
+  @media (max-width: 900px) {
+    .image-group {
+      gap: 15px;
+    }
+   
+    
+    .right-imgs .small-container img {
+      width: 120px;
+      max-height: 120px;
+      margin-top: -25px;
+    }
+    .caption {
+      font-size: 11px;
+      bottom: -20px;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .image-group {
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+    .left-img {
+      flex: 1.5;
+    }
+    .right-imgs {
+      flex: 1;
+      gap: 10px;
+    }
+    .right-imgs .small-container img {
+      width: 90px;
+      max-height: 90px;
+      margin-top: -20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="menu-label" id="menu-toggle">MENÚ</div>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo">
+  <div class="cart-label">CESTA</div>
+</header>
+
+<nav class="menu-mobile" id="mobileMenu">
+  <a href="index.html">INICIO</a>
+  <a href="colecciones.html">COLECCIONES</a>
+  <a href="acerca.html">ACERCA DE</a>
+  <a href="editorial.html">EDITORIAL</a>
+  <a href="#" onclick="toggleMenu()">Cerrar</a>
+</nav>
+<div class="container">
+  
+  <div class="image-group">
+    <div class="left-img">
+      <img src="28.jpeg" alt="Imagen grande izquierda 1" />
+      <div class="caption">DROP 01
+        <P>NICARAGUA</P>
+        2025
+      </div>
+    </div>
+    
+  </div>
+<div class="text-section">
+    Acerca de VogueCrestS.<br><br>
+   VogueCrest es una marca de moda contemporánea que nace con el propósito de fusionar la indumentaria con la tecnología y la cultura. Se trata de un proyecto visionario que no solo crea prendas exclusivas, sino que construye un ecosistema digital en el que cada pieza tiene vida propia.<br>
+    ¿Qué es VogueCrest?<br>
+   s una marca de ropa urbana y moderna, pensada para jóvenes creativos, auténticos y conectados con las tendencias globales, pero también con sus raíces culturales. Lo que hace especial a VogueCrest es su propuesta de integrar en cada prenda un código QR único, que al escanearse con cualquier celular, brinda acceso a una plataforma digital personalizada.<br>
+    ¿Qué ofrece la plataforma VogueCrest?<br><br>
+    Información de la prenda (nombre, colección, fecha de lanzamiento, historia del diseño).
+ Inspiraciones de uso: cómo combinarla, tendencias asociadas, ideas de estilo.
+ Drops exclusivos: acceso anticipado a nuevas colecciones o piezas limitadas.
+ Interacción con el usuario: registro de propiedad digital, posibilidad de crear perfiles, dejar comentarios o recibir recomendaciones.
+ Experiencia de marca: frases motivacionales, contenido multimedia, narrativas visuales y más.
+<br>
+   El concepto de “Drop” en VogueCrest<br><br>
+  Más que un simple lanzamiento de productos, el Drop en VogueCrest es una ceremonia de identidad. Cada drop representa un momento, un estado emocional, una reflexión visual sobre quiénes somos y hacia dónde vamos. Las piezas se lanzan en ediciones limitadas, reforzando el valor de lo único y lo irrepetible. Esta estrategia no solo promueve la exclusividad, sino que honra la conexión directa entre el creador y quien elige vestir su obra.<br>
+    Filosofía de marca <br>En VogueCrest creemos que la ropa no solo cubre el cuerpo, sino que revela el alma. Cada prenda es una extensión del pensamiento, del sentir, del tiempo en que vivimos. Vestir es una forma de expresión, pero también de resistencia: a lo genérico, a lo vacío, a lo superficial. Nuestras colecciones invitan a mirar hacia adentro y vestir con propósito. No solo elegís una prenda, elegís un mensaje.
+<br>Innovación tecnológica <br>VogueCrest apuesta por el uso de tecnología QR y almacenamiento digital para ofrecer experiencias únicas. Cada prenda se convierte en un puente entre el mundo físico y digital, dando valor agregado a través de contenido interactivo, autenticidad verificada y conexión directa con la marca. <br>Diseño y propósito
+<br>Cada diseño de VogueCrest está hecho con atención al detalle. La estética es minimalista pero poderosa, influenciada por el streetwear, la moda urbana y elementos culturales locales reinterpretados. Más allá de su aspecto visual, cada prenda cuenta una historia: sobre identidad, comunidad, resistencia o estilo. <br>Impacto social y cultural <br>La marca también se compromete con el empoderamiento juvenil y la promoción de talentos locales. Busca ser una plataforma donde creativos, diseñadores, ilustradores y programadores puedan participar y dejar su huella. <br> Misión <br> Impulsar una nueva manera de vestir: inteligente, conectada, significativa y con impacto cultural. <br> Visión <br>Convertirse en una marca referente de moda tecnológica en América Latina, con proyección internacional, autenticidad local y responsabilidad social.
+
+VogueCrest. Viste el futuro, conecta con tu historia.
+  </div>
+
+ <div class="right-imgs">
+      <img src="29.jpeg" alt="Imagen grande derecha 1" class="big" />
+      <div class="small-container">
+        <img src="13.jpeg" alt="Imagen pequeña derecha abajo 1" />
+      </div>
+    </div>
+</div>
+
+<script>
+  const toggleMenu = () => {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('show');
+  };
+
+  document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+</script>
+
+</body>
+</html>

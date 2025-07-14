@@ -134,3 +134,146 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Disposición tipo GNG exacta</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    font-family: Arial, sans-serif;
+    background: #fff;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  /* Contenedor general de fila */
+  .flex-row {
+    display: flex;
+    gap: 20px;
+    position: relative;
+  }
+
+  /* Imagen principal izquierda */
+  .img-left {
+    flex: 1.8;
+  }
+  .img-left img {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+  }
+
+  /* Columna derecha */
+  .right-column {
+    flex: 1;
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  /* Imagen grande derecha: bajada con margen top */
+  .img-right-big {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    margin-top: 180px;
+  }
+
+  /* Contenedor de la imagen pequeña, que se alinea abajo a la derecha */
+  .img-right-small-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* Imagen pequeña: borde blanco y sombra */
+  .img-right-small {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+    border: 4px solid white;
+    background: white;
+  }
+
+  /* RESPONSIVE MOVIL */
+  @media (max-width: 900px) {
+    .flex-row {
+      flex-direction: column;
+      gap: 15px;
+    }
+    /* La imagen principal grande a 100% ancho y altura 300 */
+    .img-left img {
+      height: 300px;
+      border-radius: 10px;
+    }
+    /* La columna derecha se vuelve fila para las dos imágenes */
+    .right-column {
+      flex-direction: row;
+      min-height: auto;
+      gap: 10px;
+      justify-content: flex-start;
+      align-items: flex-end;
+    }
+    /* Imagen grande derecha más ancha y menos alta */
+    .img-right-big {
+      width: 70%;
+      height: 250px;
+      margin-top: 0;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+    /* La imagen pequeña a la derecha, más chica y borde más delgado */
+    .img-right-small-container {
+      width: 30%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+    .img-right-small {
+      width: 100%;
+      max-height: 150px;
+      height: auto;
+      border: 3px solid white;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      border-radius: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="flex-row">
+    <div class="img-left">
+      <img src="60.jpeg" alt="Imagen principal izquierda" />
+    </div>
+    <div class="right-column">
+      <img src="47.jpeg" alt="Imagen grande derecha" class="img-right-big" />
+      <div class="img-right-small-container">
+        <img src="62.jpeg" alt="Imagen pequeña derecha abajo" class="img-right-small" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Puedes repetir bloques similares para más imágenes -->
+
+</div>
+
+</body>
+</html>

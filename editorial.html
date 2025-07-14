@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sección tipo GNG</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background: #fff;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  .menu-label, .cart-label {
+    cursor: pointer;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .menu-mobile {
+    display: none;
+    flex-direction: column;
+    background: white;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+  }
+
+  .menu-mobile a {
+    text-decoration: none;
+    color: black;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .menu-mobile.show {
+    display: flex;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .image-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 60px;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+
+  .left-img {
+    flex: 1.5;
+    position: relative;
+  }
+
+  .left-img img {
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    display: block;
+    width: 100%;
+  }
+
+  .caption {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    font-size: 12px;
+    color: #333;
+    font-weight: normal;
+  }
+
+  .right-imgs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+  }
+
+  .right-imgs .big {
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    margin-top: 180px;
+    width: 100%;
+  }
+
+  .right-imgs .small-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .right-imgs .small-container img {
+    width: 180px;
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;
+    background: white;
+    margin-top: -40px;
+  }
+
+  .text-section {
+    text-align: center;
+    font-size: 12px;
+    color: #111;
+    line-height: 1.6;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto 60px;
+  }
+
+  @media (max-width: 900px) {
+    .image-group {
+      gap: 15px;
+    }
+    .left-img img {
+      max-height: 300px;
+    }
+    .right-imgs .big {
+      max-height: 250px;
+    }
+    .right-imgs .small-container img {
+      width: 120px;
+      max-height: 120px;
+      margin-top: -25px;
+    }
+    .caption {
+      font-size: 11px;
+      bottom: -20px;
+    }
+  }
+
+  @media (max-width: 550px) {
+    .image-group {
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+    .left-img {
+      flex: 1.5;
+    }
+    .right-imgs {
+      flex: 1;
+      gap: 10px;
+    }
+    .right-imgs .small-container img {
+      width: 90px;
+      max-height: 90px;
+      margin-top: -20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="menu-label" id="menu-toggle">MENÚ</div>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo">
+  <div class="cart-label">CESTA</div>
+</header>
+
+<nav class="menu-mobile" id="mobileMenu">
+  <a href="index.html">INICIO</a>
+  <a href="colecciones.html">COLECCIONES</a>
+  <a href="acerca.html">ACERCA DE</a>
+  <a href="editorial.html">EDITORIAL</a>
+  <a href="#" onclick="toggleMenu()">Cerrar</a>
+</nav>
+
+<div class="container">
+  <div class="text-section">
+    UNA NUEVA COLECCIÓN DE PRENDAS.<br><br>
+    NACIDA SIN PROMESAS — SOLO CON EL INSTINTO DE MARCAR DIFERENCIA.<br>
+    PARA QUIENES CAMINAN ENTRE EL RUIDO CON PROPÓSITO.<br>
+    ADELANTE, TÓMALO.<br>
+    SE GANA, NO SE PIDE.<br><br>
+    DISEÑADA PARA CAPTURAR TU ATENCIÓN.<br>
+    TU ESENCIA NO SE APRENDE — SOBREVIVE. ORIGEN. SIN MÍTOS.<br><br>
+    ESTO ES VOGUECREST.<br>
+    TU SEGUNDA PIEL.
+  </div>
+
+  <div class="image-group">
+    <div class="left-img">
+      <img src="26.jpeg" alt="Imagen grande izquierda 1" />
+      <div class="caption">DROP 01
+        <P>NICARAGUA</P>
+        2025
+      </div>
+    </div>
+    <div class="right-imgs">
+      <img src="48.jpeg" alt="Imagen grande derecha 1" class="big" />
+      <div class="small-container">
+        <img src="13.jpeg" alt="Imagen pequeña derecha abajo 1" />
+      </div>
+    </div>
+  </div>
+
+  <div class="image-group">
+    <div class="left-img">
+      <img src="49.jpeg" alt="Imagen grande izquierda 2" />
+      <div class="caption">ORIGEN
+        <P>2025</P>
+      </div>
+    </div>
+    <div class="right-imgs">
+      <img src="50.jpeg" alt="Imagen grande derecha 2" class="big" />
+      <div class="small-container">
+        <img src="51.jpeg" alt="Imagen pequeña derecha abajo 2" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const toggleMenu = () => {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('show');
+  };
+
+  document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+</script>
+
+</body>
+</html>
