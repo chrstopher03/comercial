@@ -5,99 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Detalle del producto - VogueCrest</title>
   <style>
-    /* Reset box-sizing para todos */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+    /* (Aquí va todo tu CSS previo, incluido lo de tallas, colores, carrusel, etc.) */
 
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #fff;
-      color: #000;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 15px;
-    }
-
-    h1 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      line-height: 1.2;
-    }
-
-    .price {
-      font-weight: 700;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-      color: #d6336c;
-    }
-
-    .main-image {
-      width: 100%;
-      max-height: 400px;
-      object-fit: contain;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
-      cursor: zoom-in;
-      transition: transform 0.3s ease;
-    }
-    .main-image:hover {
-      transform: scale(1.02);
-    }
-
-    /* Carrusel */
-    .carousel {
-      display: flex;
-      overflow-x: auto;
-      gap: 10px;
-      margin-bottom: 25px;
-      padding-bottom: 10px;
-      scroll-behavior: smooth;
-    }
-    .carousel::-webkit-scrollbar {
-      height: 6px;
-    }
-    .carousel::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .carousel::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 3px;
-    }
-    .carousel img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.3s, transform 0.2s;
-    }
-    .carousel img:hover {
-      transform: scale(1.05);
-    }
-    .carousel img.active {
-      border-color: #d6336c;
-    }
-
-    .description {
-      white-space: pre-wrap;
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 25px;
-      color: #444;
-    }
-
+    /* Contenedor para la info extra */
     .section-title {
       font-weight: 700;
       margin-top: 20px;
@@ -108,119 +18,21 @@
       color: #222;
     }
 
-    /* Estilos para tallas y colores */
-    .opciones-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 25px;
-    }
-
-    /* Botones para tallas */
-    .talla-btn {
-      padding: 8px 16px;
-      border: 2px solid #d6336c;
-      border-radius: 6px;
-      background-color: white;
-      color: #d6336c;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .talla-btn:hover {
-      background-color: #d6336c;
-      color: white;
-    }
-
-    .talla-btn.active {
-      background-color: #d6336c;
-      color: white;
-      box-shadow: 0 0 6px rgba(214, 51, 108, 0.6);
-    }
-
-    /* Colores como círculos */
-    .color-circle {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2px solid #ccc;
-      cursor: pointer;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      position: relative;
-    }
-
-    .color-circle:hover {
-      border-color: #d6336c;
-      box-shadow: 0 0 8px rgba(214, 51, 108, 0.8);
-    }
-
-    .color-circle.active {
-      border-color: #d6336c;
-      box-shadow: 0 0 8px rgba(214, 51, 108, 0.8);
-    }
-
-    /* Tooltip para color */
-    .color-circle[data-tooltip]:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #d6336c;
-      color: white;
-      padding: 4px 8px;
-      font-size: 0.75rem;
-      border-radius: 4px;
-      white-space: nowrap;
-      pointer-events: none;
-      opacity: 0.9;
-      z-index: 10;
-    }
-
-    ul {
+    #infoExtraList {
+      margin-top: 10px;
       padding-left: 20px;
-      margin-top: 0;
-      margin-bottom: 25px;
       color: #333;
-    }
-
-    li {
       font-size: 1rem;
-      line-height: 1.4;
     }
 
-    /* Responsive */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 1.4rem;
-      }
-      .price {
-        font-size: 1.2rem;
-      }
-      .description {
-        font-size: 0.95rem;
-      }
-      .section-title {
-        font-size: 1.1rem;
-      }
-      li {
-        font-size: 0.9rem;
-      }
-      .carousel img {
-        width: 80px;
-        height: 80px;
-      }
-      .color-circle {
-        width: 28px;
-        height: 28px;
-      }
+    #infoExtraList li {
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Tu contenido previo -->
     <h1 id="productName">Cargando...</h1>
     <div class="price" id="productPrice"></div>
     <img id="mainImage" class="main-image" src="" alt="Imagen del producto" loading="lazy" />
@@ -238,6 +50,12 @@
       <div class="section-title">Colores disponibles:</div>
       <div id="coloresContainer" class="opciones-container"></div>
     </div>
+
+    <!-- Nueva sección para info extra -->
+    <div>
+      <div class="section-title">Información adicional:</div>
+      <ul id="infoExtraList"></ul>
+    </div>
   </div>
 
   <script>
@@ -250,7 +68,11 @@
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro", "Rojo", "Café"],
-        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador.",
+        esOriginal: true,
+        creador: "VogueCrest Design Team",
+        lugarCreacion: "Managua, Nicaragua",
+        tipoTela: "Algodón premium de alto gramaje"
       },
       prenda2: {
         nombre: "VOGUECREST T-SHIRT BLACK (Variante)",
@@ -260,7 +82,11 @@
         precio: "C$800",
         tallas: ["M", "L", "XL"],
         colores: ["Negro"],
-        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador.",
+        esOriginal: true,
+        creador: "VogueCrest Design Team",
+        lugarCreacion: "Managua, Nicaragua",
+        tipoTela: "Algodón premium de alto gramaje"
       },
       prenda3: {
         nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3",
@@ -270,7 +96,11 @@
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro"],
-        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador.",
+        esOriginal: true,
+        creador: "VogueCrest Design Team",
+        lugarCreacion: "Managua, Nicaragua",
+        tipoTela: "Algodón premium de alto gramaje"
       },
       prenda4: {
         nombre: "VOGUECREST LIGHT DENIM SHORTS",
@@ -280,11 +110,14 @@
         precio: "C$800",
         tallas: ["M", "L", "XL"],
         colores: ["Celeste"],
-        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador.",
+        esOriginal: true,
+        creador: "VogueCrest Design Team",
+        lugarCreacion: "Managua, Nicaragua",
+        tipoTela: "Denim suave y resistente"
       }
     };
 
-    // Mapeo de colores a códigos HEX para mostrar círculos con color real
     const colorMap = {
       "Negro": "#000000",
       "Rojo": "#ff0000",
@@ -322,7 +155,6 @@
           image.alt = producto.nombre + " imagen " + (index + 1);
           image.loading = "lazy";
 
-          // Para resaltar la imagen activa en el carrusel
           if (img === producto.imagenPrincipal) {
             image.classList.add("active");
           }
@@ -330,7 +162,6 @@
           image.addEventListener("click", () => {
             mainImage.src = img;
 
-            // Actualizar clases active
             carousel.querySelectorAll("img").forEach(i => i.classList.remove("active"));
             image.classList.add("active");
           });
@@ -371,6 +202,34 @@
 
         coloresContainer.appendChild(div);
       });
+
+      // Información adicional
+      const infoExtraList = document.getElementById("infoExtraList");
+      infoExtraList.innerHTML = "";
+
+      if (producto.esOriginal !== undefined) {
+        const li = document.createElement("li");
+        li.textContent = "Producto original: " + (producto.esOriginal ? "Sí" : "No");
+        infoExtraList.appendChild(li);
+      }
+
+      if (producto.creador) {
+        const li = document.createElement("li");
+        li.textContent = "Creado por: " + producto.creador;
+        infoExtraList.appendChild(li);
+      }
+
+      if (producto.lugarCreacion) {
+        const li = document.createElement("li");
+        li.textContent = "Lugar de creación: " + producto.lugarCreacion;
+        infoExtraList.appendChild(li);
+      }
+
+      if (producto.tipoTela) {
+        const li = document.createElement("li");
+        li.textContent = "Tipo de tela: " + producto.tipoTela;
+        infoExtraList.appendChild(li);
+      }
     }
   </script>
 </body>
