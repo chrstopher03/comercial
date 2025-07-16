@@ -5,30 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Detalle del producto - VogueCrest</title>
   <style>
+    /* Reset box-sizing para todos */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
       background: #fff;
       color: #000;
-      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     .container {
       max-width: 600px;
       margin: 0 auto;
+      padding: 0 15px;
     }
 
     h1 {
       font-weight: 700;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      line-height: 1.2;
     }
 
     .price {
       font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 15px;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      color: #d6336c; /* un color atractivo */
     }
 
     .main-image {
@@ -36,58 +45,89 @@
       max-height: 400px;
       object-fit: contain;
       border-radius: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+      cursor: zoom-in;
+      transition: transform 0.3s ease;
+    }
+    .main-image:hover {
+      transform: scale(1.02);
     }
 
+    /* Carrusel */
     .carousel {
       display: flex;
       overflow-x: auto;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       padding-bottom: 10px;
+      scroll-behavior: smooth;
+    }
+
+    /* Ocultar scrollbar en algunos navegadores */
+    .carousel::-webkit-scrollbar {
+      height: 6px;
+    }
+    .carousel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .carousel::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 3px;
     }
 
     .carousel img {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       border-radius: 8px;
       flex-shrink: 0;
       cursor: pointer;
-      transition: transform 0.2s;
+      border: 2px solid transparent;
+      transition: border-color 0.3s, transform 0.2s;
     }
-
     .carousel img:hover {
       transform: scale(1.05);
+    }
+    /* Imagen activa resaltada */
+    .carousel img.active {
+      border-color: #d6336c;
     }
 
     .description {
       white-space: pre-wrap;
       font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 15px;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      color: #444;
     }
 
     .section-title {
       font-weight: 700;
       margin-top: 20px;
-      margin-bottom: 8px;
-      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      border-bottom: 2px solid #d6336c;
+      padding-bottom: 3px;
+      color: #222;
     }
 
     ul {
       padding-left: 20px;
       margin-top: 0;
-      margin-bottom: 15px;
+      margin-bottom: 25px;
     }
 
     li {
-      font-size: 0.95rem;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: #333;
     }
 
+    /* Responsive */
     @media (max-width: 480px) {
       h1 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
       }
       .price {
         font-size: 1.2rem;
@@ -96,10 +136,14 @@
         font-size: 0.95rem;
       }
       .section-title {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
       li {
         font-size: 0.9rem;
+      }
+      .carousel img {
+        width: 80px;
+        height: 80px;
       }
     }
   </style>
@@ -108,9 +152,9 @@
   <div class="container">
     <h1 id="productName">Cargando...</h1>
     <div class="price" id="productPrice"></div>
-    <img id="mainImage" class="main-image" src="" alt="Imagen del producto" />
+    <img id="mainImage" class="main-image" src="" alt="Imagen del producto" loading="lazy" />
 
-    <div class="carousel" id="carouselImages"></div>
+    <div class="carousel" id="carouselImages" aria-label="Imágenes del producto"></div>
 
     <div class="description" id="productDescription"></div>
 
@@ -130,7 +174,7 @@
       prenda1: {
         nombre: "VOGUECREST T-SHIRT BLACK",
         imagenPrincipal: "013.png",
-        imagenesExtra: ["g"], // ← carrusel
+        imagenesExtra: ["013_1.png", "013_2.png", "013_3.png"], // Asegúrate que existan estas imágenes
         descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Su silueta recta y cuello reforzado brindan estructura y comodidad. Lleva el logotipo VogueCrest en contraste blanco al frente, destacando con un diseño limpio y atemporal.`,
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
@@ -155,18 +199,18 @@
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro"],
-                detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+        detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
       },
-       prenda4: {
+      prenda4: {
         nombre: "VOGUECREST LIGHT DENIM SHORTS",
         imagenPrincipal: "015.png",
         imagenesExtra: ["018_1.png"],
-        descripcion: "El short de mezclilla clara de VogueCrest fusiona lo clásico con el estilo contemporáneo. Confeccionado en denim suave y resistente, presenta un corte relajado por encima de la rodilla que brinda libertad de movimiento y frescura. Los detalles desgastados estratégicos y el logo VogueCrest en la parte trasera elevan su diseño urbano. Perfecto para un look casual con identidad propia..",
+        descripcion: "El short de mezclilla clara de VogueCrest fusiona lo clásico con el estilo contemporáneo. Confeccionado en denim suave y resistente, presenta un corte relajado por encima de la rodilla que brinda libertad de movimiento y frescura. Los detalles desgastados estratégicos y el logo VogueCrest en la parte trasera elevan su diseño urbano. Perfecto para un look casual con identidad propia.",
         precio: "C$800",
         tallas: ["M", "L", "XL"],
         colores: ["Celeste"],
         detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
-       }
+      }
     };
 
     function getQueryParam(param) {
@@ -182,13 +226,15 @@
     } else {
       document.getElementById("productName").textContent = producto.nombre;
       document.getElementById("productPrice").textContent = producto.precio;
-      document.getElementById("mainImage").src = producto.imagenPrincipal;
-      document.getElementById("mainImage").alt = producto.nombre;
+      const mainImage = document.getElementById("mainImage");
+      mainImage.src = producto.imagenPrincipal;
+      mainImage.alt = producto.nombre;
 
       document.getElementById("productDescription").textContent =
         producto.descripcion + "\n\n" + (producto.detalleExtra || "");
 
       const tallasList = document.getElementById("tallasList");
+      tallasList.innerHTML = ""; // Limpia antes
       producto.tallas.forEach(talla => {
         const li = document.createElement("li");
         li.textContent = talla;
@@ -196,24 +242,42 @@
       });
 
       const coloresList = document.getElementById("coloresList");
+      coloresList.innerHTML = ""; // Limpia antes
       producto.colores.forEach(color => {
         const li = document.createElement("li");
         li.textContent = color;
         coloresList.appendChild(li);
       });
 
-      // Agregar imágenes al carrusel
       const carousel = document.getElementById("carouselImages");
+      carousel.innerHTML = ""; // Limpia antes
+
       if (producto.imagenesExtra && producto.imagenesExtra.length > 0) {
-        producto.imagenesExtra.forEach(img => {
+        producto.imagenesExtra.forEach((img, index) => {
           const image = document.createElement("img");
           image.src = img;
-          image.alt = producto.nombre;
+          image.alt = producto.nombre + " vista " + (index + 1);
+          image.loading = "lazy";
+
+          // La primera miniatura activa inicialmente
+          if (index === 0) {
+            image.classList.add("active");
+          }
+
           image.addEventListener("click", () => {
-            document.getElementById("mainImage").src = img;
+            // Cambiar imagen principal
+            mainImage.src = img;
+
+            // Resaltar miniatura activa
+            document.querySelectorAll(".carousel img").forEach(imgEl => imgEl.classList.remove("active"));
+            image.classList.add("active");
           });
+
           carousel.appendChild(image);
         });
+      } else {
+        // Si no hay imagenes extra, ocultar carrusel o mostrar mensaje
+        carousel.style.display = "none";
       }
     }
   </script>
