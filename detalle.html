@@ -37,7 +37,7 @@
       font-weight: 700;
       font-size: 1.4rem;
       margin-bottom: 20px;
-      color: #d6336c; /* un color atractivo */
+      color: #d6336c;
     }
 
     .main-image {
@@ -63,8 +63,6 @@
       padding-bottom: 10px;
       scroll-behavior: smooth;
     }
-
-    /* Ocultar scrollbar en algunos navegadores */
     .carousel::-webkit-scrollbar {
       height: 6px;
     }
@@ -75,7 +73,6 @@
       background: #ccc;
       border-radius: 3px;
     }
-
     .carousel img {
       width: 100px;
       height: 100px;
@@ -89,7 +86,6 @@
     .carousel img:hover {
       transform: scale(1.05);
     }
-    /* Imagen activa resaltada */
     .carousel img.active {
       border-color: #d6336c;
     }
@@ -112,16 +108,87 @@
       color: #222;
     }
 
+    /* Estilos para tallas y colores */
+    .opciones-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    /* Botones para tallas */
+    .talla-btn {
+      padding: 8px 16px;
+      border: 2px solid #d6336c;
+      border-radius: 6px;
+      background-color: white;
+      color: #d6336c;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .talla-btn:hover {
+      background-color: #d6336c;
+      color: white;
+    }
+
+    .talla-btn.active {
+      background-color: #d6336c;
+      color: white;
+      box-shadow: 0 0 6px rgba(214, 51, 108, 0.6);
+    }
+
+    /* Colores como círculos */
+    .color-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #ccc;
+      cursor: pointer;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      position: relative;
+    }
+
+    .color-circle:hover {
+      border-color: #d6336c;
+      box-shadow: 0 0 8px rgba(214, 51, 108, 0.8);
+    }
+
+    .color-circle.active {
+      border-color: #d6336c;
+      box-shadow: 0 0 8px rgba(214, 51, 108, 0.8);
+    }
+
+    /* Tooltip para color */
+    .color-circle[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #d6336c;
+      color: white;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0.9;
+      z-index: 10;
+    }
+
     ul {
       padding-left: 20px;
       margin-top: 0;
       margin-bottom: 25px;
+      color: #333;
     }
 
     li {
       font-size: 1rem;
       line-height: 1.4;
-      color: #333;
     }
 
     /* Responsive */
@@ -145,6 +212,10 @@
         width: 80px;
         height: 80px;
       }
+      .color-circle {
+        width: 28px;
+        height: 28px;
+      }
     }
   </style>
 </head>
@@ -160,12 +231,12 @@
 
     <div>
       <div class="section-title">Tallas disponibles:</div>
-      <ul id="tallasList"></ul>
+      <div id="tallasContainer" class="opciones-container"></div>
     </div>
 
     <div>
       <div class="section-title">Colores disponibles:</div>
-      <ul id="coloresList"></ul>
+      <div id="coloresContainer" class="opciones-container"></div>
     </div>
   </div>
 
@@ -174,7 +245,7 @@
       prenda1: {
         nombre: "VOGUECREST T-SHIRT BLACK",
         imagenPrincipal: "013.png",
-        imagenesExtra: ["013_1.png", "013_2.png", "013_3.png"], // Asegúrate que existan estas imágenes
+        imagenesExtra: ["013_1.png", "013_2.png", "013_3.png"],
         descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Su silueta recta y cuello reforzado brindan estructura y comodidad. Lleva el logotipo VogueCrest en contraste blanco al frente, destacando con un diseño limpio y atemporal.`,
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
@@ -184,7 +255,7 @@
       prenda2: {
         nombre: "VOGUECREST T-SHIRT BLACK (Variante)",
         imagenPrincipal: "019.png",
-        imagenesExtra: ["019.png","023.png", "021.png", "022.png"],
+        imagenesExtra: ["019.png", "023.png", "021.png", "022.png"],
         descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Presenta una silueta recta, cuello reforzado y un diseño atemporal que combina con todo.`,
         precio: "C$800",
         tallas: ["M", "L", "XL"],
@@ -213,6 +284,14 @@
       }
     };
 
+    // Mapeo de colores a códigos HEX para mostrar círculos con color real
+    const colorMap = {
+      "Negro": "#000000",
+      "Rojo": "#ff0000",
+      "Café": "#6f4e37",
+      "Celeste": "#7ec8e3"
+    };
+
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
@@ -233,52 +312,65 @@
       document.getElementById("productDescription").textContent =
         producto.descripcion + "\n\n" + (producto.detalleExtra || "");
 
-      const tallasList = document.getElementById("tallasList");
-      tallasList.innerHTML = ""; // Limpia antes
-      producto.tallas.forEach(talla => {
-        const li = document.createElement("li");
-        li.textContent = talla;
-        tallasList.appendChild(li);
-      });
-
-      const coloresList = document.getElementById("coloresList");
-      coloresList.innerHTML = ""; // Limpia antes
-      producto.colores.forEach(color => {
-        const li = document.createElement("li");
-        li.textContent = color;
-        coloresList.appendChild(li);
-      });
-
+      // Carrusel imágenes
       const carousel = document.getElementById("carouselImages");
-      carousel.innerHTML = ""; // Limpia antes
-
+      carousel.innerHTML = "";
       if (producto.imagenesExtra && producto.imagenesExtra.length > 0) {
         producto.imagenesExtra.forEach((img, index) => {
           const image = document.createElement("img");
           image.src = img;
-          image.alt = producto.nombre + " vista " + (index + 1);
+          image.alt = producto.nombre + " imagen " + (index + 1);
           image.loading = "lazy";
 
-          // La primera miniatura activa inicialmente
-          if (index === 0) {
+          // Para resaltar la imagen activa en el carrusel
+          if (img === producto.imagenPrincipal) {
             image.classList.add("active");
           }
 
           image.addEventListener("click", () => {
-            // Cambiar imagen principal
             mainImage.src = img;
 
-            // Resaltar miniatura activa
-            document.querySelectorAll(".carousel img").forEach(imgEl => imgEl.classList.remove("active"));
+            // Actualizar clases active
+            carousel.querySelectorAll("img").forEach(i => i.classList.remove("active"));
             image.classList.add("active");
           });
-
           carousel.appendChild(image);
         });
-      } else {
-        // Si no hay imagenes extra, ocultar carrusel o mostrar mensaje
-        carousel.style.display = "none";
       }
+
+      // Tallas como botones
+      const tallasContainer = document.getElementById("tallasContainer");
+      tallasContainer.innerHTML = "";
+      producto.tallas.forEach(talla => {
+        const btn = document.createElement("button");
+        btn.textContent = talla;
+        btn.className = "talla-btn";
+        btn.type = "button";
+
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".talla-btn").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+        });
+
+        tallasContainer.appendChild(btn);
+      });
+
+      // Colores como círculos
+      const coloresContainer = document.getElementById("coloresContainer");
+      coloresContainer.innerHTML = "";
+      producto.colores.forEach(color => {
+        const div = document.createElement("div");
+        div.className = "color-circle";
+        div.style.backgroundColor = colorMap[color] || "#ccc";
+        div.setAttribute("data-tooltip", color);
+
+        div.addEventListener("click", () => {
+          document.querySelectorAll(".color-circle").forEach(c => c.classList.remove("active"));
+          div.classList.add("active");
+        });
+
+        coloresContainer.appendChild(div);
+      });
     }
   </script>
 </body>
