@@ -13,6 +13,18 @@
       color: #222;
       box-sizing: border-box;
     }
+  header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      background: white;
+      border-bottom: 1px solid #ccc;
+    }
 
     .container {
       max-width: 600px;
@@ -207,6 +219,13 @@
   </style>
 </head>
 <body>
+
+  <header>
+  <img src="Copia_de_Copia_de_Copia_de_Copia_de_Think-removebg-preview.png" alt="VogueCrest" class="logo" />
+  <div style="display:flex; align-items:center;">
+  </div>
+</header>
+
   <div class="container">
     <h1 id="productName">Cargando...</h1>
     <div class="price" id="productPrice"></div>
