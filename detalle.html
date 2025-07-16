@@ -244,11 +244,11 @@
         detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador.",
         esOriginal: true,
         creador: "VogueCrest",
-        lugarCreacion: "Somoto,Madriz, Nicaragua",
+        lugarCreacion: "Somoto, Madriz, Nicaragua",
         tipoTela: "Algodón premium de alto gramaje"
       },
       prenda2: {
-    nombre: "VOGUECREST ESSENTIAL LOGO CAP – ASH GREY",
+        nombre: "VOGUECREST ESSENTIAL LOGO CAP – ASH GREY",
         imagenPrincipal: "019.png",
         imagenesExtra: ["019.png", "023.png", "021.png", "022.png"],
         descripcion: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
@@ -258,30 +258,20 @@ Confeccionada en ante sintético de alta calidad, ofrece un acabado suave tipo t
 El logo icónico de VogueCrest en TPU negro resalta al frente, aportando un contraste sofisticado y una identidad fuerte.
 
 Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.`,
-        precio: C$950,
+        precio: "C$950",
         tallas: ["Única ajustable"],
         colores: ["Gris"],
-        detalleExtra: `Cuidado de la Gorra Essential Logo – VogueCrest
-Para mantener la apariencia y calidad premium de tu gorra Essential Logo, sigue estos consejos de cuidado:
+        detalleExtra: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
 
-Limpieza: Limpia la gorra con un paño húmedo y suave. Evita remojarla o lavar en lavadora para preservar el acabado de ante sintético y el logo TPU.
+Confeccionada en ante sintético de alta calidad, ofrece un acabado suave tipo terciopelo en un tono gris ceniza, sobrio y moderno.
 
-Secado: Seca al aire libre en un lugar sombreado, evitando la luz directa del sol para prevenir decoloración.
+El logo icónico de VogueCrest en TPU negro resalta al frente, aportando un contraste sofisticado y una identidad fuerte.
 
-Almacenamiento: Guarda la gorra en un lugar fresco y seco, preferiblemente sobre una superficie plana para conservar su forma original.
-
-Evita: No uses productos químicos agresivos ni blanqueadores, ya que pueden dañar el material y el logo. No la expongas a fuentes de calor intenso.
-
-Siguiendo estas recomendaciones, tu gorra VogueCrest mantendrá su estilo y durabilidad por mucho más tiempo.`,
+Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.`,
         esOriginal: true,
-        creador: "VogueCrest",
-        lugarCreacion: "Somoto,Madriz , Nicaragua",
-        tipoTela: ` Tipo de tela – Gorra Essential Logo
-La gorra está confeccionada en ante sintético de alta calidad, un material que imita perfectamente la textura y suavidad del ante natural, pero con mayor resistencia y fácil mantenimiento.
-
-Este ante sintético ofrece un acabado aterciopelado y suave al tacto, aportando un look sofisticado y moderno. Además, es duradero, resistente al desgaste y mantiene su forma incluso con uso frecuente.
-
-Ideal para prendas urbanas que buscan combinar elegancia y funcionalidad.`,
+        creador: "VogueCrest Design Team",
+        lugarCreacion: "Managua, Nicaragua",
+        tipoTela: "Ante sintético premium tipo terciopelo"
       },
       prenda3: {
         nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3",
@@ -317,7 +307,8 @@ Ideal para prendas urbanas que buscan combinar elegancia y funcionalidad.`,
       "Negro": "#000000",
       "Rojo": "#ff0000",
       "Café": "#6f4e37",
-      "Celeste": "#7ec8e3"
+      "Celeste": "#7ec8e3",
+      "Gris": "#999999"
     };
 
     function getQueryParam(param) {
@@ -330,6 +321,13 @@ Ideal para prendas urbanas que buscan combinar elegancia y funcionalidad.`,
 
     if (!producto) {
       document.getElementById("productName").textContent = "Producto no encontrado";
+      document.getElementById("productPrice").textContent = "";
+      document.getElementById("mainImage").src = "";
+      document.getElementById("productDescription").textContent = "";
+      document.getElementById("carouselImages").innerHTML = "";
+      document.getElementById("tallasContainer").innerHTML = "";
+      document.getElementById("coloresContainer").innerHTML = "";
+      document.getElementById("infoExtraList").innerHTML = "";
     } else {
       document.getElementById("productName").textContent = producto.nombre;
       document.getElementById("productPrice").textContent = producto.precio;
@@ -338,16 +336,16 @@ Ideal para prendas urbanas que buscan combinar elegancia y funcionalidad.`,
       mainImage.alt = producto.nombre;
 
       document.getElementById("productDescription").textContent =
-        producto.descripcion + "\n\n" + (producto.detalleExtra || "");
+        producto.descripcion + (producto.detalleExtra ? "\n\n" + producto.detalleExtra : "");
 
       // Carrusel imágenes
       const carousel = document.getElementById("carouselImages");
       carousel.innerHTML = "";
       if (producto.imagenesExtra && producto.imagenesExtra.length > 0) {
-        producto.imagenesExtra.forEach((img, index) => {
+        producto.imagenesExtra.forEach((img) => {
           const image = document.createElement("img");
           image.src = img;
-          image.alt = producto.nombre + " imagen " + (index + 1);
+          image.alt = producto.nombre + " imagen";
           image.loading = "lazy";
 
           if (img === producto.imagenPrincipal) {

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Escanea tu prenda - VogueCrest</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
@@ -12,56 +12,78 @@
       color: white;
       padding: 20px;
       text-align: center;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      max-width: 600px;
     }
     .qr-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 30px;
+      max-width: 900px;
+      width: 100%;
     }
     .qr-item {
       background: #222;
       padding: 20px;
       border-radius: 10px;
       width: 200px;
+      box-sizing: border-box;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .qr-item canvas {
-      margin-top: 10px;
+    .qr-item div {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: #f0f0f0;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 30px;
+    canvas {
+      margin-top: 5px;
+      width: 160px !important;
+      height: 160px !important;
+    }
+    @media (max-width: 480px) {
+      .qr-item {
+        width: 150px;
+        padding: 15px;
+      }
+      canvas {
+        width: 130px !important;
+        height: 130px !important;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
     }
   </style>
 </head>
 <body>
 
 <h1>Escanea una prenda</h1>
-<div class="qr-container" id="qrContainer"></div>
+<div class="qr-container" id="qrContainer" aria-label="Códigos QR de productos VogueCrest"></div>
 
 <script>
   const productos = [
-    {
-      id: "prenda1",
-      nombre: "VOGUECREST T-SHIRT BLACK"
-    },
-    {
-      id: "prenda2",
-      nombre: "VOGUECREST T-SHIRT BLACK (Variante)"
-    },
-    {
-      id: "prenda3",
-      nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3"
-    },
-    {
-        id: "prenda4",
-        nombre:"VOGUECREST LIGHT DENIM SHORTS"
-    }
-
+    { id: "prenda1", nombre: "VOGUECREST T-SHIRT BLACK" },
+    { id: "prenda2", nombre: "VOGUECREST T-SHIRT BLACK (Variante)" },
+    { id: "prenda3", nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3" },
+    { id: "prenda4", nombre: "VOGUECREST LIGHT DENIM SHORTS" }
   ];
 
   const baseURL = "https://chrstopher03.github.io/comercial/detalle.html?producto=";
-
   const container = document.getElementById("qrContainer");
 
   productos.forEach(prod => {
@@ -72,7 +94,7 @@
     title.textContent = prod.nombre;
 
     const canvas = document.createElement("canvas");
-    const url = baseURL + prod.id;
+    const url = baseURL + encodeURIComponent(prod.id);
 
     QRCode.toCanvas(canvas, url, { width: 160 }, error => {
       if (error) console.error(error);
