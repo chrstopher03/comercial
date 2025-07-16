@@ -11,7 +11,6 @@
       padding: 20px;
       background: #fff;
       color: #000;
-      max-width: 100%;
       box-sizing: border-box;
     }
 
@@ -21,9 +20,9 @@
     }
 
     h1 {
-      margin-bottom: 10px;
       font-weight: 700;
       font-size: 1.5rem;
+      margin-bottom: 10px;
     }
 
     .price {
@@ -34,18 +33,39 @@
 
     .main-image {
       width: 100%;
-      height: auto;
       max-height: 400px;
       object-fit: contain;
-      margin-bottom: 15px;
       border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+    }
+
+    .carousel img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .carousel img:hover {
+      transform: scale(1.05);
     }
 
     .description {
-      margin-bottom: 15px;
       white-space: pre-wrap;
       font-size: 1rem;
       line-height: 1.5;
+      margin-bottom: 15px;
     }
 
     .section-title {
@@ -66,26 +86,18 @@
     }
 
     @media (max-width: 480px) {
-      body {
-        padding: 15px;
-      }
-
       h1 {
         font-size: 1.3rem;
       }
-
       .price {
         font-size: 1.2rem;
       }
-
       .description {
         font-size: 0.95rem;
       }
-
       .section-title {
         font-size: 1rem;
       }
-
       li {
         font-size: 0.9rem;
       }
@@ -97,6 +109,9 @@
     <h1 id="productName">Cargando...</h1>
     <div class="price" id="productPrice"></div>
     <img id="mainImage" class="main-image" src="" alt="Imagen del producto" />
+
+    <div class="carousel" id="carouselImages"></div>
+
     <div class="description" id="productDescription"></div>
 
     <div>
@@ -115,6 +130,7 @@
       prenda1: {
         nombre: "VOGUECREST T-SHIRT BLACK",
         imagenPrincipal: "013.png",
+        imagenesExtra: ["g"], // ← carrusel
         descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Su silueta recta y cuello reforzado brindan estructura y comodidad. Lleva el logotipo VogueCrest en contraste blanco al frente, destacando con un diseño limpio y atemporal.`,
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
@@ -124,6 +140,7 @@
       prenda2: {
         nombre: "VOGUECREST T-SHIRT BLACK (Variante)",
         imagenPrincipal: "019.png",
+        imagenesExtra: ["023.png", "021.png", "022.pn"],
         descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Presenta una silueta recta, cuello reforzado y un diseño atemporal que combina con todo.`,
         precio: "C$800",
         tallas: ["M", "L", "XL"],
@@ -133,6 +150,7 @@
       prenda3: {
         nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3",
         imagenPrincipal: "018.png",
+        imagenesExtra: ["018_1.png"],
         descripcion: `Otra variante de la camiseta VOGUECREST en color negro, con un diseño especial que resalta la identidad urbana y elegante de la marca.`,
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
@@ -156,6 +174,7 @@
       document.getElementById("productPrice").textContent = producto.precio;
       document.getElementById("mainImage").src = producto.imagenPrincipal;
       document.getElementById("mainImage").alt = producto.nombre;
+
       document.getElementById("productDescription").textContent =
         producto.descripcion + "\n\n" + (producto.detalleExtra || "");
 
@@ -172,6 +191,20 @@
         li.textContent = color;
         coloresList.appendChild(li);
       });
+
+      // Agregar imágenes al carrusel
+      const carousel = document.getElementById("carouselImages");
+      if (producto.imagenesExtra && producto.imagenesExtra.length > 0) {
+        producto.imagenesExtra.forEach(img => {
+          const image = document.createElement("img");
+          image.src = img;
+          image.alt = producto.nombre;
+          image.addEventListener("click", () => {
+            document.getElementById("mainImage").src = img;
+          });
+          carousel.appendChild(image);
+        });
+      }
     }
   </script>
 </body>
