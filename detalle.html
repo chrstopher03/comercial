@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Detalle del producto - VogueCrest</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #fff;
+      color: #000;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .price {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    .main-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    .description {
+      margin-bottom: 15px;
+      white-space: pre-wrap;
+    }
+    .section-title {
+      font-weight: 700;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    ul {
+      padding-left: 20px;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<h1 id="productName">Cargando...</h1>
+<div class="price" id="productPrice"></div>
+<img id="mainImage" class="main-image" src="" alt="Imagen del producto" />
+<div class="description" id="productDescription"></div>
+
+<div>
+  <div class="section-title">Tallas disponibles:</div>
+  <ul id="tallasList"></ul>
+</div>
+
+<div>
+  <div class="section-title">Colores disponibles:</div>
+  <ul id="coloresList"></ul>
+</div>
+
+<script>
+  const productos = {
+    prenda1: {
+      nombre: "VOGUECREST T-SHIRT BLACK",
+      imagenPrincipal: "013.png",
+      descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Su silueta recta y cuello reforzado brindan estructura y comodidad. Lleva el logotipo VogueCrest en contraste blanco al frente, destacando con un diseño limpio y atemporal.`,
+      precio: "C$800",
+      tallas: ["S", "M", "L", "XL"],
+      colores: ["Negro", "Rojo", "Café"],
+      detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+    },
+    prenda2: {
+      nombre: "VOGUECREST T-SHIRT BLACK (Variante)",
+      imagenPrincipal: "019.png",
+      descripcion: `La camiseta VOGUECREST en color negro está confeccionada en algodón premium de alto gramaje con tacto suave. Presenta una silueta recta, cuello reforzado y un diseño atemporal que combina con todo.`,
+      precio: "C$800",
+      tallas: ["M", "L", "XL"],
+      colores: ["Negro"],
+      detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+    },
+    prenda3: {
+      nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3",
+      imagenPrincipal: "018.png",
+      descripcion: `Otra variante de la camiseta VOGUECREST en color negro, con un diseño especial que resalta la identidad urbana y elegante de la marca.`,
+      precio: "C$800",
+      tallas: ["S", "M", "L", "XL"],
+      colores: ["Negro"],
+      detalleExtra: "Material: 100% algodón. Lavar a mano. No usar blanqueador."
+    }
+  };
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  const productoId = getQueryParam("producto");
+  const producto = productos[productoId];
+
+  if (!producto) {
+    document.getElementById("productName").textContent = "Producto no encontrado";
+  } else {
+    document.getElementById("productName").textContent = producto.nombre;
+    document.getElementById("productPrice").textContent = producto.precio;
+    document.getElementById("mainImage").src = producto.imagenPrincipal;
+    document.getElementById("mainImage").alt = producto.nombre;
+    document.getElementById("productDescription").textContent =
+      producto.descripcion + "\n\n" + (producto.detalleExtra || "");
+
+    const tallasList = document.getElementById("tallasList");
+    producto.tallas.forEach(talla => {
+      const li = document.createElement("li");
+      li.textContent = talla;
+      tallasList.appendChild(li);
+    });
+
+    const coloresList = document.getElementById("coloresList");
+    producto.colores.forEach(color => {
+      const li = document.createElement("li");
+      li.textContent = color;
+      coloresList.appendChild(li);
+    });
+  }
+</script>
+
+</body>
+</html>

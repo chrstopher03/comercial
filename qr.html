@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Escanea tu prenda - VogueCrest</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .qr-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .qr-item {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      width: 200px;
+    }
+    .qr-item canvas {
+      margin-top: 10px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Escanea una prenda</h1>
+<div class="qr-container" id="qrContainer"></div>
+
+<script>
+  const productos = [
+    {
+      id: "prenda1",
+      nombre: "VOGUECREST T-SHIRT BLACK"
+    },
+    {
+      id: "prenda2",
+      nombre: "VOGUECREST T-SHIRT BLACK (Variante)"
+    },
+    {
+      id: "prenda3",
+      nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3"
+    }
+  ];
+
+  const baseURL = "https://chrstopher03.github.io/comercial/detalle.html?producto=";
+
+  const container = document.getElementById("qrContainer");
+
+  productos.forEach(prod => {
+    const div = document.createElement("div");
+    div.className = "qr-item";
+
+    const title = document.createElement("div");
+    title.textContent = prod.nombre;
+
+    const canvas = document.createElement("canvas");
+    const url = baseURL + prod.id;
+
+    QRCode.toCanvas(canvas, url, { width: 160 }, error => {
+      if (error) console.error(error);
+    });
+
+    div.appendChild(title);
+    div.appendChild(canvas);
+    container.appendChild(div);
+  });
+</script>
+
+</body>
+</html>
