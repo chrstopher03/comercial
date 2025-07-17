@@ -304,6 +304,21 @@ button {
   }
 }
 
+  .zoom-container {
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .zoom-container img {
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+  }
+
+  .zoom-container:hover img {
+    transform: scale(1.5); /* Zoom al 150% */
+  }
+
+
 @media (max-width: 768px) {
   .carousel-grande-item {
     width: 240px;
@@ -416,6 +431,45 @@ button {
   gap: 15px;
   flex-wrap: wrap;
 }
+.zoom-container {
+  overflow: hidden;
+  display: inline-block;
+  position: relative;
+}
+
+.zoom-container img {
+  transition: transform 0.3s ease;
+  cursor: zoom-in;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.zoom-container:hover img {
+  transform: scale(1.5);
+}
+
+/* MODAL ESTILO SIMPLE PARA AMPLIAR IMAGEN */
+.modal-image {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
+}
+
+.modal-image img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
 .look-images img {
   width: 120px;
   border-radius: 8px;
@@ -455,9 +509,11 @@ button {
 
     <div class="product-detail">
       <div class="gallery">
-        <img id="mainImage" class="main-image" src="" alt="Imagen principal producto" />
-        <div id="thumbnails" class="thumbnails"></div>
-      </div>
+  <div class="zoom-container">
+    <img id="mainImage" class="main-image" src="" alt="Imagen principal producto" />
+  </div>
+  <div id="thumbnails" class="thumbnails"></div>
+</div>
       <div class="details">
         <h1 id="productName">Cargando...</h1>
         <div class="price" id="productPrice"></div>
@@ -558,6 +614,9 @@ button {
     <h2>Productos Relacionados</h2>
     <div class="related-products"></div>
   </section>
+<div class="modal-image" id="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; cursor: zoom-out;">
+  <img id="modalImg" src="" alt="Imagen ampliada" style="max-width:90vw; max-height:90vh; object-fit:contain; border-radius:10px;">
+</div>
 
   <script>
  const productos = {
@@ -573,7 +632,7 @@ La bolsa NIGHTFLEX de VogueCrest combina la resistencia de la tela deportiva neg
     precio: "C$1,600",
     tallas: ["S", "M", "L", "XL"], // Podés cambiar a medidas si querés
     colores: ["Negro"],
-    relacionados: ["prenda2"],
+    relacionados: ["prenda1"],
   },
 
   prenda2: {
@@ -602,17 +661,20 @@ Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, 
   prenda3: {
     nombre: "VOGUECREST SHORT LIGHT DENIM – EDITION 01",
     imagenesPorColor: {
-      Cafe: ["3.png"],
-      Negro: ["1.png"],
-      Rojo: ["5.png"],
+      Celeste : ["014.png","112.png","113.jpeg"],
+      Negro: ["011.png","115.png","117.jpeg"],
     },
     imagenPrincipal: "014.png",
     descripcion: `
-Una camiseta esencial en tono café tierra que equilibra elegancia y carácter. Diseñada para quienes conectan con lo natural sin perder el estilo urbano, su tejido suave y corte limpio la convierten en una pieza versátil para cualquier ocasión. Viste con intención, camina con propósito.
+El VOGUECREST SHORT LIGHT DENIM – EDITION 01 redefine lo esencial del denim con un enfoque moderno, fresco y versátil. Confeccionado en mezclilla de tono claro con acabado suave al tacto, este short combina funcionalidad y estilo en una silueta cómoda de corte recto.
+
+Presenta un diseño minimalista con bolsillos laterales amplios, detalles metálicos pulidos y costuras reforzadas que aseguran durabilidad sin sacrificar estilo. Su fit relajado lo convierte en una prenda ideal para el día a día, adaptable tanto a outfits casuales como a looks urbanos más elaborados.
+
+Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esencia de la moda limpia, contemporánea y auténtica.
     `,
     precio: "C$800",
     tallas: ["S", "M", "L"],
-    colores: ["Cafe", "Negro", "Rojo"],
+    colores: ["Celeste", "Negro"],
     relacionados: ["prenda4"],
   },
   prenda4: {
@@ -682,15 +744,15 @@ Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
       }, prenda9: {
         nombre: "VOGUECREST BLACK PLATE CAP",
         imagenesPorColor: {
-          Negro: ["15.png", "42.png"],
+          Negro: ["15.png", "121.png","122.png","123.png"],
           Crema: ["22.png"]
         },
         imagenPrincipal: "15.png",
         descripcion: "La gorra negra con placa VogueCrest es una pieza distintiva que combina sobriedad y carácter. Confeccionada en algodón estructurado de alta calidad, presenta una visera curva y paneles reforzados para un ajuste firme. El detalle más icónico es su placa metálica negra con el logo VogueCrest, integrada con elegancia en el centro frontal. Ideal para elevar cualquier outfit urbano con una presencia moderna y sofisticada.",
-        precio: "$28.00",
-        tallas: ["S", "M", "L", "XL"],
+        precio: "C$ 850",
+    tallas: ["Única ajustable"], // ← CORREGIDO aquí
         colores: ["Negro", "Crema"],
-        relacionados: ["prenda2", "prenda4"]
+        relacionados: ["prenda2", "prendaA"]
       },
       prenda10: {
   nombre: "SKIN UNDERWEAR",
@@ -732,15 +794,21 @@ El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad 
        prendaA: {
         nombre: "SUEDE LOGO CAP NEGRO",
         imagenesPorColor: {
-          Negro: ["42.png", "15.png"],
+          Negro: ["42.png", "124.png","122.png","123.png"],
           Crema: ["22.png"]
         },
         imagenPrincipal: "42.png",
-        descripcion: "La gorra SUEDE LOGO en color negro está confeccionada en ante sintético estructurado, con un acabado suave tipo terciopelo. Presenta un diseño minimalista con el logotipo en blanco al frente, aportando contraste y distinción. Cuenta con visera curva, paneles reforzados y cierre ajustable en la parte trasera para un calce cómodo. Ideal para uso diario o complementar cualquier look urbano.",
-        precio: "$28.00",
-        tallas: ["S", "M", "L", "XL"],
+        descripcion:`
+La SUEDE LOGO CAP en color negro es una reinterpretación sofisticada de la gorra clásica. Confeccionada en tela tipo gamuza (suede) de alta calidad, ofrece una textura suave y un acabado mate que aporta distinción sin perder su esencia urbana.
+
+Su diseño minimalista presenta una estructura de seis paneles con visera curva, ajuste trasero regulable y el icónico logo VogueCrest bordado al frente en tono tonal, manteniendo una estética limpia y elegante.
+
+Ideal para completar looks casuales, monocromáticos o de inspiración streetwear, esta gorra es una pieza atemporal que equilibra estilo y sencillez con un toque de lujo discreto.
+`,
+        precio: "C$ 990",
+    tallas: ["Única ajustable"], // ← CORREGIDO aquí
         colores: ["Negro", "Crema"],
-        relacionados: ["prenda2", "prenda4"]
+        relacionados: ["prenda2", "prenda9"]
       },
       prendaB: {
         nombre: "SKIN TANK TOP BROWN",
@@ -796,10 +864,10 @@ Ideal para quienes buscan una prenda audaz que combine homenaje, moda y cultura 
 
 
     `,
-        precio: "C$400",
+        precio: "C$ 2,000",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro"],
-        relacionados: ["prenda2", "prenda4"]
+        relacionados: ["prenda11", "prendaH"]
       },
       prendaF: {
         nombre: "VOGUECREST SIGNATURE CAP CREAM",
@@ -980,7 +1048,26 @@ if (!producto) {
       thumbnailsContainer.appendChild(img);
     });
   }
+  const mainImage = document.getElementById('mainImage');
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
 
+  mainImage.addEventListener('click', () => {
+    modalImg.src = mainImage.src; // siempre asignar el src
+    modal.style.display = 'flex';
+  });
+
+  modal.addEventListener('click', () => {
+    modal.style.display = 'none';
+    // opcional: no vaciar el src para evitar efecto raro
+    // modalImg.src = '';
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.style.display === 'flex') {
+      modal.style.display = 'none';
+    }
+  });
   // Mostrar imagen principal fija (aunque cambie color)
   mainImage.src = producto.imagenPrincipal;
   mainImage.alt = producto.nombre;
@@ -1101,6 +1188,15 @@ closeMenuBtn.addEventListener("click", (e) => {
   mobileMenu.classList.remove("show");
 });
 }
+
+  function abrirModal(src) {
+    document.getElementById('imagenAmpliada').src = src;
+    document.getElementById('modalImagen').style.display = 'flex';
+  }
+
+  function cerrarModal() {
+    document.getElementById('modalImagen').style.display = 'none';
+  }
   </script>
   
 </body>
