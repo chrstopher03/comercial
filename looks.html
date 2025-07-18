@@ -47,6 +47,49 @@
       object-fit: contain;
     }
 
+/* Footer simple fijo abajo */
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f7f7f7;
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    body {
+      padding-bottom: 120px;
+    }
+    .cart-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .cart-item .left-block, .cart-item .right-block {
+      flex: 1 1 100%;
+      min-width: auto;
+      margin-bottom: 10px;
+    }
+    .cart-item .right-block {
+      align-items: flex-start;
+    }
+    #btnPagar {
+      bottom: 50px;
+      left: 20px;
+      right: 20px;
+      z-index: 99;
+      border-radius: 15px;
+      font-size: 1.4rem;
+    }
+    footer {
+      bottom: 0;
+    }
+  }
     /* Menú móvil */
     nav.menu-mobile {
       position: fixed;
@@ -251,7 +294,9 @@
     <button class="close-look-modal" aria-label="Cerrar">&times;</button>
     <img id="modalLookImage" alt="Imagen ampliada" />
   </div>
-
+<footer>
+  &copy; 2025 VogueCrest. Todos los derechos reservados.
+</footer>
   <script>
     const modal = document.getElementById("modalLooks");
     const modalImage = document.getElementById("modalLookImage");

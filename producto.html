@@ -120,7 +120,6 @@ a:hover {
   width: 80px;
   height: 80px;
   object-fit: cover;
-  border: 2px solid transparent;
   border-radius: 6px;
   cursor: pointer;
   transition: border-color 0.3s;
@@ -261,7 +260,6 @@ button {
   height: 180px;
   object-fit: cover;
   border-radius: 8px;
-  border: 1px solid #ddd;
   margin-bottom: 8px;
   transition: transform 0.3s ease;
 }
@@ -341,7 +339,6 @@ button {
 
 @media (max-width: 900px) {
   .detalle-flotante {
-    position: fixed !important;
     right: 20px;
     z-index: 10000;
     white-space: nowrap;
@@ -407,6 +404,66 @@ button {
   border-color: black;
   color: black;
 }
+.footer {
+
+  padding: 40px 0;
+  font-size: 0.9rem;
+  color: #333;
+  user-select: none;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centra todo horizontal */
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px;
+  gap: 20px; /* Separación entre texto y nav */
+}
+
+.footer-copy {
+  margin: 0;
+  flex: 0 1 auto;
+  text-align: center; /* Centra texto */
+}
+
+.footer-nav {
+  flex: 0 1 auto;
+  display: flex;
+  justify-content: center; /* Centra links */
+  gap: 25px;
+}
+
+.footer-nav a {
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover,
+.footer-nav a:focus {
+  color: #000;
+  text-decoration: underline;
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .footer-container {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  .footer-nav {
+    margin-top: 15px;
+    gap: 20px;
+  }
+  .footer-copy {
+    margin-bottom: 0;
+  }
+}
+
 .tab-content {
   display: none;
   font-size: 1rem;
@@ -421,7 +478,33 @@ button {
 .tab-content::-webkit-scrollbar {
   width: 8px;
 }
+.footer-info a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+    }
 
+    .footer-info a:hover {
+      text-decoration: underline;
+    }
+
+    .btn-add {
+      background: #fff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 5px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .footer-flotante {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
 .tab-content::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 4px;
@@ -489,8 +572,9 @@ button {
 <header>
   <div class="menu-label" id="menu-toggle">MENÚ</div>
   <img src="100.png" alt="VogueCrest" class="logo" />
-  <div class="cart-label">CESTA</div>
-</header>
+<a href="cesta.html" class="cart-icon">
+CESTA <span id="cartCount" style="display:none; background:rgb(0, 0, 0); color:#fff; border-radius:50%; padding: 0 6px; font-size:14px; vertical-align:top;">0</span>
+</a></header>
 
 <!-- MENÚ MÓVIL DESLIZANTE -->
 <nav class="menu-mobile" id="mobileMenu">
@@ -498,122 +582,128 @@ button {
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
   <a href="editorial.html">EDITORIAL</a>
-    <a href="looks.html">LOOKS</a>
-        <a href="contacto.html">CONTACTANOS</a>
+  <a href="looks.html">LOOKS</a>
+  <a href="contacto.html">CONTACTANOS</a>
   <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
 
+<div class="container">
+  <a href="colecciones.html" class="back-link">&larr; Volver a Colecciones</a>
 
-  <div class="container">
-    <a href="colecciones.html" class="back-link">&larr; Volver a Colecciones</a>
-
-    <div class="product-detail">
-      <div class="gallery">
-  <div class="zoom-container">
-    <img id="mainImage" class="main-image" src="" alt="Imagen principal producto" />
-  </div>
-  <div id="thumbnails" class="thumbnails"></div>
-</div>
-      <div class="details">
-        <h1 id="productName">Cargando...</h1>
-        <div class="price" id="productPrice"></div>
-
-        <label for="sizeSelect">Selecciona talla:</label>
-        <select id="sizeSelect"></select>
-
-        <label for="colorSelect">Selecciona color:</label>
-        <select id="colorSelect"></select>
-
-        <button id="addToCartBtn">Añadir a la cesta</button>
-
-        <!-- Acordeón detalle producto -->
-        <div class="accordion" id="accordionDetalle">DETALLE DEL PRODUCTO</div>
-        <div class="panel" id="productDescription"></div>
-
-        <!-- NUEVO + DETALLES -->
-        <div class="" id="accordionMasDetalles"></div>
-        <div class="panel" id="masDetalles">
-          
-        </div>
-
-        <!-- BOTÓN + DETALLE flotante -->
-        <div class="detalle-flotante" id="openModalBtn">+ DETALLE</div>
+  <div class="product-detail">
+    <div class="gallery">
+      <div class="zoom-container">
+        <img id="mainImage" class="main-image" src="" alt="Imagen principal producto" />
       </div>
+      <div id="thumbnails" class="thumbnails"></div>
+    </div>
+
+    <div class="details">
+      <h1 id="productName">Cargando...</h1>
+      <div class="price" id="productPrice"></div>
+
+      <label for="sizeSelect">Selecciona talla:</label>
+      <select id="sizeSelect"></select>
+
+      <label for="colorSelect">Selecciona color:</label>
+      <select id="colorSelect"></select>
+
+      <button id="addToCartBtn">Añadir a la cesta</button>
+
+      <div class="" id="accordionDetalle"></div>
+      <div class="" id="productDescription"></div>
+
+      <div class="" id="accordionMasDetalles">Detalles de la tienda</div>
+      <div class="panel" id="masDetalles"></div>
+
+      <div class="detalle-flotante" id="openModalBtn">+ DETALLE</div>
     </div>
   </div>
+</div>
 
-  
-  <!-- MODAL + DETALLE -->
-  <div class="modal" id="modalDetalle" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
-    <div class="modal-content">
-      <span class="close-modal" id="closeModalBtn" aria-label="Cerrar">&times;</span>
+<!-- MODAL + DETALLE -->
+<div class="modal" id="modalDetalle" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+  <div class="modal-content">
+    <span class="close-modal" id="closeModalBtn" aria-label="Cerrar">&times;</span>
 
-      <nav class="tabs-nav" role="tablist">
-        <button class="tab-btn active" data-tab="info" role="tab" aria-selected="true" aria-controls="info">Información de la prenda</button>
-        <button class="tab-btn" data-tab="envios" role="tab" aria-selected="false" aria-controls="envios">Envíos y devoluciones</button>
-        <button class="tab-btn" data-tab="tallas" role="tab" aria-selected="false" aria-controls="tallas">Guía de tallas</button>
-        <button class="tab-btn" data-tab="looks" role="tab" aria-selected="false" aria-controls="looks">Ver looks</button>
-        <button class="tab-btn" data-tab="contacto" role="tab" aria-selected="false" aria-controls="contacto">Contacta con nosotros</button>
-      </nav>
+    <nav class="tabs-nav" role="tablist">
+      <button class="tab-btn active" data-tab="info">Información de la prenda</button>
+      <button class="tab-btn" data-tab="envios">Envíos y devoluciones</button>
+      <button class="tab-btn" data-tab="tallas">Guía de tallas</button>
+      <button class="tab-btn" data-tab="looks">Ver looks</button>
+      <button class="tab-btn" data-tab="contacto">Contacta con nosotros</button>
+    </nav>
 
-      <section id="info" class="tab-content active" role="tabpanel" tabindex="0" aria-labelledby="info-tab">
-        <h2 id="modalTitle">Información de la prenda</h2>
-        <p id="modalInfoContent">Cargando información...</p>
-      </section>
+    <section id="info" class="tab-content active">
+      <h2 id="modalTitle">Información de la prenda</h2>
+      <p id="modalInfoContent">Cargando información...</p>
+    </section>
 
-      <section id="envios" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="envios-tab">
-        <h2>Envíos y devoluciones</h2>
-        <ul>
-          <li>Envío estándar: 3-5 días hábiles.</li>
-          <li>Envío exprés: 1-2 días hábiles.</li>
-          <li>Devoluciones gratuitas hasta 30 días después de la compra.</li>
-          <li>Para devolver un producto, contacta con soporte.</li>
-        </ul>
-      </section>
+    <section id="envios" class="tab-content">
+      <h2>Envíos y devoluciones</h2>
+      <ul>
+        <li>Envío estándar: 3-5 días hábiles.</li>
+        <li>Envío exprés: 1-2 días hábiles.</li>
+        <li>Devoluciones gratuitas hasta 30 días después de la compra.</li>
+        <li>Para devolver un producto, contacta con soporte.</li>
+      </ul>
+    </section>
 
-      <section id="tallas" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="tallas-tab">
-        <h2>Guía de tallas</h2>
-        <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr><th>Talla</th><th>Pecho (cm)</th><th>Cintura (cm)</th><th>Largo (cm)</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>S</td><td>88-92</td><td>74-78</td><td>68</td></tr>
-            <tr><td>M</td><td>92-96</td><td>78-82</td><td>70</td></tr>
-            <tr><td>L</td><td>96-100</td><td>82-86</td><td>72</td></tr>
-            <tr><td>XL</td><td>100-104</td><td>86-90</td><td>74</td></tr>
-          </tbody>
-        </table>
-      </section>
+    <section id="tallas" class="tab-content">
+      <h2>Guía de tallas</h2>
+      <table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr><th>Talla</th><th>Pecho (cm)</th><th>Cintura (cm)</th><th>Largo (cm)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>S</td><td>88-92</td><td>74-78</td><td>68</td></tr>
+          <tr><td>M</td><td>92-96</td><td>78-82</td><td>70</td></tr>
+          <tr><td>L</td><td>96-100</td><td>82-86</td><td>72</td></tr>
+          <tr><td>XL</td><td>100-104</td><td>86-90</td><td>74</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-      <section id="looks" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="looks-tab">
-        <h2>Ver looks</h2>
-        <div class="look-images">
-          <img src="03.png" alt="Look 1" />
-          <img src="02.png" alt="Look 2" />
-          <img src="04.png" alt="Look 3" />
-          <img src="06.png" alt="Look 4" />
-          <img src="0." alt="Look 5" />
-        </div>
-      </section>
+    <section id="looks" class="tab-content">
+      <h2>Ver looks</h2>
+      <div class="look-images">
+        <img src="03.png" alt="Look 1" />
+        <img src="02.png" alt="Look 2" />
+        <img src="04.png" alt="Look 3" />
+        <img src="06.png" alt="Look 4" />
+        <img src="0." alt="Look 5" />
+      </div>
+    </section>
 
-      <section id="contacto" class="tab-content" role="tabpanel" tabindex="0" aria-labelledby="contacto-tab">
-<a href="contacto.html" class="back-link">&larr; Contactanos</a>
-        <p>Para consultas y soporte, escríbenos:</p>
-        <ul>
-          <li>Email: <a href="mailto:soporte@voguecrest.com">soporte@voguecrest.com</a></li>
-          <li>Teléfono: +505 1234 5678</li>
-          <li>Horario: Lunes a Viernes, 9am - 6pm</li>
-        </ul>
-      </section>
-
-    </div>
+    <section id="contacto" class="tab-content">
+      <a href="contacto.html" class="back-link">&larr; Contactanos</a>
+      <p>Para consultas y soporte, escríbenos:</p>
+      <ul>
+        <li>Email: <a href="mailto:soporte@voguecrest.com">soporte@voguecrest.com</a></li>
+        <li>Teléfono: +505 1234 5678</li>
+        <li>Horario: Lunes a Viernes, 9am - 6pm</li>
+      </ul>
+    </section>
   </div>
-  <!-- SECCIÓN PRODUCTOS RELACIONADOS -->
-  <section class="related-section" aria-label="Productos relacionados">
-    <h2>Productos Relacionados</h2>
-    <div class="related-products"></div>
-  </section>
+</div>
+
+<!-- SECCIÓN PRODUCTOS RELACIONADOS -->
+<section class="related-section" aria-label="Productos relacionados">
+  <h2>Productos Relacionados</h2>
+  <div class="related-products"></div>
+</section>
+<footer class="footer">
+  <div class="container footer-container">
+    <p class="footer-copy">&copy; 2025 VogueCrest. Todos los derechos reservados.</p>
+    <nav class="footer-nav" aria-label="Enlaces principales del sitio">
+      
+    </nav>
+  </div>
+</footer>
+
+
+
+<!-- MODAL DE IMAGEN -->
 <div class="modal-image" id="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); justify-content:center; align-items:center; cursor: zoom-out;">
   <img id="modalImg" src="" alt="Imagen ampliada" style="max-width:90vw; max-height:90vh; object-fit:contain; border-radius:10px;">
 </div>
@@ -675,7 +765,7 @@ Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esen
     precio: "C$800",
     tallas: ["S", "M", "L"],
     colores: ["Celeste", "Negro"],
-    relacionados: ["prenda4"],
+    relacionados: ["prenda6"],
   },
   prenda4: {
         nombre: "VOGUECREST TEAM T-SHIRT – EDITION 01",
@@ -689,7 +779,7 @@ Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esen
         colores: ["Blanca"],
         relacionados: ["prenda3", "prendaH"]
       },
-    prenda5: {
+     prenda5: {
         nombre: "CAMISETA VOGUECREST SKIN – BLACK EDITION",
         imagenesPorColor: {
           Negro: ["09.png","036.png","037.jpeg"]
@@ -704,14 +794,14 @@ Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esen
       prenda6: {
         nombre: "VOGUECREST BLACK FABRIC SHORTS",
         imagenesPorColor: {
-          Negro: ["6.png"],
+          Negro: ["018.png"],
         },
         imagenPrincipal: "018.png",
         descripcion: "El short negro de tela de VogueCrest está diseñado para ofrecer confort, estilo y versatilidad. Confeccionado en una mezcla ligera de algodón y poliéster, su corte recto y cintura elástica con cordón ajustable lo hacen ideal para el día a día. El diseño minimalista con el logo VogueCrest bordado en blanco lo convierte en una pieza esencial para un outfit moderno y funcional.",
         precio: "C$400",
         tallas: ["S", "M", "L", "XL"],
         colores: [ "Negro"],
-        relacionados: ["prenda2", "prendaH"]
+        relacionados: ["prenda3"]
       },
       prenda7: {
         nombre: "SKIN TANK TOP BROWN",
@@ -730,7 +820,7 @@ Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
         colores: ["Cafe", "Negro",],
         relacionados: ["prenda2", "prenda4"]
       },
-     prenda8: {
+  prenda8: {
         nombre: "VOGUECREST V-NECK BLOUSE WHITE",
         imagenesPorColor: {
           Blanco: ["8.png"]
@@ -958,10 +1048,24 @@ La VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACK es una declaración de estilo y act
 function getQueryParam(param) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(param);
-}
-
-const productoId = getQueryParam("producto");
+}const productoId = getQueryParam("producto");
 const producto = productos[productoId];
+
+// —————— INICIO: Contador carrito en header ——————
+const cartCount = document.getElementById("cartCount");
+function actualizarContadorCarrito() {
+  const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+  const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+  if (cartCount) {
+    cartCount.textContent = totalCantidad;
+    cartCount.style.display = totalCantidad > 0 ? "inline-block" : "none";
+  }
+}
+// Actualizar contador al cargar la página
+actualizarContadorCarrito();
+// —————— FIN: Contador carrito en header ——————
+
+/* --- EL RESTO DE TU CÓDIGO EXISTENTE, SIN CAMBIOS --- */
 
 // Referencias a elementos DOM
 const mainImage = document.getElementById("mainImage");
@@ -977,9 +1081,13 @@ const panelDetalle = productDescription;
 const accordionMasDetalles = document.getElementById("accordionMasDetalles");
 const panelMasDetalles = document.getElementById("masDetalles");
 const openModalBtn = document.getElementById("openModalBtn");
-const modal = document.getElementById("modalDetalle");
+const modalDetalle = document.getElementById("modalDetalle");
 const closeModalBtn = document.getElementById("closeModalBtn");
 const modalInfoContent = document.getElementById("modalInfoContent");
+
+// Modal para imagen ampliada
+const modalImagen = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
 
 if (!producto) {
   productName.textContent = "Producto no encontrado";
@@ -995,11 +1103,10 @@ if (!producto) {
   productPrice.textContent = producto.precio;
   productDescription.textContent = producto.descripcion;
 
-  // Limpiar selects antes de llenar
   sizeSelect.innerHTML = "";
   colorSelect.innerHTML = "";
 
-  // Llenar tallas o medidas según el producto
+  // Tallas o medidas
   if (productoId === "prenda1") {
     const medidas = [
       { label: "Ancho: 30cm, Alto: 40cm", value: "medida1" },
@@ -1021,7 +1128,6 @@ if (!producto) {
     });
   }
 
-  // Llenar colores
   producto.colores.forEach((color) => {
     const option = document.createElement("option");
     option.value = color;
@@ -1029,7 +1135,6 @@ if (!producto) {
     colorSelect.appendChild(option);
   });
 
-  // Cargar imágenes de miniaturas según color
   function cargarImagenes(color) {
     thumbnailsContainer.innerHTML = "";
     const imgs = producto.imagenesPorColor[color] || [];
@@ -1040,48 +1145,45 @@ if (!producto) {
       if (index === 0) img.classList.add("selected");
       img.addEventListener("click", () => {
         mainImage.src = src;
-        thumbnailsContainer
-          .querySelectorAll("img")
-          .forEach((i) => i.classList.remove("selected"));
+        thumbnailsContainer.querySelectorAll("img").forEach(i => i.classList.remove("selected"));
         img.classList.add("selected");
       });
       thumbnailsContainer.appendChild(img);
     });
   }
-  const mainImage = document.getElementById('mainImage');
-  const modal = document.getElementById('modal');
-  const modalImg = document.getElementById('modalImg');
 
-  mainImage.addEventListener('click', () => {
-    modalImg.src = mainImage.src; // siempre asignar el src
-    modal.style.display = 'flex';
-  });
-
-  modal.addEventListener('click', () => {
-    modal.style.display = 'none';
-    // opcional: no vaciar el src para evitar efecto raro
-    // modalImg.src = '';
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.style.display === 'flex') {
-      modal.style.display = 'none';
-    }
-  });
-  // Mostrar imagen principal fija (aunque cambie color)
+  // Mostrar imagen principal
   mainImage.src = producto.imagenPrincipal;
   mainImage.alt = producto.nombre;
 
-  // Carga inicial miniaturas del primer color
+  // Evento abrir modal de imagen principal
+  mainImage.addEventListener("click", () => {
+    modalImg.src = mainImage.src;
+    modalImagen.style.display = "flex";
+  });
+
+  // Cerrar modal al hacer click fuera de la imagen
+  modalImagen.addEventListener("click", (e) => {
+    if (e.target === modalImagen) {
+      modalImagen.style.display = "none";
+    }
+  });
+
+  // Cerrar modal con tecla Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modalImagen.style.display === "flex") {
+      modalImagen.style.display = "none";
+    }
+  });
+
   cargarImagenes(producto.colores[0]);
   colorSelect.value = producto.colores[0];
 
-  // Cambiar color y miniaturas pero la imagen principal sigue fija
+  // Cambiar color (imagen principal no cambia)
   colorSelect.addEventListener("change", (e) => {
     cargarImagenes(e.target.value);
     mainImage.src = producto.imagenPrincipal;
   });
-
 
   // Productos relacionados
   const relatedProductsContainer = document.querySelector(".related-products");
@@ -1093,8 +1195,7 @@ if (!producto) {
         div.className = "related-product";
         div.innerHTML = `
           <a href="producto.html?producto=${relId}">
-            <img src="${relProd.imagenesPorColor[relProd.colores[0]][0]}" alt="${relProd.nombre}">
-            <p>${relProd.nombre}</p>
+            <img src="${relProd.imagenesPorColor[relProd.colores[0]][0]}" 
           </a>
         `;
         relatedProductsContainer.appendChild(div);
@@ -1102,101 +1203,126 @@ if (!producto) {
     });
   }
 
-addToCartBtn.addEventListener("click", () => {
-  const talla = sizeSelect.value;
-  const color = colorSelect.value;
-  alert(`Añadido a la cesta:\n${producto.nombre}\nTalla: ${talla}\nColor: ${color}`);
-  // Aquí puedes añadir funcionalidad para guardar el carrito real
-});
+  addToCartBtn.addEventListener("click", () => {
+    const talla = sizeSelect.value;
+    const color = colorSelect.value;
 
-// ACORDEÓN DETALLE con altura dinámica y padding
-accordionDetalle.addEventListener("click", () => {
-  accordionDetalle.classList.toggle("active");
-  if (panelDetalle.style.maxHeight) {
-    panelDetalle.style.maxHeight = null;
-    panelDetalle.style.padding = "0";
-  } else {
-    panelDetalle.style.maxHeight = panelDetalle.scrollHeight + "px";
-    panelDetalle.style.padding = "10px 0";
-  }
-});
+    // Cantidad (usa input con id="quantityInput", si no existe toma 1)
+    const cantidadInput = document.getElementById("quantityInput");
+    const cantidad = cantidadInput ? parseInt(cantidadInput.value) || 1 : 1;
 
-// NUEVO ACORDEÓN + DETALLES
-accordionMasDetalles.addEventListener("click", () => {
-  accordionMasDetalles.classList.toggle("active");
-  if (panelMasDetalles.style.maxHeight) {
-    panelMasDetalles.style.maxHeight = null;
-    panelMasDetalles.style.padding = "0";
-  } else {
-    panelMasDetalles.style.maxHeight = panelMasDetalles.scrollHeight + "px";
-    panelMasDetalles.style.padding = "10px 0";
-  }
-});
 
-// MODAL + DETALLE
-openModalBtn.addEventListener("click", () => {
-  modal.style.display = "block";
-  // Carga info completa dinámica
-  modalInfoContent.textContent = producto.infoCompleta || "Información no disponible.";
-  // Foco en modal para accesibilidad
-  modal.querySelector(".modal-content").focus();
-});
-closeModalBtn.addEventListener("click", () => {
-  modal.style.display = "none";
-  openModalBtn.focus();
-});
-window.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.style.display = "none";
-    openModalBtn.focus();
-  }
-});
+    // Producto para carrito
+    const productoCarrito = {
+      id: productoId,
+      nombre: producto.nombre,
+      talla,
+      color,
+      cantidad,
+      precio: producto.precio,
+      imagen: producto.imagenPrincipal
+    };
 
-// Navegación tabs modal
-const tabButtons = document.querySelectorAll(".tab-btn");
-const tabContents = document.querySelectorAll(".tab-content");
+    // Leer carrito actual
+    let carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
 
-tabButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    // Quitar active de todos
-    tabButtons.forEach((btn) => {
-      btn.classList.remove("active");
-      btn.setAttribute("aria-selected", "false");
-    });
-    tabContents.forEach((tc) => tc.classList.remove("active"));
+    // Buscar producto existente en carrito (mismo id, talla y color)
+    const indexExistente = carrito.findIndex(item =>
+      item.id === productoCarrito.id &&
+      item.talla === productoCarrito.talla &&
+      item.color === productoCarrito.color
+    );
 
-    // Poner active en el clickeado
-    button.classList.add("active");
-    button.setAttribute("aria-selected", "true");
-    const tabId = button.getAttribute("data-tab");
-    const tabContent = document.getElementById(tabId);
-    tabContent.classList.add("active");
-    tabContent.focus();
+    if (indexExistente !== -1) {
+      carrito[indexExistente].cantidad += productoCarrito.cantidad;
+    } else {
+      carrito.push(productoCarrito);
+    }
+
+    // Guardar carrito actualizado
+    localStorage.setItem("voguecrest_cart", JSON.stringify(carrito));
+
+    // ———— ACTUALIZAR CONTADOR EN HEADER ————
+    actualizarContadorCarrito();
   });
-});
 
-const toggleBtn = document.getElementById("menu-toggle");
-const mobileMenu = document.getElementById("mobileMenu");
-const closeMenuBtn = document.getElementById("closeMenu");
+  accordionDetalle.addEventListener("click", () => {
+    accordionDetalle.classList.toggle("active");
+    if (panelDetalle.style.maxHeight) {
+      panelDetalle.style.maxHeight = null;
+      panelDetalle.style.padding = "0";
+    } else {
+      panelDetalle.style.maxHeight = panelDetalle.scrollHeight + "px";
+      panelDetalle.style.padding = "10px 0";
+    }
+  });
 
-toggleBtn.addEventListener("click", () => {
-  mobileMenu.classList.toggle("show");
-});
+  accordionMasDetalles.addEventListener("click", () => {
+    accordionMasDetalles.classList.toggle("active");
+    if (panelMasDetalles.style.maxHeight) {
+      panelMasDetalles.style.maxHeight = null;
+      panelMasDetalles.style.padding = "0";
+    } else {
+      panelMasDetalles.style.maxHeight = panelMasDetalles.scrollHeight + "px";
+      panelMasDetalles.style.padding = "10px 0";
+    }
+  });
 
-closeMenuBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  mobileMenu.classList.remove("show");
-});
+  openModalBtn.addEventListener("click", () => {
+    modalDetalle.style.display = "block";
+    modalInfoContent.textContent = producto.infoCompleta || "Información no disponible.";
+    modalDetalle.querySelector(".modal-content").focus();
+  });
+
+  closeModalBtn.addEventListener("click", () => {
+    modalDetalle.style.display = "none";
+    openModalBtn.focus();
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modalDetalle) {
+      modalDetalle.style.display = "none";
+      openModalBtn.focus();
+    }
+  });
+
+  // Tabs navegación
+  const tabButtons = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      tabButtons.forEach((btn) => {
+        btn.classList.remove("active");
+        btn.setAttribute("aria-selected", "false");
+      });
+      tabContents.forEach((tc) => tc.classList.remove("active"));
+
+      button.classList.add("active");
+      button.setAttribute("aria-selected", "true");
+      const tabId = button.getAttribute("data-tab");
+      document.getElementById(tabId).classList.add("active");
+    });
+  });
+
+  // Menú móvil
+  const toggleBtn = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const closeMenuBtn = document.getElementById("closeMenu");
+
+  toggleBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("show");
+  });
+
+  if (closeMenuBtn) {
+    closeMenuBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      mobileMenu.classList.remove("show");
+    });
+  }
 }
 
-  function abrirModal(src) {
-    document.getElementById('imagenAmpliada').src = src;
-    document.getElementById('modalImagen').style.display = 'flex';
-  }
 
-  function cerrarModal() {
-    document.getElementById('modalImagen').style.display = 'none';
-  }
   </script>
   
 </body>
