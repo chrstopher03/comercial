@@ -223,7 +223,6 @@ header {
   }
   #gift img {
     position: absolute;
-    width: 80%;
     height: 450px;
     object-fit: cover;
     top: 0;
@@ -260,10 +259,16 @@ header {
   
   /* Secciones */
   #film video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 1000px;
+  max-height: 80vh;
+  margin: 0 auto 40px;
+  object-fit: cover;
+  border-radius: 10px;
+}
 
-    display: block;
-    margin: 0 auto 40px;
-  }
   #historia img {
     max-width: 90vw;
     border-radius: 8px;
@@ -294,6 +299,7 @@ header {
   button.btn-enter:hover {
     background: #444;
   }
+  
 </style>
 </head>
 <body>
@@ -328,7 +334,7 @@ header {
 
 <main>
   <section id="gift">
-    <img src="101.png" alt="Prenda 1" class="active" />
+    <img src="106.png" alt="Prenda 1" class="active" />
     <img src="7.jpg" alt="Prenda 2" />
     <img src="11.jpg" alt="Prenda 3" />
     <img src="5.png" alt="Prenda 4" />
@@ -336,7 +342,7 @@ header {
 
   <section id="film">
     <video autoplay muted loop>
-      <source src="23.mp4" type="video/mp4" />
+      <source src="204.mp4" type="video/mp4" />
     </video>
   </section>
 
