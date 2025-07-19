@@ -220,13 +220,21 @@
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
 
-      // Intentar voz masculina preferida
+      // Voces masculinas preferidas en español:
+      const maleVoicesOrder = ['Microsoft Pablo', 'Google español', 'Google Español', 'es-ES Male', 'es-ES'];
+
       let voices = speechSynthesis.getVoices();
-      let maleVoice = voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('male'));
+
+      let maleVoice = voices.find(v =>
+        v.lang.startsWith('es') &&
+        (maleVoicesOrder.some(namePart => v.name.includes(namePart)) || v.name.toLowerCase().includes('male'))
+      );
+
       if (!maleVoice) {
-        // Algunas voces comunes masculinas en español:
-        maleVoice = voices.find(v => v.lang.startsWith('es') && (v.name.toLowerCase().includes('juan') || v.name.toLowerCase().includes('carlos') || v.name.toLowerCase().includes('david')));
+        // Si no encuentra voz masculina preferida, busca la primera masculina en español
+        maleVoice = voices.find(v => v.lang.startsWith('es') && v.name.toLowerCase().includes('male'));
       }
+
       if (maleVoice) utterance.voice = maleVoice;
 
       window.speechSynthesis.cancel();
@@ -247,12 +255,10 @@
   function getBotResponse(rawMessage) {
     const message = normalize(rawMessage);
 
-    // Ahora usamos palabras clave más flexibles para detectar intención:
-
     if (/\b(hola|buenas|buenos dias|buenas tardes|buenas noches|saludos)\b/.test(message)) {
       return "¡Hola! ¿En qué puedo ayudarte con VogueCrest hoy?";
     }
-    if (message.includes('Que son')) {
+    if (message.includes('Quienes son')) {
       return "VogueCrest es una plataforma de moda digital donde podés explorar colecciones, escanear productos con QR, y comprar prendas exclusivas.";
     }
     if (/\b(usar|uso|funciona|tutorial|guia|como)\b/.test(message) && message.includes('plataforma')) {
