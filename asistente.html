@@ -139,10 +139,9 @@
   const micBtn = document.getElementById('micBtn');
   const input = document.getElementById('userInput');
 
-  // Comprobar soporte SpeechRecognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    micBtn.style.display = 'none'; // Ocultar si no soporta
+    micBtn.style.display = 'none';
     console.warn('Este navegador no soporta SpeechRecognition API');
   }
 
@@ -219,6 +218,10 @@
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
+      // Buscar voz masculina en español:
+      const voices = window.speechSynthesis.getVoices();
+      const maleVoice = voices.find(voice => voice.lang.startsWith('es') && /male|hombre|juan|diego|enrique/i.test(voice.name));
+      if (maleVoice) utterance.voice = maleVoice;
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     } else {
