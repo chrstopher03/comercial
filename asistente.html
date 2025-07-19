@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asistente - VogueCrest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    header {
+      background-color: #000;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.4rem;
+    }
+
+    .chatbot-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      background: #f9f9f9;
+    }
+
+    .robot-img {
+      width: 120px;
+      display: block;
+      margin: 0 auto 1rem;
+    }
+
+    .chat-box {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 1rem;
+      height: 300px;
+      overflow-y: auto;
+      background: #fff;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      white-space: pre-wrap; /* Para respetar saltos de línea */
+    }
+
+    .bot {
+      font-weight: bold;
+    }
+
+    .user {
+      text-align: right;
+      color: #007bff;
+    }
+
+    .input-container {
+      display: flex;
+      margin-top: 1rem;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.8rem 1rem;
+      margin-left: 0.5rem;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<header>Asistente VogueCrest</header>
+
+<div class="chatbot-container">
+  <img src="https://cdn-icons-png.flaticon.com/512/4712/4712037.png" alt="Robot" class="robot-img" />
+  <div class="chat-box" id="chatBox">
+    <div class="message bot">🤖 Hola, ¿ocupás ayuda? Soy tu asistente VogueCrest.<br>Te explicaré qué es la plataforma y cómo usarla. Escribime lo que necesités.</div>
+  </div>
+  <div class="input-container">
+    <input type="text" id="userInput" placeholder="Escribí tu pregunta aquí..." onkeydown="if(event.key==='Enter'){sendMessage();}">
+    <button onclick="sendMessage()">Enviar</button>
+  </div>
+</div>
+
+<script>
+  const chatBox = document.getElementById('chatBox');
+
+  function sendMessage() {
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+
+    const response = getBotResponse(text.toLowerCase());
+    setTimeout(() => {
+      addMessage(response, 'bot');
+    }, 500);
+
+    input.value = '';
+  }
+
+  function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message ' + sender;
+    messageDiv.textContent = (sender === 'bot' ? '🤖 ' : '') + text;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Que el bot hable en voz alta sus respuestas
+    if (sender === 'bot') {
+      speakText(text);
+    }
+  }
+
+  function speakText(text) {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'es-ES'; // Español (España). Cambia a 'es-MX' o el que prefieras si quieres
+      window.speechSynthesis.cancel(); // Cancelar cualquier voz anterior
+      window.speechSynthesis.speak(utterance);
+    } else {
+      console.log('¡Tu navegador no soporta síntesis de voz!');
+    }
+  }
+
+  function normalize(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quitar acentos
+      .replace(/[^a-z0-9\s]/g, "") // Quitar caracteres especiales
+      .trim();
+  }
+
+  function getBotResponse(rawMessage) {
+    const message = normalize(rawMessage);
+
+    if (/hola|buenas|buenos dias|buenas tardes|buenas noches/.test(message)) {
+      return "¡Hola! ¿En qué puedo ayudarte con VogueCrest hoy?";
+    } 
+    if (/que es voguecrest|quien es voguecrest|voguecrest/.test(message)) {
+      return "VogueCrest es una plataforma de moda digital donde podés explorar colecciones, escanear productos con QR, y comprar prendas exclusivas.";
+    }
+    if (/como usar la plataforma|uso plataforma|uso de la plataforma|tutorial|guia|como funciona/.test(message)) {
+      return "Para usar VogueCrest: \n1️⃣ Iniciá sesión o entrá como invitado.\n2️⃣ Navegá el catálogo o los drops exclusivos.\n3️⃣ Escaneá códigos QR en las prendas físicas para ver detalles.\n4️⃣ Agregá productos al carrito.\n5️⃣ Finalizá la compra y revisá tu perfil para pedidos y más.";
+    }
+    if (/registrar|registro|login|entrar|crear cuenta/.test(message)) {
+      return "Para registrarte, llená el formulario en la pantalla de inicio. Solo necesitás tu nombre, apellido y correo.";
+    }
+    if (/carrito|agregar|comprar|cesta/.test(message)) {
+      return "En cada prenda verás un botón de 'Añadir a la cesta'. Al hacer clic, el producto se guarda en tu carrito.";
+    }
+    if (/drop|exclusivo|lanzamiento/.test(message)) {
+      return "En la sección 'Drops' verás lanzamientos exclusivos. ¡Aprovechá porque son por tiempo limitado!";
+    }
+    if (/escáner|escaner|qr|codigo/.test(message)) {
+      return "Usá el escáner QR para leer las etiquetas físicas de nuestras prendas y ver sus detalles en la app.";
+    }
+    if (/perfil|cuenta|usuario|editar/.test(message)) {
+      return "En la sección 'Perfil' podés ver y editar tu información personal, incluso agregar una foto.";
+    }
+    if (/gracias|ok|vale|listo/.test(message)) {
+      return "¡Con gusto! Si tenés más dudas, escribime.";
+    }
+    
+    return "Lo siento, solo puedo ayudarte con preguntas sobre VogueCrest. Probá con: ¿cómo uso el escáner?, ¿cómo me registro?, etc.";
+  }
+</script>
+
+</body>
+</html>

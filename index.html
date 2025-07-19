@@ -33,11 +33,32 @@ header {
   cursor: pointer;
   user-select: none;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .logo {
   height: 50px;
   object-fit: contain;
+}
+
+/* Contador cesta alineado al lado */
+.cart-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cart-count {
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 50%;
+  min-width: 20px;
+  text-align: center;
+  line-height: 1;
+  display: inline-block;
 }
 
 /* Menú móvil */
@@ -63,87 +84,226 @@ header {
   color: black;
   font-weight: 500;
 }
-/* Footer simple fijo abajo */
-  footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #f7f7f7;
-    padding: 15px 20px;
-    border-top: 1px solid #ddd;
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-  }
 
-  /* Responsive */
-  @media (max-width: 720px) {
-    body {
-      padding-bottom: 120px;
-    }
-    .cart-item {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .cart-item .left-block, .cart-item .right-block {
-      flex: 1 1 100%;
-      min-width: auto;
-      margin-bottom: 10px;
-    }
-    .cart-item .right-block {
-      align-items: flex-start;
-    }
-    #btnPagar {
-      bottom: 50px;
-      left: 20px;
-      right: 20px;
-      z-index: 99;
-      border-radius: 15px;
-      font-size: 1.4rem;
-    }
-    footer {
-      bottom: 0;
-    }
+/* Caja desplegable cesta */
+#cartDropdown {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 320px;
+  max-height: 400px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 10px;
+  overflow-y: auto;
+  padding: 15px;
+  z-index: 15000;
+  display: none;
+}
+
+#cartDropdown h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.cart-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cart-item-details {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.cart-item-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.cart-item-qty-price {
+  font-size: 12px;
+  color: #555;
+}
+
+#cartTotal {
+  font-weight: 700;
+  text-align: right;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+#emptyCartMsg {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+#btnCheckout {
+  width: 100%;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 16px;
+}
+#btnCheckout:hover {
+  background: #444;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  body {
+    padding-bottom: 120px;
   }
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .cart-item .left-block, .cart-item .right-block {
+    flex: 1 1 100%;
+    min-width: auto;
+    margin-bottom: 10px;
+  }
+  .cart-item .right-block {
+    align-items: flex-start;
+  }
+  #btnPagar {
+    bottom: 50px;
+    left: 20px;
+    right: 20px;
+    z-index: 99;
+    border-radius: 15px;
+    font-size: 1.4rem;
+  }
+  footer {
+    bottom: 0;
+  }
+  #cartDropdown {
+    width: 90vw;
+    right: 5vw;
+    max-height: 60vh;
+  }
+}
+
 .menu-mobile.show {
   left: 0;
 }
 
-  /* Splash TikTok style */
-  #splash {
-    position: fixed;
-    z-index: 20000;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Splash TikTok style */
+#splash {
+  position: fixed;
+  z-index: 20000;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.splash-content {
+  text-align: center;
+  animation: pulse 1.2s infinite ease-in-out;
+}
+.splash-content img {
+  width: 120px;
+  margin-bottom: 20px;
+}
+.splash-content h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #000;
+}
+
+main {
+  padding-top: 60px;
+  padding-bottom: 50px;
+}
+
+/* Ajustes solo para gift */
+#gift {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  margin: 60px auto;
+  padding: 0 15px;
+  overflow: hidden;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+
+#gift img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centrado absoluto */
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  background: #fff;
+}
+
+#gift img.active {
+  opacity: 1;
+  z-index: 5;
+}
+
+@media (max-width: 600px) {
+  #gift {
+    max-width: 100vw;
+    padding: 0 5px;
+    margin-top: 70px; /* similar ajuste en móvil */
   }
-  .splash-content {
-    text-align: center;
-    animation: pulse 1.2s infinite ease-in-out;
-  }
-  .splash-content img {
-    width: 120px;
-    margin-bottom: 20px;
-  }
-  .splash-content h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #000;
-  }
+}
+
+/* Ajustes para la imagen grande dentro de .left-img */
+.left-img {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px 40px;
+  margin-top: 100px; /* espacio extra arriba */
+  margin-bottom: 40px;
+}
 
 
-  main {
-    padding-top: 60px;
-    padding-bottom: 50px;
-  }
+.left-img img {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 12px;
+}
 
-   .carousel-section {
+/* Ajustes para el carrusel */
+.carousel-section {
   overflow: hidden;
   width: 100%;
-  padding: 20px 0;
+  padding: 40px 0;
+  margin-bottom: 40px;
 }
 
 .carousel-container {
@@ -214,68 +374,31 @@ header {
     scroll-snap-type: x mandatory;
   }
 }
-  #gift {
-  position: relative;
+
+/* Ticker Inferior */
+.ticker-wrapper {
   width: 100%;
-  max-width: 900px;
-  aspect-ratio: 16 / 9;
-  margin: 80px auto 40px; /* margin-top aumentado para espacio con header */
   overflow: hidden;
-  border-radius: 12px;
-  padding: 0 10px;
-}
-
-#gift img {
-  position: absolute;
-  width: 94%;
-  height: 100%;
-  object-fit: cover; /* cover para que se vea grande y sin espacios vacíos */
-  top: 0;
+  background: #000;
+  color: #fff;
+  position: fixed;
+  bottom: 0;
   left: 0;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-  background: #fff;
+  z-index: 11000;
+}
+.ticker {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: tickerMove 20s linear infinite;
+}
+.ticker span { margin-right: 60px; }
+@keyframes tickerMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-#gift img.active {
-  opacity: 1;
-  z-index: 5;
-}
-
-@media (max-width: 600px) {
-  #gift {
-    max-width: 100vw;
-    padding: 0 5px;
-    margin-top: 70px; /* similar ajuste en móvil */
-  }
-}
-
-
-
-  /* Ticker Inferior */
-  .ticker-wrapper {
-    width: 100%;
-    overflow: hidden;
-    background: #000;
-    color: #fff;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 11000;
-  }
-  .ticker {
-    display: inline-flex;
-    white-space: nowrap;
-    animation: tickerMove 20s linear infinite;
-  }
-  .ticker span { margin-right: 60px; }
-  @keyframes tickerMove {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  
-  /* Secciones */
-  #film video {
+/* Secciones */
+#film video {
   display: block;
   width: 100%;
   height: auto;
@@ -286,139 +409,136 @@ header {
   border-radius: 10px;
 }
 
-  #historia img {
-    max-width: 90vw;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  #tienda {
-    text-align: center;
-    padding: 40px 20px;
-  }
-  #tienda h2 {
-    font-size: 2.5rem;
-    margin-bottom: 25px;
-  }
-  button.btn-enter {
-    padding: 15px 50px;
-    background: #000;
-    color: #fff;
-    font-weight: 700;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  button.btn-enter:hover {
-    background: #444;
-  }
-  
- .left-img {
-  display: flex;
-  justify-content: center;
-  padding: 0 10px;
-}
-
-.left-img img {
-  width: 100%;
-  max-width: 800px;
-  height: auto;
-  object-fit: contain;
+#historia img {
+  max-width: 90vw;
+  border-radius: 8px;
+  margin-bottom: 20px;
   display: block;
-  border-radius: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#tienda {
+  text-align: center;
+  padding: 40px 20px;
+}
+#tienda h2 {
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+}
+button.btn-enter {
+  padding: 15px 50px;
+  background: #000;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+button.btn-enter:hover {
+  background: #444;
 }
 
-  .caption {
-    position: absolute;
-    bottom: -25px;
-    left: 0;
-    font-size: 12px;
-    color: #333;
-    font-weight: normal;
-  }
+.caption {
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  font-size: 12px;
+  color: #333;
+  font-weight: normal;
+}
 
-  .right-imgs {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.right-imgs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
+}
+
+.right-imgs .big {
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  margin-top: 180px;
+  width: 100%;
+}
+
+.right-imgs .small-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.right-imgs .small-container img {
+  width: 180px;
+  height: auto;
+  max-height: 180px;
+  object-fit: cover;
+  background: white;
+  margin-top: -40px;
+}
+
+.text-section {
+  text-align: center;
+  font-size: 12px;
+  color: #111;
+  line-height: 1.6;
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto 60px;
+}
+
+@media (max-width: 900px) {
+  .image-group {
     gap: 15px;
-    position: relative;
   }
 
   .right-imgs .big {
-    height: auto;
-    max-height: 400px;
-    object-fit: cover;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-    margin-top: 180px;
-    width: 100%;
+    max-height: 250px;
   }
-
-  .right-imgs .small-container {
-    display: flex;
-    justify-content: flex-end;
-  }
-
   .right-imgs .small-container img {
-    width: 180px;
-    height: auto;
-    max-height: 180px;
-    object-fit: cover;
-    background: white;
-    margin-top: -40px;
+    width: 120px;
+    max-height: 120px;
+    margin-top: -25px;
   }
+  .caption {
+    font-size: 11px;
+    bottom: -20px;
+  }
+}
 
-  .text-section {
-    text-align: center;
-    font-size: 12px;
-    color: #111;
-    line-height: 1.6;
-    padding: 40px 20px;
-    max-width: 800px;
-    margin: 0 auto 60px;
+@media (max-width: 550px) {
+  .image-group {
+    gap: 10px;
+    flex-wrap: nowrap;
   }
+  .left-img {
+    flex: 1.5;
+  }
+  .right-imgs {
+    flex: 1;
+    gap: 10px;
+  }
+  .right-imgs .small-container img {
+    width: 90px;
+    max-height: 90px;
+    margin-top: -20px;
+  }
+}
 
-  @media (max-width: 900px) {
-    .image-group {
-      gap: 15px;
-    }
- 
-    .right-imgs .big {
-      max-height: 250px;
-    }
-    .right-imgs .small-container img {
-      width: 120px;
-      max-height: 120px;
-      margin-top: -25px;
-    }
-    .caption {
-      font-size: 11px;
-      bottom: -20px;
-    }
-  }
+/* Animación pulso splash */
+@keyframes pulse {
+  0%, 100% {opacity: 1;}
+  50% {opacity: 0.6;}
+}
 
-  @media (max-width: 550px) {
-    .image-group {
-      gap: 10px;
-      flex-wrap: nowrap;
-    }
-    .left-img {
-      flex: 1.5;
-    }
-    .right-imgs {
-      flex: 1;
-      gap: 10px;
-    }
-    .right-imgs .small-container img {
-      width: 90px;
-      max-height: 90px;
-      margin-top: -20px;
-    }
-  }
+.hide-splash {
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
@@ -426,17 +546,19 @@ header {
 <!-- Splash Animation -->
 <div id="splash">
   <div class="splash-content">
-
-    <img src="100.png" alt="Logo VogueCrest" />
-
+    <video src="251.mp4" autoplay muted playsinline style="width:900px; margin-bottom:20px;"></video>
   </div>
 </div>
+
 
 <!-- HEADER MODERNO -->
 <header>
   <div class="menu-label" id="menu-toggle">MENÚ</div>
   <img src="100.png" alt="VogueCrest" class="logo" />
-  <div class="cart-label">CESTA</div>
+  <div class="cart-label" id="cartLabel">
+    CESTA
+    <span class="cart-count" id="cartCount">0</span>
+  </div>
 </header>
 
 <!-- MENÚ MÓVIL DESLIZANTE -->
@@ -445,18 +567,27 @@ header {
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
   <a href="editorial.html">EDITORIAL</a>
-    <a href="looks.html">LOOKS</a>
-        <a href="contacto.html">CONTACTANOS</a>
+  <a href="looks.html">LOOKS</a>
+  <a href="contacto.html">CONTACTANOS</a>
+  <a href="sesion.html">INICIAR SESION</a>
+    <a href="asistente.html">INICIAR SESION</a>
   <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
 
+<!-- CESTA DESPLEGABLE -->
+<div id="cartDropdown" aria-label="Cesta de productos">
+  <h3>Tu cesta</h3>
+  <div id="cartItems"></div>
+  <div id="emptyCartMsg">Tu cesta está vacía</div>
+  <div id="cartTotal"></div>
+  <button id="btnCheckout">Proceder al pago</button>
+</div>
 
 <main>
   <section id="gift">
-    <img src="106.png" alt="Prenda 1" class="active" />
+    <img src="015.png" alt="Prenda 1" class="active" />
     <img src="7.jpg" alt="Prenda 2" />
-    <img src="11.jpg" alt="Prenda 3" />
-    <img src="5.png" alt="Prenda 4" />
+    <img src="106.png" alt="Prenda 3" />
   </section>
 
   <div class="image-group">
@@ -467,7 +598,6 @@ header {
         2025
       </div>
     </div>
-   
   </div>
   <!-- CARRUSEL 1 -->
   <section class="carousel-section">
@@ -520,65 +650,140 @@ header {
         </div>
         <div class="carousel-item" data-category="Shorts">
           <a href="producto.html?producto=prenda10" class="carousel-link">
-            <img src="19.png" alt="Prenda 8" />
-          </a>
-        </div>
-        <div class="carousel-item" data-category="Sueteres">
-          <a href="producto.html?producto=prenda11" class="carousel-link">
-            <img src="20.png" alt="Prenda 8" />
-          </a>
-        </div>
-        <!-- Duplicado para animacion -->
-        <div class="carousel-item" data-category="">
-          <a href="producto.html?producto=prenda1" class="carousel-link">
-            <img src="10.png" alt="Prenda 1" />
-          </a>
-        </div>
-        <div class="carousel-item" data-category="">
-          <a href="producto.html?producto=prenda2" class="carousel-link">
-            <img src="11.jpg" alt="Prenda 2" />
-          </a>
-        </div>
-        <div class="carousel-item" data-category="">
-          <a href="producto.html?producto=prenda12" class="carousel-link">
-            <img src="011.png" alt="Prenda 2" />
+            <img src="19.png" alt="Prenda 10" />
           </a>
         </div>
       </div>
     </div>
   </section>
-
-
-  
- 
 </main>
 
-<div class="ticker-wrapper">
+<div class="ticker-wrapper" aria-hidden="true">
   <div class="ticker">
-    <span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan><span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan>
-    <span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan><span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan>
-    <span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan><span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan>
-    <span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan><span>DROP 01</span><SPan>·</SPan><span>VOGUECREST</span><SPan>·</SPan>
-
+    <span>VOGUECREST · DROP 01 · VOGUECREST · DROP 01 · VOGUECREST ·DROP 01 · VOGUECREST ·</span>
+    <span>VOGUECREST · DROP 01 · VOGUECREST · DROP 01 · VOGUECREST ·DROP 01 · VOGUECREST ·</span>
   </div>
 </div>
 
 <script>
-  // Splash desaparece tras 3 segundos
-  window.addEventListener('load', () => {
+  // Splash ocultar después de 2.2 seg
+  window.addEventListener("load", () => {
+    const splash = document.getElementById("splash");
     setTimeout(() => {
-      const splash = document.getElementById('splash');
-      splash.classList.add('hide-splash');
-      setTimeout(() => splash.remove(), 1000);
-    }, 3000);
+      splash.classList.add("hide-splash");
+      setTimeout(() => splash.style.display = "none", 1000);
+    }, 2200);
   });
 
   // Toggle menú móvil
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobileMenu");
+  menuToggle.addEventListener("click", () => {
+    mobileMenu.classList.toggle("show");
+  });
+
   function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    menu.classList.toggle('show');
+    mobileMenu.classList.remove("show");
   }
-  document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+
+  // CESTA FUNCIONALIDAD
+  const cartLabel = document.getElementById("cartLabel");
+  const cartDropdown = document.getElementById("cartDropdown");
+  const cartCount = document.getElementById("cartCount");
+  const cartItemsContainer = document.getElementById("cartItems");
+  const emptyCartMsg = document.getElementById("emptyCartMsg");
+  const cartTotalEl = document.getElementById("cartTotal");
+  const btnCheckout = document.getElementById("btnCheckout");
+
+  // Simulación carrito (a futuro integrar localStorage o API)
+  let cart = [];
+
+  // Actualizar UI carrito
+  function updateCartUI() {
+    cartCount.textContent = cart.length;
+    if (cart.length === 0) {
+      emptyCartMsg.style.display = "block";
+      cartItemsContainer.innerHTML = "";
+      cartTotalEl.textContent = "";
+      btnCheckout.style.display = "none";
+      return;
+    }
+    emptyCartMsg.style.display = "none";
+    btnCheckout.style.display = "block";
+
+    let total = 0;
+    cartItemsContainer.innerHTML = "";
+    cart.forEach(item => {
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "cart-item";
+
+      const img = document.createElement("img");
+      img.src = item.img;
+      img.alt = item.name;
+
+      const details = document.createElement("div");
+      details.className = "cart-item-details";
+
+      const name = document.createElement("div");
+      name.className = "cart-item-name";
+      name.textContent = item.name;
+
+      const qtyPrice = document.createElement("div");
+      qtyPrice.className = "cart-item-qty-price";
+      qtyPrice.textContent = `Cantidad: ${item.quantity} · Precio: $${item.price}`;
+
+      details.appendChild(name);
+      details.appendChild(qtyPrice);
+
+      itemDiv.appendChild(img);
+      itemDiv.appendChild(details);
+
+      cartItemsContainer.appendChild(itemDiv);
+
+      total += item.price * item.quantity;
+    });
+
+    cartTotalEl.textContent = `Total: $${total.toFixed(2)}`;
+  }
+
+  // Toggle desplegable cesta
+  cartLabel.addEventListener("click", () => {
+    if(cartDropdown.style.display === "block") {
+      cartDropdown.style.display = "none";
+    } else {
+      cartDropdown.style.display = "block";
+    }
+  });
+
+  // Botón proceder al pago
+  btnCheckout.addEventListener("click", () => {
+    alert("Funcionalidad de pago no implementada todavía.");
+  });
+
+  // Simulación: agrega un producto a carrito para demo
+  cart.push({name: "Prenda Demo", price: 25.99, quantity: 1, img:"106.png"});
+  updateCartUI();
+
+  // Gift rotativo (cambio de imágenes cada 3 seg)
+  const giftImages = document.querySelectorAll("#gift img");
+  let currentGiftIndex = 0;
+
+  setInterval(() => {
+    giftImages[currentGiftIndex].classList.remove("active");
+    currentGiftIndex = (currentGiftIndex + 1) % giftImages.length;
+    giftImages[currentGiftIndex].classList.add("active");
+  }, 3000);
+
+  // Pausar animación carrusel al pasar mouse (solo en desktop)
+  const carousel1 = document.getElementById("carousel1");
+  carousel1.addEventListener("mouseenter", () => {
+    carousel1.classList.add("pause");
+  });
+  carousel1.addEventListener("mouseleave", () => {
+    carousel1.classList.remove("pause");
+  });
+
 </script>
+
 </body>
 </html>
