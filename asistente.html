@@ -139,9 +139,10 @@
   const micBtn = document.getElementById('micBtn');
   const input = document.getElementById('userInput');
 
+  // Comprobar soporte SpeechRecognition
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    micBtn.style.display = 'none';
+    micBtn.style.display = 'none'; // Ocultar si no soporta
     console.warn('Este navegador no soporta SpeechRecognition API');
   }
 
@@ -218,10 +219,6 @@
     if ('speechSynthesis' in window) {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'es-ES';
-      // Buscar voz masculina en español:
-      const voices = window.speechSynthesis.getVoices();
-      const maleVoice = voices.find(voice => voice.lang.startsWith('es') && /male|hombre|juan|diego|enrique/i.test(voice.name));
-      if (maleVoice) utterance.voice = maleVoice;
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(utterance);
     } else {
@@ -240,34 +237,56 @@
   function getBotResponse(rawMessage) {
     const message = normalize(rawMessage);
 
-    if (/hola|buenas|buenos dias|buenas tardes|buenas noches/.test(message)) {
+    if (/hola|buenas|buenos\s*dias|buenas\s*tardes|buenas\s*noches/.test(message)) {
       return "¡Hola! ¿En qué puedo ayudarte con VogueCrest hoy?";
-    } 
-    if (/que es voguecrest|quien es voguecrest|voguecrest/.test(message)) {
+    }
+
+    if (/que\s+es\s+voguecrest|quien\s+es\s+voguecrest|voguecrest/.test(message)) {
       return "VogueCrest es una plataforma de moda digital donde podés explorar colecciones, escanear productos con QR, y comprar prendas exclusivas.";
     }
-    if (/como usar la plataforma|uso plataforma|uso de la plataforma|tutorial|guia|como funciona/.test(message)) {
-      return "Para usar VogueCrest: \n1️⃣ Iniciá sesión o entrá como invitado.\n2️⃣ Navegá el catálogo o los drops exclusivos.\n3️⃣ Escaneá códigos QR en las prendas físicas para ver detalles.\n4️⃣ Agregá productos al carrito.\n5️⃣ Finalizá la compra y revisá tu perfil para pedidos y más.";
+
+    if (/como\s+usar\s+la\s+plataforma|uso\s+plataforma|uso\s+de\s+la\s+plataforma|tutorial|guia|como\s+funciona/.test(message)) {
+      return "Para usar VogueCrest:\n1️⃣ Iniciá sesión o entrá como invitado.\n2️⃣ Navegá el catálogo o los drops exclusivos.\n3️⃣ Escaneá códigos QR en las prendas físicas para ver detalles.\n4️⃣ Agregá productos al carrito.\n5️⃣ Finalizá la compra y revisá tu perfil para pedidos y más.";
     }
-    if (/registrar|registro|login|entrar|crear cuenta/.test(message)) {
+
+    if (/registrar|registro|login|entrar|crear\s+cuenta/.test(message)) {
       return "Para registrarte, llená el formulario en la pantalla de inicio. Solo necesitás tu nombre, apellido y correo.";
     }
+
     if (/carrito|agregar|comprar|cesta/.test(message)) {
       return "En cada prenda verás un botón de 'Añadir a la cesta'. Al hacer clic, el producto se guarda en tu carrito.";
     }
+
     if (/drop|exclusivo|lanzamiento/.test(message)) {
       return "En la sección 'Drops' verás lanzamientos exclusivos. ¡Aprovechá porque son por tiempo limitado!";
     }
+
     if (/escáner|escaner|qr|codigo/.test(message)) {
       return "Usá el escáner QR para leer las etiquetas físicas de nuestras prendas y ver sus detalles en la app.";
     }
+
     if (/perfil|cuenta|usuario|editar/.test(message)) {
       return "En la sección 'Perfil' podés ver y editar tu información personal, incluso agregar una foto.";
     }
+
     if (/gracias|ok|vale|listo/.test(message)) {
       return "¡Con gusto! Si tenés más dudas, escribime.";
     }
-    
+
+    // Respuestas extras:
+    if (/quien\s+eres|quien\s+so(s)?t?es|quien\s+es\s+tu\s+creador/.test(message)) {
+      return "Soy VogueCrest, tu asistente digital. ¡Aquí para ayudarte!";
+    }
+
+    if (/como\s+esta?s|como\s+vas/.test(message)) {
+      return "¡Estoy funcionando a full! ¿Y vos?";
+    }
+
+    if (/hora|que\s+hora\s+es/.test(message)) {
+      const now = new Date();
+      return `La hora actual es ${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}.`;
+    }
+
     return "Lo siento, solo puedo ayudarte con preguntas sobre VogueCrest. Probá con: ¿cómo uso el escáner?, ¿cómo me registro?, etc.";
   }
 </script>
