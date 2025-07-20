@@ -697,153 +697,242 @@ button.btn-enter:hover {
 </div>
 
 <script>
-  // Splash ocultar después de 2.2 seg
-  window.addEventListener("load", () => {
-    const splash = document.getElementById("splash");
-    setTimeout(() => {
-      splash.classList.add("hide-splash");
-      setTimeout(() => splash.style.display = "none", 1000);
-    }, 2200);
-  });
+// Splash ocultar después de 2.2 seg
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  setTimeout(() => {
+    splash.classList.add("hide-splash");
+    setTimeout(() => (splash.style.display = "none"), 1000);
+  }, 2200);
+});
 
-  // Toggle menú móvil
-  const menuToggle = document.getElementById("menu-toggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  menuToggle.addEventListener("click", () => {
-    mobileMenu.classList.toggle("show");
-  });
+// Toggle menú móvil
+const menuToggle = document.getElementById("menu-toggle");
+const mobileMenu = document.getElementById("mobileMenu");
+menuToggle.addEventListener("click", () => {
+  mobileMenu.classList.toggle("show");
+});
 
-  function toggleMenu() {
-    mobileMenu.classList.remove("show");
+function toggleMenu() {
+  mobileMenu.classList.remove("show");
+}
+
+// Elementos DOM para carrito
+const cartLabel = document.getElementById("cartLabel");
+const cartDropdown = document.getElementById("cartDropdown");
+const cartCount = document.getElementById("cartCount");
+const cartItemsContainer = document.getElementById("cartItems");
+const emptyCartMsg = document.getElementById("emptyCartMsg");
+const cartTotalEl = document.getElementById("cartTotal");
+const btnCheckout = document.getElementById("btnCheckout");
+
+// Cargar carrito desde localStorage o inicializar vacío
+let cart = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+
+// Limpiar carrito si contiene solo el producto demo
+if (cart.length === 1 && cart[0].name === "Prenda Demo") {
+  cart = [];
+  localStorage.removeItem("voguecrest_cart");
+}
+
+// Obtener productoId desde href (función reutilizable)
+function obtenerProductoDesdeHref(href) {
+  try {
+    const url = new URL(href, window.location.origin);
+    return url.searchParams.get("producto");
+  } catch (e) {
+    return null;
   }
+}
 
-  // Elementos DOM para carrito
-  const cartLabel = document.getElementById("cartLabel");
-  const cartDropdown = document.getElementById("cartDropdown");
-  const cartCount = document.getElementById("cartCount");
-  const cartItemsContainer = document.getElementById("cartItems");
-  const emptyCartMsg = document.getElementById("emptyCartMsg");
-  const cartTotalEl = document.getElementById("cartTotal");
-  const btnCheckout = document.getElementById("btnCheckout");
+// Marcar productos agotados y bloquear clic solo si están en carrito y en agotados
+function marcarAgotados() {
+  const agotados = JSON.parse(localStorage.getItem("voguecrest_agotados")) || [];
+  const items = document.querySelectorAll(".carousel-item");
 
-  // Cargar carrito desde localStorage o inicializar vacío
-  let cart = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+  // Obtener IDs de productos en carrito
+  const idsEnCarrito = cart.map((item) => item.id);
 
-  // Actualizar UI carrito (lista de productos y total)
-  function updateCartUI() {
-    if (cart.length === 0) {
-      emptyCartMsg.style.display = "block";
-      cartItemsContainer.innerHTML = "";
-      cartTotalEl.textContent = "";
-      btnCheckout.style.display = "none";
-      return;
-    }
-    emptyCartMsg.style.display = "none";
-    btnCheckout.style.display = "block";
+  items.forEach((item) => {
+    const link = item.querySelector("a.carousel-link");
+    if (!link) return;
 
-    let total = 0;
-    cartItemsContainer.innerHTML = "";
+    const productoId = obtenerProductoDesdeHref(link.href);
+    if (!productoId) return;
 
-    cart.forEach(item => {
-      const itemDiv = document.createElement("div");
-      itemDiv.className = "cart-item";
-
-      const img = document.createElement("img");
-      img.src = item.img;
-      img.alt = item.name;
-
-      const details = document.createElement("div");
-      details.className = "cart-item-details";
-
-      const name = document.createElement("div");
-      name.className = "cart-item-name";
-      name.textContent = item.name;
-
-      const qtyPrice = document.createElement("div");
-      qtyPrice.className = "cart-item-qty-price";
-      qtyPrice.textContent = `Cantidad: ${item.cantidad} · Precio: $${item.price}`;
-
-      details.appendChild(name);
-      details.appendChild(qtyPrice);
-
-      itemDiv.appendChild(img);
-      itemDiv.appendChild(details);
-
-      cartItemsContainer.appendChild(itemDiv);
-
-      total += item.price * item.cantidad;
-    });
-
-    cartTotalEl.textContent = `Total: $${total.toFixed(2)}`;
-  }
-
-  // Actualizar contador sumando todas las cantidades del carrito
-  function updateCartCount() {
-    const totalCantidad = cart.reduce((acc, item) => acc + (item.cantidad || 0), 0);
-    cartCount.textContent = totalCantidad;
-  }
-
-  // Actualizar todo (UI y contador)
-  function refreshCart() {
-    updateCartUI();
-    updateCartCount();
-  }
-
-  // Mostrar / ocultar desplegable carrito
-  cartLabel.addEventListener("click", () => {
-    if(cartDropdown.style.display === "block") {
-      cartDropdown.style.display = "none";
+    if (agotados.includes(productoId) && idsEnCarrito.includes(productoId)) {
+      if (!item.querySelector(".agotado-label")) {
+        const label = document.createElement("div");
+        label.textContent = "AGOTADO";
+        label.className = "agotado-label";
+        Object.assign(label.style, {
+          position: "absolute",
+          top: "10px",
+          left: "10px",
+          backgroundColor: "rgba(255, 0, 0, 0.8)",
+          color: "white",
+          padding: "4px 8px",
+          fontWeight: "bold",
+          borderRadius: "5px",
+          zIndex: "10",
+          fontSize: "14px",
+          pointerEvents: "none",
+          userSelect: "none",
+        });
+        item.style.position = "relative";
+        item.appendChild(label);
+      }
+      link.style.pointerEvents = "none";
+      link.style.opacity = "0.5";
+      item.style.cursor = "default";
     } else {
-      cartDropdown.style.display = "block";
+      const etiqueta = item.querySelector(".agotado-label");
+      if (etiqueta) etiqueta.remove();
+      link.style.pointerEvents = "auto";
+      link.style.opacity = "1";
+      item.style.cursor = "pointer";
     }
   });
+}
 
-  // Botón proceder al pago
-  btnCheckout.addEventListener("click", () => {
-    alert("Funcionalidad de pago no implementada todavía.");
+// Actualizar UI carrito (lista de productos y total)
+function updateCartUI() {
+  if (cart.length === 0) {
+    emptyCartMsg.style.display = "block";
+    cartItemsContainer.innerHTML = "";
+    cartTotalEl.textContent = "";
+    btnCheckout.style.display = "none";
+    return;
+  }
+  emptyCartMsg.style.display = "none";
+  btnCheckout.style.display = "block";
+
+  let total = 0;
+  cartItemsContainer.innerHTML = "";
+
+  cart.forEach((item) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "cart-item";
+
+    const img = document.createElement("img");
+    img.src = item.img;
+    img.alt = item.name;
+
+    const details = document.createElement("div");
+    details.className = "cart-item-details";
+
+    const name = document.createElement("div");
+    name.className = "cart-item-name";
+    name.textContent = item.name;
+
+    const qtyPrice = document.createElement("div");
+    qtyPrice.className = "cart-item-qty-price";
+    qtyPrice.textContent = `Cantidad: ${item.cantidad} · Precio: $${item.price}`;
+
+    details.appendChild(name);
+    details.appendChild(qtyPrice);
+
+    itemDiv.appendChild(img);
+    itemDiv.appendChild(details);
+
+    cartItemsContainer.appendChild(itemDiv);
+
+    total += item.price * item.cantidad;
   });
 
-  // Inicializar demo: si carrito está vacío, agregar un producto demo (opcional)
-  if(cart.length === 0) {
-    cart.push({name: "Prenda Demo", price: 25.99, cantidad: 1, img:"106.png"});
-    localStorage.setItem("voguecrest_cart", JSON.stringify(cart));
+  cartTotalEl.textContent = `Total: $${total.toFixed(2)}`;
+}
+
+// Actualizar contador sumando todas las cantidades del carrito
+function updateCartCount() {
+  const totalCantidad = cart.reduce((acc, item) => acc + (item.cantidad || 0), 0);
+  cartCount.textContent = totalCantidad;
+  cartCount.style.display = totalCantidad === 0 ? "none" : "inline-block";
+}
+
+// Eliminar producto del carrito y también quitarlo de agotados
+function eliminarProductoDelCarrito(productoId, talla, color) {
+  // Filtrar para eliminar el producto específico
+  cart = cart.filter(
+    (item) => !(item.id === productoId && item.talla === talla && item.color === color)
+  );
+
+  // Guardar carrito actualizado
+  localStorage.setItem("voguecrest_cart", JSON.stringify(cart));
+
+  // Actualizar agotados: remover el producto eliminado
+  let agotados = JSON.parse(localStorage.getItem("voguecrest_agotados")) || [];
+  if (agotados.includes(productoId)) {
+    agotados = agotados.filter((id) => id !== productoId);
+    localStorage.setItem("voguecrest_agotados", JSON.stringify(agotados));
   }
 
-  // Actualizar carrito y contador al cargar
   refreshCart();
+}
 
-  // Gift rotativo (cambio de imágenes cada 3 seg)
-  const giftImages = document.querySelectorAll("#gift img");
-  let currentGiftIndex = 0;
+// Actualizar todo (UI, contador, y estado agotados)
+function refreshCart() {
+  updateCartUI();
+  updateCartCount();
 
-  setInterval(() => {
-    giftImages[currentGiftIndex].classList.remove("active");
-    currentGiftIndex = (currentGiftIndex + 1) % giftImages.length;
-    giftImages[currentGiftIndex].classList.add("active");
-  }, 3000);
+  // Si el carrito está vacío, también vaciar agotados
+  if (cart.length === 0) {
+    localStorage.removeItem("voguecrest_agotados");
+  }
 
-  // Pausar animación carrusel al pasar mouse (solo en desktop)
-  const carousel1 = document.getElementById("carousel1");
-  carousel1.addEventListener("mouseenter", () => {
-    carousel1.classList.add("pause");
-  });
-  carousel1.addEventListener("mouseleave", () => {
-    carousel1.classList.remove("pause");
-  });
+  marcarAgotados();
+}
+
+// Mostrar / ocultar desplegable carrito
+cartLabel.addEventListener("click", () => {
+  if (cartDropdown.style.display === "block") {
+    cartDropdown.style.display = "none";
+  } else {
+    cartDropdown.style.display = "block";
+  }
+});
+
+// Botón proceder al pago
+btnCheckout.addEventListener("click", () => {
+  alert("Funcionalidad de pago no implementada todavía.");
+});
+
+// Actualizar carrito y contador al cargar
+refreshCart();
+
+// Gift rotativo (cambio de imágenes cada 3 seg)
+const giftImages = document.querySelectorAll("#gift img");
+let currentGiftIndex = 0;
+
+setInterval(() => {
+  giftImages[currentGiftIndex].classList.remove("active");
+  currentGiftIndex = (currentGiftIndex + 1) % giftImages.length;
+  giftImages[currentGiftIndex].classList.add("active");
+}, 3000);
+
+// Pausar animación carrusel al pasar mouse (solo en desktop)
+const carousel1 = document.getElementById("carousel1");
+carousel1.addEventListener("mouseenter", () => {
+  carousel1.classList.add("pause");
+});
+carousel1.addEventListener("mouseleave", () => {
+  carousel1.classList.remove("pause");
+});
+
 // Control de sesión para mostrar invitado o cesta
 function updateSessionUI() {
-  const userLoggedIn = localStorage.getItem('userLoggedIn');
-  const guestLabel = document.getElementById('guestLabel');
-  const cartLabel = document.getElementById('cartLabel');
+  const userLoggedIn = localStorage.getItem("userLoggedIn");
+  const guestLabel = document.getElementById("guestLabel");
+  const cartLabel = document.getElementById("cartLabel");
 
   if (userLoggedIn) {
     // Usuario logueado: mostrar cesta, ocultar invitado
-    guestLabel.style.display = 'none';
-    cartLabel.style.display = 'inline-flex';
+    guestLabel.style.display = "none";
+    cartLabel.style.display = "inline-flex";
   } else {
     // No hay usuario: mostrar invitado, ocultar cesta
-    guestLabel.style.display = 'inline';
-    cartLabel.style.display = 'none';
+    guestLabel.style.display = "inline";
+    cartLabel.style.display = "none";
   }
 }
 

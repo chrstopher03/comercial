@@ -660,7 +660,7 @@ CESTA <span id="cartCount" style="display:none; background:rgb(0, 0, 0); color:#
       <div class="" id="accordionDetalle"></div>
       <div class="" id="productDescription"></div>
 
-      <div class="" id="accordionMasDetalles">Detalles de la tienda</div>
+      <div class="" id="accordionMasDetalles"></div>
       <div class="panel" id="masDetalles"></div>
 
       <div class="detalle-flotante" id="openModalBtn">+ DETALLE</div>
@@ -736,7 +736,7 @@ CESTA <span id="cartCount" style="display:none; background:rgb(0, 0, 0); color:#
 
 <!-- SECCIÓN PRODUCTOS RELACIONADOS -->
 <section class="related-section" aria-label="Productos relacionados">
-  <h2>Productos Relacionados</h2>
+  <h2></h2>
   <div class="related-products"></div>
 </section>
 <footer class="footer">
@@ -810,50 +810,59 @@ Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esen
     stock: 10,
     relacionados: ["prenda6"],
   },
-    prenda4: {
+   
+ 
+  prenda4: {
     nombre: "VOGUECREST TEAM T-SHIRT – EDITION 01",
     imagenesPorColor: {
-      Blanca: ["015.png","031.png","032.jpeg"],
+      Blanco: ["015.png","031.png","032.jpeg"],
+      Negro:["309.png","310.png"],
     },
     imagenPrincipal: "015.png",
     descripcion: "La camiseta TEAM de VogueCrest fusiona la esencia vintage del fútbol con un toque moderno y urbano. Su silueta corta y ancha ofrece un volumen cómodo, mientras que las capas de malla añaden textura y dinamismo al diseño. El gran número estampado en el frente resalta el carácter único de la prenda, y la cinta personalizada en el cuello aporta ese detalle exclusivo que distingue a VogueCrest. Ideal para quienes buscan un estilo auténtico, fresco y con personalidad propia.",
     precio: "C$800",
     tallas: ["M", "L", "XL"],
-    colores: ["Blanca"],
-    stock: 0, // AGOTADO
+    colores: ["Blanco","Negro"],
+    
+    stock: 5, // AGOTADO
     relacionados: ["prenda3", "prendaH"]
   },
     prenda5: {
         nombre: "CAMISETA VOGUECREST SKIN – BLACK EDITION",
         imagenesPorColor: {
-          Negro: ["09.png","036.png","037.jpeg"]
+          Negro: ["09.png","036.png","037.jpeg"],
+          Rojo: ["035.png","034.png"],
         },
         imagenPrincipal: "09.png",
         descripcion: 'La camiseta SKIN Black Edition está confeccionada en algodón premium de 200 gramos, brindando cuerpo, caída y una sensación de calidad superior. El acabado teñido en prenda en color negro profundo aporta textura suave y un look atemporal, perfecto para cualquier ocasión ',
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Negro"],
+        colores: ["Negro","Rojo"],
+            stock: 5, // AGOTADO
+
         relacionados: ["prenda2", "prenda4"]
       },
       prenda6: {
         nombre: "VOGUECREST BLACK FABRIC SHORTS",
         imagenesPorColor: {
-          Negro: ["018.png"],
+          Cafe: ["018.png"],
         },
         imagenPrincipal: "018.png",
         descripcion: "El short negro de tela de VogueCrest está diseñado para ofrecer confort, estilo y versatilidad. Confeccionado en una mezcla ligera de algodón y poliéster, su corte recto y cintura elástica con cordón ajustable lo hacen ideal para el día a día. El diseño minimalista con el logo VogueCrest bordado en blanco lo convierte en una pieza esencial para un outfit moderno y funcional.",
         precio: "C$400",
         tallas: ["S", "M", "L", "XL"],
-        colores: [ "Negro"],
+        colores: [ "Cafe"],
+            stock: 5, // AGOTADO
+
         relacionados: ["prenda3"]
       },
       prenda7: {
         nombre: "SKIN TANK TOP BROWN",
         imagenesPorColor: {
-          Cafe: ["7.jpg","9.png"],
-          Negro: ["43.jpg"]
+          Negro: ["258.png","306.png"],
+          Blanco:["307.png","308.png"]
         },
-        imagenPrincipal: "7.jpg",
+        imagenPrincipal: "258.png",
        descripcion: `
 
 Camisetas de tirantes ajustadas confeccionadas en algodón acanalado, con estampado limpio en el pecho y una variante con estampado de camuflaje integral.
@@ -861,7 +870,9 @@ Camisetas de tirantes ajustadas confeccionadas en algodón acanalado, con estamp
 Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
         precio: "$28.00",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Cafe", "Negro",],
+        colores: ["Negro","Blanco"],
+            stock: 2, // <-- PRODUCTO AGOTADO
+
         relacionados: ["prenda2", "prenda4"]
       },
   prenda8: {
@@ -886,16 +897,19 @@ Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
         precio: "C$ 850",
     tallas: ["Única ajustable"], // ← CORREGIDO aquí
         colores: ["Negro", "Crema"],
+            stock: 5, // AGOTADO
+
         relacionados: ["prenda2", "prendaA"]
       },
       prenda10: {
   nombre: "SKIN UNDERWEAR",
   imagenesPorColor: {
        
-        Negro: ["19.png","254.jpeg"],
+        Negro: ["311.png","254.jpeg"],
   },
   imagenPrincipal: "19.png",
   descripcion: `
+    stock: 5, // AGOTADO
 
 Ropa interior de algodón de tiro medio con acabado suave al tacto y silueta limpia.
 
@@ -909,10 +923,10 @@ prenda11: {
   nombre: "VOGUECREST GREY ZIPPER SWEATER",
   imagenesPorColor: {
         Crema:["21.png"],
-        Gris: ["20.png"],
-        Negro: ["11.jpg"],
+        Gris: ["20.png","303.png"],
+        Negro: ["11.jpg","302.png"],
   },
-  imagenPrincipal: "20.png",
+  imagenPrincipal: "11.png",
   descripcion: `
 
 El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad y estilo en una sola prenda. Confeccionado en una mezcla de algodón suave y resistente, presenta un corte moderno con cierre frontal plateado que aporta funcionalidad y un toque sofisticado. Su diseño minimalista incluye la icónica placa plateada con el logo de VogueCrest en el pecho, lo que lo convierte en una prenda versátil para looks urbanos o casuales con actitud. Ideal para quienes buscan destacar con elegancia discreta.
@@ -923,7 +937,44 @@ El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad 
   colores: ["Gris","Negro", "Crema"],
   relacionados: ["prenda2", "prenda4"]
 },
+prenda12: {
+  nombre: "VOGUECREST GREY ZIPPER SWEATER",
+  imagenesPorColor: {
+        Negro: ["11.jpg","302.png"],
+         Crema:["21.png"],
+        Gris: ["20.png","303.png"],
+  },
+  imagenPrincipal: "10.png",
+  descripcion: `
 
+El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad y estilo en una sola prenda. Confeccionado en una mezcla de algodón suave y resistente, presenta un corte moderno con cierre frontal plateado que aporta funcionalidad y un toque sofisticado. Su diseño minimalista incluye la icónica placa plateada con el logo de VogueCrest en el pecho, lo que lo convierte en una prenda versátil para looks urbanos o casuales con actitud. Ideal para quienes buscan destacar con elegancia discreta.
+
+`,
+  precio: "C$1500",
+      stock: 5, // AGOTADO
+
+  tallas: ["S", "M", "L", "XL"],
+  colores: ["Negro","Gris", "Crema"],
+  relacionados: ["prenda2", "prenda4"]
+},
+prenda13: {
+  nombre: "VOGUECREST GREY ZIPPER SWEATER",
+  imagenesPorColor: {
+        Negro: ["011.png"],
+        Celeste:["014.png"],
+        Cafe: ["018.png"],
+  },
+  imagenPrincipal: "011.png",
+  descripcion: `
+
+El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad y estilo en una sola prenda. Confeccionado en una mezcla de algodón suave y resistente, presenta un corte moderno con cierre frontal plateado que aporta funcionalidad y un toque sofisticado. Su diseño minimalista incluye la icónica placa plateada con el logo de VogueCrest en el pecho, lo que lo convierte en una prenda versátil para looks urbanos o casuales con actitud. Ideal para quienes buscan destacar con elegancia discreta.
+
+`,
+  precio: "C$1500",
+  tallas: ["S", "M", "L", "XL"],
+  colores: [,"Negro","Celeste","Cafe"],
+  relacionados: ["prenda2", "prenda4"]
+},
        prendaA: {
         nombre: "SUEDE LOGO CAP NEGRO",
         imagenesPorColor: {
@@ -946,14 +997,18 @@ Ideal para completar looks casuales, monocromáticos o de inspiración streetwea
       prendaB: {
         nombre: "SKIN TANK TOP BROWN",
         imagenesPorColor: {
-          Negro: ["43.jpg"],
-          Cafe:["7.jpg","9.png"],
+          Negro: ["43.jpg","304.jpeg"],
+          Marron:["7.jpg","305.jpeg"],
         },
         imagenPrincipal: "43.jpg",
-        descripcion: "Camisa casual roja para uso diario.",
+        descripcion: `
+
+Camisetas de tirantes ajustadas confeccionadas en algodón acanalado, con estampado limpio en el pecho y una variante con estampado de camuflaje integral.
+
+Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
         precio: "$28.00",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Negro","Cafe", ],
+        colores: ["Negro","Marron", ],
         relacionados: ["prenda7", "prendaJ"]
       },
        prendaC: {
@@ -973,20 +1028,22 @@ Ideal para completar looks casuales, monocromáticos o de inspiración streetwea
       prendaD: {
         nombre: "VOGUECREST PRO ATHLETIC TEE BLACK",
         imagenesPorColor: {
-          Negro: ["80.png"]
+          Ceste: ["012.png"]
         },
-        imagenPrincipal: "80.png",
+        imagenPrincipal: "012.png",
         descripcion: "Diseñada para el rendimiento y el estilo, la VOGUECREST PRO ATHLETIC TEE BLACK combina comodidad y tecnología deportiva avanzada. Confeccionada en tejido transpirable y de secado rápido, esta camiseta negra presenta el icónico logo VogueCrest en el centro, garantizando una apariencia moderna y sofisticada para tus entrenamientos o actividades diarias. Perfecta para quienes buscan destacar sin sacrificar funcionalidad.",
         precio: "C$600",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Negro"],
+        colores: ["Celeste"],
         relacionados: ["prenda2", "prenda4"]
       },
       prendaE: {
         nombre: "LEGENDARY SMOKE HOODIE DARK",
         imagenesPorColor: {
-          Negro: ["108.png","107.jpeg","109.jpeg"]
+          Gris: ["108.png","107.jpeg","109.jpeg"]
         },
+            stock: 5, // AGOTADO
+
         imagenPrincipal: "106.png",
         descripcion:  `
 La sudadera LEGENDARY SMOKE presenta una composición visual en estilo collage que rinde homenaje al ícono del baloncesto Kobe Bryant. Su diseño envolvente integra elementos gráficos como humo, tipografías distorsionadas y arte urbano, todo impreso sobre una base de algodón con efecto lavado vintage.
@@ -999,7 +1056,7 @@ Ideal para quienes buscan una prenda audaz que combine homenaje, moda y cultura 
     `,
         precio: "C$ 2,000",
         tallas: ["S", "M", "L", "XL"],
-        colores: ["Negro"],
+        colores: ["Gris"],
         relacionados: ["prenda11", "prendaH"],
             stock: 2, // <-- PRODUCTO AGOTADO
 
@@ -1087,7 +1144,6 @@ La VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACK es una declaración de estilo y act
         colores: ["Negro"],
         relacionados: ["prenda10", "prendaB"]
       },
- 
 }
 document.addEventListener("DOMContentLoaded", () => {
   // Obtener parámetro producto de URL
@@ -1207,6 +1263,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "Negro": "#000000",
       "Gris": "#808080",
       "Celeste": "#87CEEB",
+      "Blanco": "#ffffff",
+      "Cafe" : "#573e2b",
+      "Crema" : "#ede1cb",
+      "Marron": "#713b17",
+      "Rojo" : "#c61c1d",
       // Puedes añadir más colores aquí
     };
     return mapa[nombre] || "#888888";
