@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recuperar Contraseña - VogueCrest</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+  <style>
+    /* mismo estilo que antes */
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: 'Inter', sans-serif; background:#fff; color:#000; height:100vh; display:flex; flex-direction:column; padding:20px;}
+    .wrapper { max-width:400px; margin:auto; flex-grow:1; display:flex; flex-direction:column; justify-content:center; padding:0 20px;}
+    h1 { font-size:28px; font-weight:500; text-align:center; margin-bottom:30px;}
+    form { display:flex; flex-direction:column; gap:18px;}
+    input { font-size:14px; padding:14px 12px; border:none; border-bottom:1px solid #ccc; background:transparent; outline:none; width:100%;}
+    button { background:#000; color:#fff; border:none; padding:14px; font-size:14px; font-weight:600; text-transform:uppercase; cursor:pointer; border-radius:6px; transition:background-color 0.3s ease;}
+    button:hover { background:#333;}
+    .error { color:red; text-align:center; margin-top:10px;}
+    .back-link { text-align:center; margin-top:25px; font-size:13px;}
+    .back-link a { color:#000; text-decoration:underline; cursor:pointer;}
+    .back-link a:hover { color:#333;}
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Recuperar Contraseña</h1>
+    <form id="recover-form" autocomplete="off" novalidate>
+      <input type="email" id="email" name="email" placeholder="Correo electrónico" required />
+      <button type="submit">Continuar</button>
+    </form>
+    <div id="error-message" class="error"></div>
+    <div class="back-link">
+      <a href="sesion.html">Volver al inicio de sesión</a>
+    </div>
+  </div>
+
+  <script>
+    const recoverForm = document.getElementById('recover-form');
+    const errorMsg = document.getElementById('error-message');
+
+    recoverForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      errorMsg.textContent = '';
+
+      const email = recoverForm.email.value.trim().toLowerCase();
+      const userJSON = localStorage.getItem(`user_${email}`);
+
+      if (!userJSON) {
+        errorMsg.textContent = 'El correo no está registrado.';
+        return;
+      }
+
+      // Guardamos el email en sessionStorage para usar en cambiar-contra.html
+      sessionStorage.setItem('recoverEmail', email);
+
+      // Redirigimos a cambiar contraseña
+      window.location.href = 'cambiar-contra.html';
+    });
+  </script>
+</body>
+</html>
+
+  prenda2: {
+    nombre: "VOGUECREST ESSENTIAL LOGO CAP – ASH GREY",
+    imagenesPorColor: {
+      Gris: ["019.png","023.png","021.png","022.png"],
+    },
+    imagenPrincipal: "019.png",
+    descripcion: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
+
+Confeccionada en ante sintético de alta calidad, ofrece un acabado suave tipo terciopelo en un tono gris ceniza, sobrio y moderno.
+
+El logo icónico de VogueCrest en TPU negro resalta al frente, aportando un contraste sofisticado y una identidad fuerte.
+
+Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.`,
+    precio: "C$950",
+    tallas: ["Única ajustable"],
+    circunferencia: "54-62 cm",
+    colores: ["Gris"],
+    stock: 2, // <-- PRODUCTO AGOTADO
+    materiales: ["Tela deportiva", "Logo bordado", "Cierre ajustable"],
+    relacionados: ["prendaA", "prendaF","prenda9"]
+  },
+ prenda3: {
+    nombre: "VOGUECREST SHORT LIGHT DENIM – EDITION 01",
+    imagenesPorColor: {
+      Celeste : ["014.png","112.png","113.jpeg"],
+      Negro: ["011.png","115.png","117.jpeg"],
+    },
+    imagenPrincipal: "014.png",
+    descripcion: `El VOGUECREST SHORT LIGHT DENIM – EDITION 01 redefine lo esencial del denim con un enfoque moderno, fresco y versátil. Confeccionado en mezclilla de tono claro con acabado suave al tacto, este short combina funcionalidad y estilo en una silueta cómoda de corte recto.
+
+Presenta un diseño minimalista con bolsillos laterales amplios, detalles metálicos pulidos y costuras reforzadas que aseguran durabilidad sin sacrificar estilo. Su fit relajado lo convierte en una prenda ideal para el día a día, adaptable tanto a outfits casuales como a looks urbanos más elaborados.
+
+Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esencia de la moda limpia, contemporánea y auténtica.`,
+    precio: "C$800",
+    tallas: ["S", "M", "L"],
+    colores: ["Celeste", "Negro"],
+    stock: 10,
+    relacionados: ["prenda6"],
+  },
+    prenda4: {
+    nombre: "VOGUECREST TEAM T-SHIRT – EDITION 01",
+    imagenesPorColor: {
+      Blanca: ["015.png","031.png","032.jpeg"],
+    },
+    imagenPrincipal: "015.png",
+    descripcion: "La camiseta TEAM de VogueCrest fusiona la esencia vintage del fútbol con un toque moderno y urbano. Su silueta corta y ancha ofrece un volumen cómodo, mientras que las capas de malla añaden textura y dinamismo al diseño. El gran número estampado en el frente resalta el carácter único de la prenda, y la cinta personalizada en el cuello aporta ese detalle exclusivo que distingue a VogueCrest. Ideal para quienes buscan un estilo auténtico, fresco y con personalidad propia.",
+    precio: "C$800",
+    tallas: ["M", "L", "XL"],
+    colores: ["Blanca"],
+    stock: 0, // AGOTADO
+    relacionados: ["prenda3", "prendaH"]
+  },
+    prenda5: {
+        nombre: "CAMISETA VOGUECREST SKIN – BLACK EDITION",
+        imagenesPorColor: {
+          Negro: ["09.png","036.png","037.jpeg"]
+        },
+        imagenPrincipal: "09.png",
+        descripcion: 'La camiseta SKIN Black Edition está confeccionada en algodón premium de 200 gramos, brindando cuerpo, caída y una sensación de calidad superior. El acabado teñido en prenda en color negro profundo aporta textura suave y un look atemporal, perfecto para cualquier ocasión ',
+        precio: "C$800",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prenda6: {
+        nombre: "VOGUECREST BLACK FABRIC SHORTS",
+        imagenesPorColor: {
+          Negro: ["018.png"],
+        },
+        imagenPrincipal: "018.png",
+        descripcion: "El short negro de tela de VogueCrest está diseñado para ofrecer confort, estilo y versatilidad. Confeccionado en una mezcla ligera de algodón y poliéster, su corte recto y cintura elástica con cordón ajustable lo hacen ideal para el día a día. El diseño minimalista con el logo VogueCrest bordado en blanco lo convierte en una pieza esencial para un outfit moderno y funcional.",
+        precio: "C$400",
+        tallas: ["S", "M", "L", "XL"],
+        colores: [ "Negro"],
+        relacionados: ["prenda3"]
+      },
+      prenda7: {
+        nombre: "SKIN TANK TOP BROWN",
+        imagenesPorColor: {
+          Cafe: ["7.jpg","9.png"],
+          Negro: ["43.jpg"]
+        },
+        imagenPrincipal: "7.jpg",
+       descripcion: `
+
+Camisetas de tirantes ajustadas confeccionadas en algodón acanalado, con estampado limpio en el pecho y una variante con estampado de camuflaje integral.
+
+Diseñadas para ajustarse al cuerpo con una silueta limpia y minimalista.`,
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Cafe", "Negro",],
+        relacionados: ["prenda2", "prenda4"]
+      },
+  prenda8: {
+        nombre: "VOGUECREST V-NECK BLOUSE WHITE",
+        imagenesPorColor: {
+          Blanco: ["8.png"]
+        },
+        imagenPrincipal: "8.png",
+        descripcion: "La blusa blanca con cuello en V de VogueCrest está pensada para resaltar la elegancia natural y la comodidad femenina. Confeccionada en un tejido liviano y suave al tacto, su corte fluido se adapta al cuerpo con gracia. El escote en V estiliza el cuello, mientras que el diseño minimalista la convierte en una prenda ideal para ocasiones casuales o semi-formales. Perfecta para combinar con jeans, faldas o shorts de la colección VogueCrest.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Blanco"],
+        relacionados: ["prenda2", "prenda4"]
+      }, prenda9: {
+        nombre: "VOGUECREST BLACK PLATE CAP",
+        imagenesPorColor: {
+          Negro: ["15.png", "121.png","122.png","123.png"],
+          Crema: ["22.png"]
+        },
+        imagenPrincipal: "15.png",
+        descripcion: "La gorra negra con placa VogueCrest es una pieza distintiva que combina sobriedad y carácter. Confeccionada en algodón estructurado de alta calidad, presenta una visera curva y paneles reforzados para un ajuste firme. El detalle más icónico es su placa metálica negra con el logo VogueCrest, integrada con elegancia en el centro frontal. Ideal para elevar cualquier outfit urbano con una presencia moderna y sofisticada.",
+        precio: "C$ 850",
+    tallas: ["Única ajustable"], // ← CORREGIDO aquí
+        colores: ["Negro", "Crema"],
+        relacionados: ["prenda2", "prendaA"]
+      },
+      prenda10: {
+  nombre: "SKIN UNDERWEAR",
+  imagenesPorColor: {
+       
+        Negro: ["19.png","254.jpeg"],
+  },
+  imagenPrincipal: "19.png",
+  descripcion: `
+
+Ropa interior de algodón de tiro medio con acabado suave al tacto y silueta limpia.
+
+Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elástica flexible y branding GNG. Suave, transpirable y pensada para el uso diario.`,
+  precio: "C$500",
+  tallas: ["S", "M", "L", "XL"],
+  colores: ["Negro"],
+  relacionados: ["prenda2", "prenda4"]
+}, 
+prenda11: {
+  nombre: "VOGUECREST GREY ZIPPER SWEATER",
+  imagenesPorColor: {
+        Crema:["21.png"],
+        Gris: ["20.png"],
+        Negro: ["11.jpg"],
+  },
+  imagenPrincipal: "20.png",
+  descripcion: `
+
+El suéter gris con zipper de VogueCrest está diseñado para brindar comodidad y estilo en una sola prenda. Confeccionado en una mezcla de algodón suave y resistente, presenta un corte moderno con cierre frontal plateado que aporta funcionalidad y un toque sofisticado. Su diseño minimalista incluye la icónica placa plateada con el logo de VogueCrest en el pecho, lo que lo convierte en una prenda versátil para looks urbanos o casuales con actitud. Ideal para quienes buscan destacar con elegancia discreta.
+
+`,
+  precio: "C$1500",
+  tallas: ["S", "M", "L", "XL"],
+  colores: ["Gris","Negro", "Crema"],
+  relacionados: ["prenda2", "prenda4"]
+},
+
+       prendaA: {
+        nombre: "SUEDE LOGO CAP NEGRO",
+        imagenesPorColor: {
+          Negro: ["42.png", "124.png","122.png","123.png"],
+          Crema: ["22.png"]
+        },
+        imagenPrincipal: "42.png",
+        descripcion:`
+La SUEDE LOGO CAP en color negro es una reinterpretación sofisticada de la gorra clásica. Confeccionada en tela tipo gamuza (suede) de alta calidad, ofrece una textura suave y un acabado mate que aporta distinción sin perder su esencia urbana.
+
+Su diseño minimalista presenta una estructura de seis paneles con visera curva, ajuste trasero regulable y el icónico logo VogueCrest bordado al frente en tono tonal, manteniendo una estética limpia y elegante.
+
+Ideal para completar looks casuales, monocromáticos o de inspiración streetwear, esta gorra es una pieza atemporal que equilibra estilo y sencillez con un toque de lujo discreto.
+`,
+        precio: "C$ 990",
+    tallas: ["Única ajustable"], // ← CORREGIDO aquí
+        colores: ["Negro", "Crema"],
+        relacionados: ["prenda2", "prenda9"]
+      },
+      prendaB: {
+        nombre: "SKIN TANK TOP BROWN",
+        imagenesPorColor: {
+          Negro: ["43.jpg"],
+          Cafe:["7.jpg","9.png"],
+        },
+        imagenPrincipal: "43.jpg",
+        descripcion: "Camisa casual roja para uso diario.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro","Cafe", ],
+        relacionados: ["prenda7", "prendaJ"]
+      },
+       prendaC: {
+        nombre: "VOGUECREST CREAM ZIPPER SWEATER",
+        imagenesPorColor: {
+          Crema: ["21.png"],
+          Negro: ["11.jpg"],
+          Gris:["20.png"]
+        },
+        imagenPrincipal: "21.png",
+        descripcion: "El suéter color crema con zipper de VogueCrest ofrece una mezcla perfecta entre suavidad, elegancia y estilo urbano. Confeccionado con tejido de algodón premium, proporciona una sensación cálida y ligera ideal para cualquier temporada. Su diseño incluye un cierre frontal metálico y una placa frontal con el logo VogueCrest en acabado satinado, que aporta distinción sin exceso. Su tonalidad neutra lo convierte en una prenda esencial para combinaciones versátiles y sofisticadas.",
+        precio: "$28.00",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Crema", "Negro","Gris"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prendaD: {
+        nombre: "VOGUECREST PRO ATHLETIC TEE BLACK",
+        imagenesPorColor: {
+          Negro: ["80.png"]
+        },
+        imagenPrincipal: "80.png",
+        descripcion: "Diseñada para el rendimiento y el estilo, la VOGUECREST PRO ATHLETIC TEE BLACK combina comodidad y tecnología deportiva avanzada. Confeccionada en tejido transpirable y de secado rápido, esta camiseta negra presenta el icónico logo VogueCrest en el centro, garantizando una apariencia moderna y sofisticada para tus entrenamientos o actividades diarias. Perfecta para quienes buscan destacar sin sacrificar funcionalidad.",
+        precio: "C$600",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prendaE: {
+        nombre: "LEGENDARY SMOKE HOODIE DARK",
+        imagenesPorColor: {
+          Negro: ["108.png","107.jpeg","109.jpeg"]
+        },
+        imagenPrincipal: "106.png",
+        descripcion:  `
+La sudadera LEGENDARY SMOKE presenta una composición visual en estilo collage que rinde homenaje al ícono del baloncesto Kobe Bryant. Su diseño envolvente integra elementos gráficos como humo, tipografías distorsionadas y arte urbano, todo impreso sobre una base de algodón con efecto lavado vintage.
+
+Esta hoodie de corte oversized destaca por su estética callejera contemporánea. Confeccionada en felpa suave, incorpora capucha amplia sin cordón, bolsillos tipo canguro y acabados acanalados en puños y cintura, ofreciendo una silueta cómoda y estructurada.
+
+Ideal para quienes buscan una prenda audaz que combine homenaje, moda y cultura urbana.
+
+
+    `,
+        precio: "C$ 2,000",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro"],
+        relacionados: ["prenda11", "prendaH"]
+      },
+      prendaF: {
+        nombre: "VOGUECREST SIGNATURE CAP CREAM",
+        imagenesPorColor: {
+          Crema: ["22.png"],
+          Negro: ["42.png","15.png"]
+        },
+        imagenPrincipal: "22.png",
+        descripcion: "Eleva tu estilo urbano con la VOGUECREST SIGNATURE CAP CREAM. Esta gorra color crema está equipada con una placa metálica negra que exhibe el icónico logo VogueCrest, combinando elegancia y actitud. Fabricada con materiales de alta calidad, ofrece ajuste cómodo y duradero, perfecta para complementar cualquier outfit con un toque sofisticado y contemporáneo.",
+        precio: "C$450",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Crema", "Negro"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prendaG: {
+        nombre: "VOGUECREST DENIM SHORT BLACK",
+        imagenesPorColor: {
+          Negro: ["10.png"],
+        },
+        imagenPrincipal: "10.png",
+        descripcion: "Un básico reinventado con estilo urbano: el VOGUECREST DENIM SHORT BLACK combina la resistencia clásica del jean con un diseño moderno. Este short negro presenta el nombre VogueCrest estampado en la parte inferior, aportando un detalle distintivo y elegante. Perfecto para looks casuales y urbanos, ofrece comodidad y durabilidad para el día a día con la esencia auténtica de VogueCrest.",
+        precio: "C$700",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prendaH: {
+        nombre: "VOGUECREST BLACK ZIPPER SWEATER",
+        imagenesPorColor: {
+          Negro: ["11.jpg",],
+          Gris: ["20.png"],
+          Crema: ["21.png"]
+        },
+        imagenPrincipal: "11.jpg",
+        descripcion: "Un suéter negro con cierre metálico que combina estilo y carácter. Diseñado para quienes prefieren lo simple pero poderoso, esta pieza encarna la esencia urbana de VogueCrest: limpia, sólida y con actitud. Ideal para climas frescos, su tela gruesa y su corte relajado lo convierten en una prenda esencial para dominar la calle con elegancia.",
+        precio: "C$1500",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro", "Gris","Crema"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+        prendaI: {
+        nombre: "VOGUECREST OVERSIZE LIGHT GREY LIGHTNING TEE",
+        imagenesPorColor: {
+          Gris: ["12.png"]
+        },
+        imagenPrincipal: "12.png",
+        descripcion: "Marca tendencia con la VOGUECREST OVERSIZE LIGHT GREY LIGHTNING TEE, una camisa gris oversize decorada con impactantes rayos negros que evocan energía y movimiento. El icónico logo VogueCrest resalta en el diseño, fusionando estilo urbano y comodidad en una sola prenda. Perfecta para un look casual pero lleno de personalidad, diseñada para quienes buscan destacar con audacia y comodidad.",
+        precio: "C$800",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Gris"],
+        relacionados: ["prenda2", "prenda4"]
+      },
+      prendaJ: {
+        nombre:  "SKIN UNDERWEAR",
+        imagenesPorColor: {
+          Cafe: ["17.png", "16.png"],
+          Negro: ["18.png"]
+        },
+        imagenPrincipal: "17.png",
+         descripcion: `
+
+Ropa interior de algodón de tiro medio con acabado suave al tacto y silueta limpia.
+
+Cada pack incluye 2 unidades en colores surtidos. Diseñada con cinturilla elástica flexible y branding GNG. Suave, transpirable y pensada para el uso diario.`,
+        precio: "C$500",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro","Cafe"],
+        relacionados: ["prenda10", "prendaB"]
+      },
+      
+      prendaK: {
+        nombre:  "VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACKR",
+        imagenesPorColor: {
+          Negro: ["09.png"],
+        },
+        imagenPrincipal: "09.png",
+         descripcion: `
+
+La VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACK es una declaración de estilo y actitud. Con un corte amplio y relajado, esta camisa oversize en negro presenta el icónico logo de VogueCrest al frente y en la espalda, creando un diseño imponente y moderno. Ideal para outfits urbanos con personalidad, su tela suave garantiza comodidad sin perder fuerza visual. Es más que una prenda: es identidad VogueCrest.`,
+        precio: "C$500",
+        tallas: ["S", "M", "L", "XL"],
+        colores: ["Negro"],
+        relacionados: ["prenda10", "prendaB"]
+      },
+ 
+}

@@ -16,6 +16,9 @@
       background-color: #fff;
       color: #000;
       min-height: 100vh;
+      /* Padding para que el contenido no quede debajo del header y footer */
+      padding-top: 60px;
+      padding-bottom: 60px;
     }
 
     header {
@@ -29,6 +32,7 @@
       z-index: 1000;
       background: white;
       border-bottom: 1px solid #ccc;
+      /* Para que logo quede centrado sin posicion absoluta */
     }
 
     .menu-label, .cart-label {
@@ -36,14 +40,19 @@
       text-transform: uppercase;
       font-size: 14px;
       user-select: none;
+      font-weight: 600;
     }
 
     .logo {
+      height: 40px;
+      object-fit: contain;
+      /* centramos el logo con flexbox */
+      margin: 0 auto;
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      height: 40px;
-      object-fit: contain;
+      top: 10px;
+      z-index: 1100; /* para que quede encima del menú */
     }
 
     footer {
@@ -57,6 +66,9 @@
       text-align: center;
       font-size: 0.9rem;
       color: #666;
+      z-index: 1000;
+      height: 60px;
+      line-height: 30px;
     }
 
     nav.menu-mobile {
@@ -88,10 +100,14 @@
       text-align: center;
       font-weight: 600;
       user-select: none;
+      padding: 12px 0;
+      transition: background-color 0.2s ease;
     }
 
-    nav.menu-mobile a:hover {
+    nav.menu-mobile a:hover,
+    nav.menu-mobile a:focus {
       background: #f0f0f0;
+      outline: none;
     }
 
     a {
@@ -104,19 +120,23 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      min-height: 100vh;
-      padding-top: 80px;
-      padding-bottom: 100px;
+      min-height: calc(100vh - 120px); /* resto header+footer */
+      padding: 20px 10px;
       box-sizing: border-box;
+      width: 100%;
     }
 
     .related-section {
       text-align: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .related-section h2 {
       font-size: 22px;
       margin-bottom: 20px;
+      font-weight: 700;
     }
 
     .carousel-grande-container {
@@ -125,6 +145,7 @@
       scroll-snap-type: x mandatory;
       display: flex;
       padding: 10px 0;
+      -webkit-overflow-scrolling: touch; /* mejor scroll en iOS */
     }
 
     .carousel-grande-track {
@@ -141,15 +162,26 @@
       width: 80vw;
       max-width: 320px;
       height: 400px;
-      background-color: transparent; /* sin fondo */
-      border-radius: 0; /* sin bordes redondeados */
+      background-color: transparent;
+      border-radius: 0;
       overflow: hidden;
       cursor: pointer;
       transition: transform 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: none; /* sin sombra */
+      box-shadow: none;
+      border: 1px solid transparent;
+    }
+
+    .carousel-grande-item:focus {
+      outline: 3px solid #0077cc;
+      outline-offset: 2px;
+    }
+
+    .carousel-grande-item:hover img,
+    .carousel-grande-item:focus img {
+      transform: scale(1.05);
     }
 
     .carousel-grande-item img {
@@ -157,14 +189,10 @@
       height: 100%;
       object-fit: contain;
       display: block;
-      background-color: transparent; /* sin fondo */
+      background-color: transparent;
       transition: transform 0.3s ease;
       pointer-events: none;
-      border: none; /* sin borde */
-    }
-
-    .carousel-grande-item:hover img {
-      transform: scale(1.05);
+      border: none;
     }
 
     .carousel-grande-container::-webkit-scrollbar {
@@ -179,7 +207,7 @@
     #modalLooks {
       display: none;
       position: fixed;
-      z-index: 9999;
+      z-index: 10000;
       top: 0;
       left: 0;
       width: 100vw;
@@ -188,6 +216,7 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      overflow: auto;
     }
 
     #modalLooks img {
@@ -198,8 +227,8 @@
     }
 
     #modalLooks button.close-look-modal {
-      position: absolute;
-      top: 15px;
+      position: fixed; /* Mejor usar fixed para que quede siempre visible */
+      top: 20px;
       right: 25px;
       font-size: 32px;
       background: none;
@@ -207,10 +236,16 @@
       color: white;
       cursor: pointer;
       font-weight: 700;
+      z-index: 11000;
+      padding: 5px 10px;
+      line-height: 1;
+      user-select: none;
     }
 
-    #modalLooks button.close-look-modal:hover {
+    #modalLooks button.close-look-modal:hover,
+    #modalLooks button.close-look-modal:focus {
       color: #ccc;
+      outline: none;
     }
 
     @media (min-width: 768px) {
@@ -229,41 +264,41 @@
 
   <!-- HEADER -->
   <header>
-    <div class="menu-label" id="menu-toggle">MENÚ</div>
+    <div class="menu-label" id="menu-toggle" tabindex="0" role="button" aria-label="Abrir menú">MENÚ</div>
     <img src="100.png" alt="VogueCrest" class="logo" />
-    <div class="cart-label">CESTA</div>
+    <div class="cart-label" tabindex="0" role="button" aria-label="Abrir cesta">CESTA</div>
   </header>
 
   <!-- MENÚ MÓVIL -->
-  <nav class="menu-mobile" id="mobileMenu">
+  <nav class="menu-mobile" id="mobileMenu" aria-label="Menú móvil">
     <a href="index.html">INICIO</a>
     <a href="colecciones.html">COLECCIONES</a>
     <a href="acerca.html">ACERCA DE</a>
     <a href="editorial.html">EDITORIAL</a>
     <a href="looks.html">LOOKS</a>
     <a href="contacto.html">CONTACTANOS</a>
-    <a href="#" onclick="toggleMenu()">CERRAR</a>
+    <a href="#" onclick="toggleMenu()" tabindex="0">CERRAR</a>
   </nav>
 
   <!-- CARRUSEL CENTRADO -->
-  <div class="centro-pantalla">
+  <main class="centro-pantalla">
     <section class="related-section">
       <h2>Looks inspiradores</h2>
-      <div class="carousel-grande-container">
+      <div class="carousel-grande-container" role="list">
         <div class="carousel-grande-track">
-          <div class="carousel-grande-item"><img src="03.png" alt="Look 1" /></div>
-          <div class="carousel-grande-item"><img src="02.png" alt="Look 2" /></div>
-          <div class="carousel-grande-item"><img src="Copia de Copia de Copia de Copia de Think (12).png" alt="Look 3" /></div>
-          <div class="carousel-grande-item"><img src="06.png" alt="Look 4" /></div>
-          <div class="carousel-grande-item"><img src="07.png" alt="Look 5" /></div>
-          <div class="carousel-grande-item"><img src="010.jpeg" alt="Look 6" /></div>
+          <div class="carousel-grande-item" role="listitem" tabindex="0"><img src="265.png" alt="Look 1" /></div>
+          <div class="carousel-grande-item" role="listitem" tabindex="0"><img src="266.png" alt="Look 2" /></div>
+          <div class="carousel-grande-item" role="listitem" tabindex="0"><img src="Copia de Copia de Copia de Copia de Think (12).png" alt="Look 3" /></div>
+          <div class="carousel-grande-item" role="listitem" tabindex="0"><img src="06.png" alt="Look 4" /></div>
+          <div class="carousel-grande-item" role="listitem" tabindex="0"><img src="07.png" alt="Look 5" /></div>
+          <div class="carousel-grande-item" role="listitem" tabindex="0"><img src="010.jpeg" alt="Look 6" /></div>
         </div>
       </div>
     </section>
-  </div>
+  </main>
 
   <!-- MODAL -->
-  <div id="modalLooks">
+  <div id="modalLooks" role="dialog" aria-modal="true" aria-labelledby="modalLookLabel" tabindex="-1">
     <button class="close-look-modal" aria-label="Cerrar">&times;</button>
     <img id="modalLookImage" alt="Imagen ampliada" />
   </div>
@@ -278,35 +313,67 @@
     const modalImage = document.getElementById("modalLookImage");
     const closeBtn = document.querySelector(".close-look-modal");
 
+    // Abrir modal con click o tecla Enter/Space
     document.querySelectorAll(".carousel-grande-item").forEach(item => {
-      item.addEventListener("click", () => {
+      function openModal() {
         const img = item.querySelector("img");
         modalImage.src = img.src;
         modalImage.alt = img.alt;
         modal.style.display = "flex";
+        modal.focus();
+      }
+
+      item.addEventListener("click", openModal);
+      item.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal();
+        }
       });
     });
 
     closeBtn.addEventListener("click", () => {
       modal.style.display = "none";
+      modalImage.src = "";
+      modalImage.alt = "";
     });
 
     modal.addEventListener("click", (e) => {
-      if (e.target === modal) modal.style.display = "none";
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modalImage.src = "";
+        modalImage.alt = "";
+      }
     });
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && modal.style.display === "flex") {
         modal.style.display = "none";
+        modalImage.src = "";
+        modalImage.alt = "";
       }
     });
 
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobileMenu');
+
     function toggleMenu() {
       mobileMenu.classList.toggle('show');
+      // Foco al abrir para accesibilidad
+      if (mobileMenu.classList.contains('show')) {
+        mobileMenu.querySelector('a').focus();
+      } else {
+        menuToggle.focus();
+      }
     }
+
     menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('keydown', e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleMenu();
+      }
+    });
   </script>
 
 </body>

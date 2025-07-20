@@ -10,7 +10,6 @@
   /* Reset y base */
   *, *::before, *::after { box-sizing: border-box; }
   body, html {
-    font-family: Arial, sans-serif;
     background: #ffffff;
     color: #000;
     overflow-x: hidden;
@@ -26,14 +25,12 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid #ccc;
 }
 
 .menu-label, .cart-label {
   cursor: pointer;
   user-select: none;
   font-size: 14px;
-  font-weight: 600;
 }
 
 .logo {
@@ -43,10 +40,20 @@ header {
 
 /* Contador cesta alineado al lado */
 .cart-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  color: black !important;      /* Que el texto sea negro */
+  text-decoration: none !important; /* Sin subrayado ni rayas */
+  outline: none !important;      /* Quita el borde de enfoque */
+  user-select: none;
+  cursor: pointer;
 }
+.cart-label:focus,
+.cart-label:active,
+.cart-label:visited {
+  color: black !important;
+  text-decoration: none !important;
+  outline: none !important;
+}
+
 
 .cart-count {
   background: #000;
@@ -75,7 +82,6 @@ header {
   justify-content: center;
   gap: 24px;
   transition: left 0.3s ease-in-out;
-  font-size: 18px;
   z-index: 9999;
 }
 
@@ -290,12 +296,11 @@ main {
 
 
 .left-img img {
-  width: 100%;
+  width: 113%;
   max-width: 800px;
   height: auto;
   object-fit: contain;
   display: block;
-  border-radius: 12px;
 }
 
 /* Ajustes para el carrusel */
@@ -552,24 +557,34 @@ button.btn-enter:hover {
 
 
 <!-- HEADER MODERNO -->
+<!-- HEADER MODERNO -->
 <header>
   <div class="menu-label" id="menu-toggle">MENÚ</div>
   <img src="100.png" alt="VogueCrest" class="logo" />
-  <div class="cart-label" id="cartLabel">
+  
+  <a href="sesion.html" id="guestLabel" style="font-weight: 700; font-size: 14px; cursor: pointer; user-select: none; text-decoration: none; color: black; display:none;">
+  Invitado
+</a>
+
+
+  <a href="cesta.html" class="cart-label" id="cartLabel" aria-label="Ir a la cesta de compras" style="display:none;">
     CESTA
     <span class="cart-count" id="cartCount">0</span>
-  </div>
+  </a>
 </header>
+
+
 
 <!-- MENÚ MÓVIL DESLIZANTE -->
 <nav class="menu-mobile" id="mobileMenu">
   <a href="index.html">INICIO</a>
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
-  <a href="editorial.html">EDITORIAL</a>
+  <a href="editorial.html">OUT & ABOUT</a>
   <a href="looks.html">LOOKS</a>
   <a href="contacto.html">CONTACTANOS</a>
   <a href="sesion.html">INICIAR SESION</a>
+  <a href="cuenta.html">CUENTA</a>
     <a href="asistente.html">ASISTENTE</a>
   <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
@@ -656,14 +671,25 @@ button.btn-enter:hover {
       </div>
     </div>
   </section>
+  <div class="image-group">
+    <div class="left-img">
+      <img src="258.jpeg" alt="Imagen grande izquierda 1" />
+      <div class="caption">DROP 01
+        <P>NICARAGUA</P>
+        2025
+      </div>
+    </div>
+  </div>
+
+  
 </main>
 
 <div class="ticker-wrapper" aria-hidden="true">
   <div class="ticker">
-    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
-    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
-    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
-    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
+    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span><span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
+    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span><span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
+    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span><span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
+    <span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span><span>VOGUECRESTS </span><SPan>.</SPan> <SPan>DROP 01</span>
 
 
 
@@ -691,7 +717,7 @@ button.btn-enter:hover {
     mobileMenu.classList.remove("show");
   }
 
-  // CESTA FUNCIONALIDAD
+  // Elementos DOM para carrito
   const cartLabel = document.getElementById("cartLabel");
   const cartDropdown = document.getElementById("cartDropdown");
   const cartCount = document.getElementById("cartCount");
@@ -700,12 +726,11 @@ button.btn-enter:hover {
   const cartTotalEl = document.getElementById("cartTotal");
   const btnCheckout = document.getElementById("btnCheckout");
 
-  // Simulación carrito (a futuro integrar localStorage o API)
-  let cart = [];
+  // Cargar carrito desde localStorage o inicializar vacío
+  let cart = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
 
-  // Actualizar UI carrito
+  // Actualizar UI carrito (lista de productos y total)
   function updateCartUI() {
-    cartCount.textContent = cart.length;
     if (cart.length === 0) {
       emptyCartMsg.style.display = "block";
       cartItemsContainer.innerHTML = "";
@@ -718,6 +743,7 @@ button.btn-enter:hover {
 
     let total = 0;
     cartItemsContainer.innerHTML = "";
+
     cart.forEach(item => {
       const itemDiv = document.createElement("div");
       itemDiv.className = "cart-item";
@@ -735,7 +761,7 @@ button.btn-enter:hover {
 
       const qtyPrice = document.createElement("div");
       qtyPrice.className = "cart-item-qty-price";
-      qtyPrice.textContent = `Cantidad: ${item.quantity} · Precio: $${item.price}`;
+      qtyPrice.textContent = `Cantidad: ${item.cantidad} · Precio: $${item.price}`;
 
       details.appendChild(name);
       details.appendChild(qtyPrice);
@@ -745,13 +771,25 @@ button.btn-enter:hover {
 
       cartItemsContainer.appendChild(itemDiv);
 
-      total += item.price * item.quantity;
+      total += item.price * item.cantidad;
     });
 
     cartTotalEl.textContent = `Total: $${total.toFixed(2)}`;
   }
 
-  // Toggle desplegable cesta
+  // Actualizar contador sumando todas las cantidades del carrito
+  function updateCartCount() {
+    const totalCantidad = cart.reduce((acc, item) => acc + (item.cantidad || 0), 0);
+    cartCount.textContent = totalCantidad;
+  }
+
+  // Actualizar todo (UI y contador)
+  function refreshCart() {
+    updateCartUI();
+    updateCartCount();
+  }
+
+  // Mostrar / ocultar desplegable carrito
   cartLabel.addEventListener("click", () => {
     if(cartDropdown.style.display === "block") {
       cartDropdown.style.display = "none";
@@ -765,9 +803,14 @@ button.btn-enter:hover {
     alert("Funcionalidad de pago no implementada todavía.");
   });
 
-  // Simulación: agrega un producto a carrito para demo
-  cart.push({name: "Prenda Demo", price: 25.99, quantity: 1, img:"106.png"});
-  updateCartUI();
+  // Inicializar demo: si carrito está vacío, agregar un producto demo (opcional)
+  if(cart.length === 0) {
+    cart.push({name: "Prenda Demo", price: 25.99, cantidad: 1, img:"106.png"});
+    localStorage.setItem("voguecrest_cart", JSON.stringify(cart));
+  }
+
+  // Actualizar carrito y contador al cargar
+  refreshCart();
 
   // Gift rotativo (cambio de imágenes cada 3 seg)
   const giftImages = document.querySelectorAll("#gift img");
@@ -787,8 +830,28 @@ button.btn-enter:hover {
   carousel1.addEventListener("mouseleave", () => {
     carousel1.classList.remove("pause");
   });
+// Control de sesión para mostrar invitado o cesta
+function updateSessionUI() {
+  const userLoggedIn = localStorage.getItem('userLoggedIn');
+  const guestLabel = document.getElementById('guestLabel');
+  const cartLabel = document.getElementById('cartLabel');
+
+  if (userLoggedIn) {
+    // Usuario logueado: mostrar cesta, ocultar invitado
+    guestLabel.style.display = 'none';
+    cartLabel.style.display = 'inline-flex';
+  } else {
+    // No hay usuario: mostrar invitado, ocultar cesta
+    guestLabel.style.display = 'inline';
+    cartLabel.style.display = 'none';
+  }
+}
+
+// Ejecutar al cargar la página
+updateSessionUI();
 
 </script>
+
 
 </body>
 </html>

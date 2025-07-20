@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi Cuenta - VogueCrest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset y base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #000;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+    }
+    a {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    header {
+      border-bottom: 1px solid #ddd;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      height: 50px;
+      cursor: pointer;
+    }
+    nav.header-nav a {
+      margin-left: 30px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 30px;
+      display: flex;
+      gap: 40px;
+    }
+    /* Sidebar */
+    aside.sidebar {
+      flex-basis: 260px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 30px 25px;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+    aside.sidebar img.profile-pic {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    aside.sidebar h2 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 22px;
+      text-align: center;
+      word-break: break-word;
+    }
+    aside.sidebar p.email {
+      font-size: 14px;
+      color: #555;
+      text-align: center;
+      margin: 4px 0 12px;
+      word-break: break-word;
+    }
+    aside.sidebar button.logout-btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 14px 22px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.3s ease;
+      font-size: 15px;
+    }
+    aside.sidebar button.logout-btn:hover {
+      background: #444;
+    }
+    /* Sidebar menu */
+    .sidebar-menu {
+      width: 100%;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .sidebar-menu button {
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 8px 0;
+      cursor: pointer;
+      text-align: left;
+      border-left: 4px solid transparent;
+      transition: border-color 0.3s ease, color 0.3s ease;
+      width: 100%;
+    }
+    .sidebar-menu button.active {
+      border-left-color: #000;
+      color: #000;
+    }
+    .sidebar-menu button:hover:not(.active) {
+      color: #555;
+    }
+
+    /* Contenido principal */
+    section.content-area {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 30px 40px;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      min-height: 400px;
+    }
+    section.content-area h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    /* Info cuenta */
+    .info-block {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .info-item {
+      flex-basis: calc(50% - 10px);
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .info-item h3 {
+      margin: 0 0 10px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #222;
+    }
+    .info-item p {
+      margin: 0;
+      font-size: 15px;
+      color: #333;
+      word-break: break-word;
+    }
+    /* Botones editar */
+    .edit-btn {
+      margin-top: 15px;
+      background: transparent;
+      border: 1px solid #000;
+      padding: 6px 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+      width: fit-content;
+      transition: background-color 0.2s ease;
+    }
+    .edit-btn:hover {
+      background-color: #000;
+      color: #fff;
+    }
+
+    /* Tabla pedidos */
+    table.orders-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    table.orders-table th,
+    table.orders-table td {
+      padding: 14px 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      font-size: 15px;
+      vertical-align: middle;
+    }
+    table.orders-table th {
+      background-color: #f0f0f0;
+      font-weight: 600;
+    }
+    table.orders-table tr:last-child td {
+      border-bottom: none;
+    }
+    .no-orders {
+      font-size: 16px;
+      color: #666;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* Modal */
+    #modalOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1200;
+      justify-content: center;
+      align-items: center;
+    }
+    #modalOverlay.active {
+      display: flex;
+    }
+    #modalContent {
+      background: #fff;
+      border-radius: 8px;
+      padding: 30px 40px;
+      width: 400px;
+      max-width: 90vw;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      user-select: text;
+      position: relative;
+    }
+    #modalContent h2 {
+      margin-top: 0;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    #modalContent label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    #modalContent input[type="text"],
+    #modalContent input[type="email"],
+    #modalContent input[type="password"],
+    #modalContent input[type="file"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+    }
+    #modalContent button {
+      background: #efefef;
+      color: #070707;
+      border: none;
+      padding: 12px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #modalContent button:hover {
+      background: #444;
+    }
+    #modalCloseBtn {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #444;
+      user-select: none;
+    }
+
+    /* NUEVO: Mejoras móviles */
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+        margin: 20px 15px;
+        padding: 0;
+      }
+      aside.sidebar {
+        padding-top: 15px;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        overflow-x: auto;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+        width: 100%;
+      }
+      aside.sidebar img.profile-pic {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+      }
+      aside.sidebar h2,
+      aside.sidebar p.email {
+        display: none; /* ocultamos nombre y email en sidebar móvil para mejor espacio */
+      }
+      aside.sidebar button.logout-btn {
+        flex-shrink: 0;
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+        margin-left: auto;
+      }
+      .sidebar-menu {
+        flex-direction: row;
+        gap: 10px;
+        border-top: none;
+        margin-top: 0;
+        overflow-x: auto;
+        width: 100%;
+      }
+      .sidebar-menu button {
+        flex: none;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        padding: 6px 12px;
+        font-size: 14px;
+        white-space: nowrap;
+      }
+      .sidebar-menu button.active {
+        border-left: none;
+        border-bottom-color: #000;
+      }
+      section.content-area {
+        padding: 20px 15px;
+        min-height: auto;
+      }
+      .info-block {
+        flex-direction: column;
+      }
+      .info-item {
+        flex-basis: 100%;
+      }
+      table.orders-table th,
+      table.orders-table td {
+        font-size: 13px;
+        padding: 8px 6px;
+      }
+      table.orders-table {
+        font-size: 14px;
+      }
+    }
+
+    
+
+    /* HEADER MODERNO */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      z-index: 1000;
+      background: white;
+    }
+
+    .menu-label, .cart-label {
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 14px;
+      user-select: none;
+      position: relative;
+    }
+
+   .cart-label {
+  color: black !important;      /* Que el texto sea negro */
+  text-decoration: none !important; /* Sin subrayado ni rayas */
+  outline: none !important;      /* Quita el borde de enfoque */
+  user-select: none;
+  cursor: pointer;
+}
+.cart-label:focus,
+.cart-label:active,
+.cart-label:visited {
+  color: black !important;
+  text-decoration: none !important;
+  outline: none !important;
+}
+
+
+    /* El número de items en cesta */
+    #cartCount {
+      position: absolute;
+      top: -8px;
+      right: -15px;
+      background: #000000;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 12px;
+      min-width: 20px;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 40px;
+      object-fit: contain;
+    }
+
+    /* Menú móvil */
+    nav.menu-mobile {
+      position: fixed;
+      top: 60px;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 60px);
+      background: white;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      font-size: 18px;
+      z-index: 9999;
+      transition: left 0.3s ease-in-out;
+    }
+
+    nav.menu-mobile.show {
+      left: 0;
+    }
+
+    nav.menu-mobile a {
+      color: black;
+      text-decoration: none;
+      width: 100%;
+      text-align: center;
+      user-select: none;
+    }
+
+    nav.menu-mobile a:hover {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="menu-label" id="menu-toggle">MENÚ</div>
+  <img src="100.png" alt="VogueCrest" class="logo" />
+  <a href="cesta.html" class="cart-label" id="cartLabel" aria-label="Ir a la cesta de compras">
+    CESTA
+    <span class="cart-count" id="cartCount">0</span>
+  </a>
+</header>
+<nav class="menu-mobile" id="mobileMenu">
+  <a href="index.html">INICIO</a>
+  <a href="colecciones.html">COLECCIONES</a>
+  <a href="acerca.html">ACERCA DE</a>
+  <a href="editorial.html">OUT & ABOUT</a>
+  <a href="looks.html">LOOKS</a>
+  <a href="contacto.html">CONTACTANOS</a>
+  <a href="sesion.html">INICIAR SESION</a>
+  <a href="cuenta.html">CUENTA</a>
+    <a href="asistente.html">ASISTENTE</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
+</nav>
+<main>
+  <aside class="sidebar" aria-label="Información del usuario y navegación">
+    <img src="https://via.placeholder.com/130" alt="Foto de perfil" class="profile-pic" id="profilePicSidebar" />
+    <h2 id="userNameSidebar">Cargando...</h2>
+    <p class="email" id="userEmailSidebar">cargando@correo.com</p>
+
+    <nav class="sidebar-menu" role="tablist" aria-label="Menú de cuenta">
+      <button role="tab" id="tabAccount" aria-selected="true" aria-controls="panelAccount" class="active" tabindex="0">Cuenta</button>
+      <button role="tab" id="tabOrders" aria-selected="false" aria-controls="panelOrders" tabindex="-1">Pedidos</button>
+    </nav>
+
+    <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+  </aside>
+
+  <section class="content-area">
+    <!-- Panel Cuenta -->
+    <div id="panelAccount" role="tabpanel" aria-labelledby="tabAccount">
+      <h1>Detalles de la cuenta</h1>
+      <div class="info-block">
+        <div class="info-item">
+          <h3>Nombre</h3>
+          <p id="userFirstName">Cargando...</p>
+          <button class="edit-btn" onclick="openEditModal('firstName')">Editar</button>
+        </div>
+        <div class="info-item">
+          <h3>Apellido</h3>
+          <p id="userLastName">Cargando...</p>
+          <button class="edit-btn" onclick="openEditModal('lastName')">Editar</button>
+        </div>
+        <div class="info-item" style="flex-basis:100%">
+          <h3>Correo electrónico</h3>
+          <p id="userEmail">cargando@correo.com</p>
+          <button class="edit-btn" onclick="openEditModal('email')">Editar</button>
+        </div>
+        <div class="info-item" style="flex-basis:100%">
+          <h3>Foto de perfil</h3>
+          <img id="profilePicMain" src="https://via.placeholder.com/150" alt="Foto de perfil" style="width:150px; height:150px; border-radius:50%; object-fit:cover; margin-top:8px; box-shadow: 0 0 8px rgba(0,0,0,0.1);" />
+          <button class="edit-btn" onclick="openEditModal('profilePic')">Cambiar foto</button>
+        </div>
+        <div class="info-item" style="flex-basis:100%">
+          <h3>Contraseña</h3>
+          <button class="edit-btn" onclick="openEditModal('password')">Cambiar contraseña</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel Pedidos -->
+    <div id="panelOrders" role="tabpanel" aria-labelledby="tabOrders" hidden>
+      <h1>Lista de pedidos</h1>
+      <table class="orders-table" aria-describedby="ordersDesc">
+        <thead>
+          <tr>
+            <th>ID Pedido</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="ordersBody">
+          <!-- Pedidos dinámicos aquí -->
+        </tbody>
+      </table>
+      <p class="no-orders" id="noOrdersMsg" hidden>No tienes pedidos registrados.</p>
+    </div>
+  </section>
+</main>
+
+<!-- Modal Edición -->
+<div id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div id="modalContent">
+    <button id="modalCloseBtn" aria-label="Cerrar">&times;</button>
+    <h2 id="modalTitle">Editar</h2>
+    <form id="editForm">
+      <!-- Campos dinámicos se insertan aquí -->
+    </form>
+  </div>
+</div>
+
+<script>
+  function goHome() {
+    window.location.href = 'index.html';
+  }
+
+  let loggedInEmail = localStorage.getItem('userLoggedIn');
+  if (!loggedInEmail) {
+    window.location.href = 'sesion.html';
+  }
+  let userData = null;
+  let currentField = '';
+
+  const profilePicSidebar = document.getElementById('profilePicSidebar');
+  const profilePicMain = document.getElementById('profilePicMain');
+  const userNameSidebar = document.getElementById('userNameSidebar');
+  const userEmailSidebar = document.getElementById('userEmailSidebar');
+
+  const tabAccount = document.getElementById('tabAccount');
+  const tabOrders = document.getElementById('tabOrders');
+  const panelAccount = document.getElementById('panelAccount');
+  const panelOrders = document.getElementById('panelOrders');
+
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const editForm = document.getElementById('editForm');
+  const modalTitle = document.getElementById('modalTitle');
+
+  function loadUserData() {
+    const userJSON = localStorage.getItem(`user_${loggedInEmail}`);
+    if (!userJSON) {
+      alert('Usuario no encontrado. Redirigiendo a inicio de sesión.');
+      localStorage.removeItem('userLoggedIn');
+      window.location.href = 'sesion.html';
+      return;
+    }
+    userData = JSON.parse(userJSON);
+
+    userNameSidebar.textContent = `${userData.firstName} ${userData.lastName}`;
+    userEmailSidebar.textContent = loggedInEmail;
+    if(userData.profilePicBase64) {
+      profilePicSidebar.src = userData.profilePicBase64;
+      profilePicMain.src = userData.profilePicBase64;
+    } else {
+      profilePicSidebar.src = 'https://via.placeholder.com/130';
+      profilePicMain.src = 'https://via.placeholder.com/150';
+    }
+
+    document.getElementById('userFirstName').textContent = userData.firstName || 'No disponible';
+    document.getElementById('userLastName').textContent = userData.lastName || 'No disponible';
+    document.getElementById('userEmail').textContent = loggedInEmail;
+  }
+
+  function openEditModal(field) {
+    currentField = field;
+    modalTitle.textContent = `Editar ${fieldLabel(field)}`;
+    editForm.innerHTML = '';
+
+    if(field === 'password') {
+      editForm.innerHTML = `
+        <label for="newPassword">Nueva contraseña</label>
+        <input type="password" id="newPassword" name="newPassword" required minlength="6" />
+        <label for="confirmPassword">Confirmar contraseña</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6" />
+        <button type="submit">Guardar</button>
+      `;
+    } else if(field === 'profilePic') {
+      editForm.innerHTML = `
+        <label for="profilePicInput">Seleccionar nueva foto</label>
+        <input type="file" id="profilePicInput" name="profilePicInput" accept="image/*" required />
+        <button type="submit">Guardar</button>
+      `;
+    } else if(['firstName','lastName','email'].includes(field)) {
+      const value = userData[field] || '';
+      editForm.innerHTML = `
+        <label for="editInput">${fieldLabel(field)}</label>
+        <input type="${field === 'email' ? 'email' : 'text'}" id="editInput" name="editInput" value="${value}" required />
+        <button type="submit">Guardar</button>
+      `;
+    }
+
+    modalOverlay.classList.add('active');
+  }
+
+  modalCloseBtn.addEventListener('click', () => {
+    modalOverlay.classList.remove('active');
+    currentField = '';
+  });
+
+  function fieldLabel(field) {
+    switch(field) {
+      case 'firstName': return 'Nombre';
+      case 'lastName': return 'Apellido';
+      case 'email': return 'Correo electrónico';
+      case 'password': return 'Contraseña';
+      case 'profilePic': return 'Foto de perfil';
+      default: return field;
+    }
+  }
+
+  editForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if(!userData) return;
+
+    if(currentField === 'password') {
+      const newPassword = document.getElementById('newPassword').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      if(newPassword.length < 6) {
+        alert('La contraseña debe tener al menos 6 caracteres.');
+        return;
+      }
+      if(newPassword !== confirmPassword) {
+        alert('Las contraseñas no coinciden.');
+        return;
+      }
+      userData.password = newPassword;
+    } else if(currentField === 'profilePic') {
+      const fileInput = document.getElementById('profilePicInput');
+      if(fileInput.files.length === 0) {
+        alert('Por favor selecciona una imagen.');
+        return;
+      }
+      const file = fileInput.files[0];
+      if(!file.type.startsWith('image/')) {
+        alert('El archivo debe ser una imagen.');
+        return;
+      }
+      const base64 = await fileToBase64(file);
+      userData.profilePicBase64 = base64;
+    } else if(['firstName', 'lastName', 'email'].includes(currentField)) {
+      const newValue = document.getElementById('editInput').value.trim();
+      if(newValue === '') {
+        alert(`${fieldLabel(currentField)} no puede estar vacío.`);
+        return;
+      }
+      if(currentField === 'email' && newValue !== loggedInEmail) {
+        if(localStorage.getItem(`user_${newValue}`)) {
+          alert('Ya existe un usuario registrado con ese correo.');
+          return;
+        }
+        localStorage.removeItem(`user_${loggedInEmail}`);
+        loggedInEmail = newValue;
+        localStorage.setItem('userLoggedIn', loggedInEmail);
+      }
+      userData[currentField] = newValue;
+    }
+
+    localStorage.setItem(`user_${loggedInEmail}`, JSON.stringify(userData));
+    loadUserData();
+    alert(`${fieldLabel(currentField)} actualizado correctamente.`);
+    modalOverlay.classList.remove('active');
+    currentField = '';
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject('Error al leer archivo');
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function switchTab(newTab) {
+    if(newTab === 'account') {
+      tabAccount.classList.add('active');
+      tabAccount.setAttribute('aria-selected', 'true');
+      tabAccount.tabIndex = 0;
+
+      tabOrders.classList.remove('active');
+      tabOrders.setAttribute('aria-selected', 'false');
+      tabOrders.tabIndex = -1;
+
+      panelAccount.hidden = false;
+      panelOrders.hidden = true;
+    } else if(newTab === 'orders') {
+      tabOrders.classList.add('active');
+      tabOrders.setAttribute('aria-selected', 'true');
+      tabOrders.tabIndex = 0;
+
+      tabAccount.classList.remove('active');
+      tabAccount.setAttribute('aria-selected', 'false');
+      tabAccount.tabIndex = -1;
+
+      panelOrders.hidden = false;
+      panelAccount.hidden = true;
+      loadOrders();
+    }
+  }
+
+  tabAccount.addEventListener('click', () => switchTab('account'));
+  tabOrders.addEventListener('click', () => switchTab('orders'));
+
+  function loadOrders() {
+    const ordersBody = document.getElementById('ordersBody');
+    const noOrdersMsg = document.getElementById('noOrdersMsg');
+    ordersBody.innerHTML = '';
+
+    const ordersJSON = localStorage.getItem(`orders_${loggedInEmail}`);
+    let orders = [];
+    if(ordersJSON) {
+      orders = JSON.parse(ordersJSON);
+    }
+
+    if(!orders || orders.length === 0) {
+      noOrdersMsg.hidden = false;
+      return;
+    }
+    noOrdersMsg.hidden = true;
+
+    orders.forEach(order => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${order.id}</td>
+        <td>${order.date}</td>
+        <td>${order.status}</td>
+        <td>$${order.total}</td>
+      `;
+      ordersBody.appendChild(tr);
+    });
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    localStorage.removeItem('userLoggedIn');
+    alert('Has cerrado sesión.');
+    window.location.href = 'index.html';
+  });
+
+  loadUserData();
+  switchTab('account');
+
+   // Menú móvil
+  const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  toggleBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('show');
+  });
+
+  // Pausar scroll al pasar mouse o tocar (tus carouseles)
+  const setupCarouselPause = (carouselId) => {
+    const track = document.getElementById(carouselId);
+
+    track.addEventListener('mouseenter', () => track.classList.add('pause'));
+    track.addEventListener('mouseleave', () => track.classList.remove('pause'));
+
+    track.addEventListener('touchstart', () => track.classList.add('pause'));
+    track.addEventListener('touchend', () => setTimeout(() => track.classList.remove('pause'), 3000));
+  };
+
+  setupCarouselPause('carousel1');
+  setupCarouselPause('carousel2');
+</script>
+
+</body>
+</html>

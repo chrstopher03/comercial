@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Iniciar sesión - VogueCrest</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
   <style>
     * {
       box-sizing: border-box;
@@ -17,8 +17,8 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
+      padding: 20px;
     }
-
     /* HEADER */
     header {
       display: flex;
@@ -35,15 +35,6 @@
       font-size: 14px;
       cursor: pointer;
     }
-    .cart-count {
-      background: black;
-      color: white;
-      border-radius: 50%;
-      padding: 2px 6px;
-      margin-left: 6px;
-      font-size: 12px;
-    }
-
     /* MENÚ MÓVIL */
     .menu-mobile {
       position: fixed;
@@ -69,12 +60,15 @@
     .menu-mobile.open {
       left: 0;
     }
-
     .wrapper {
       width: 100%;
       max-width: 400px;
       padding: 0 20px;
       margin: auto;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     h1 {
       font-size: 28px;
@@ -105,6 +99,11 @@
       font-weight: 600;
       text-transform: uppercase;
       cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #333;
     }
     .extras {
       text-align: center;
@@ -114,6 +113,12 @@
     .extras a {
       color: #000;
       text-decoration: underline;
+      cursor: pointer;
+    }
+    #errorMsg {
+      color: red;
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
@@ -123,47 +128,84 @@
   <header>
     <div class="menu-label" id="menu-toggle">MENÚ</div>
     <img src="100.png" alt="VogueCrest" class="logo" />
-    <div class="cart-label" id="cartLabel">
-          </div>
+    <div class="cart-label" id="cartLabel"></div>
   </header>
 
   <!-- MENÚ MÓVIL -->
-  <nav class="menu-mobile" id="mobileMenu">
-    <a href="index.html">INICIO</a>
-    <a href="colecciones.html">COLECCIONES</a>
-    <a href="acerca.html">ACERCA DE</a>
-    <a href="editorial.html">EDITORIAL</a>
-    <a href="looks.html">LOOKS</a>
-    <a href="contacto.html">CONTACTANOS</a>
-    <a href="sesion.html">INICIAR SESION</a>
-    <a href="#" onclick="toggleMenu()">CERRAR</a>
-  </nav>
-
+<nav class="menu-mobile" id="mobileMenu">
+  <a href="index.html">INICIO</a>
+  <a href="colecciones.html">COLECCIONES</a>
+  <a href="acerca.html">ACERCA DE</a>
+  <a href="editorial.html">OUT & ABOUT</a>
+  <a href="looks.html">LOOKS</a>
+  <a href="contacto.html">CONTACTANOS</a>
+  <a href="sesion.html">INICIAR SESION</a>
+  <a href="cuenta.html">CUENTA</a>
+    <a href="asistente.html">ASISTENTE</a>
+  <a href="#" onclick="toggleMenu()">CERRAR</a>
+</nav>
   <!-- FORMULARIO -->
   <div class="wrapper">
     <h1>Iniciar sesión</h1>
-    <form>
-      <input type="email" placeholder="Correo electrónico" required />
-      <input type="password" placeholder="Contraseña" required />
+    <form id="loginForm" autocomplete="off" novalidate>
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
       <button type="submit">Iniciar sesión</button>
     </form>
+    <div id="errorMsg"></div>
     <div class="extras">
-      <p><a href="#">¿Olvidaste tu contraseña?</a></p>
+<p><a href="contraseña.html">¿Olvidaste tu contraseña?</a></p>
       <p>¿Aún no tienes una cuenta? <a href="registrarse.html">Registrarse</a></p>
     </div>
   </div>
 
   <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('open');
-    });
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
 
     function toggleMenu() {
-      mobileMenu.classList.remove('open');
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('open');
     }
+    document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+
+    loginForm.addEventListener('submit', e => {
+      e.preventDefault();
+
+      const email = loginForm.email.value.trim().toLowerCase();
+      const password = loginForm.password.value;
+
+      const userJSON = localStorage.getItem(`user_${email}`);
+
+      errorMsg.textContent = '';
+
+      if (!userJSON) {
+        errorMsg.textContent = 'Usuario no encontrado. Por favor regístrate.';
+        return;
+      }
+
+      const userData = JSON.parse(userJSON);
+
+      if (userData.password !== password) {
+        errorMsg.textContent = 'Contraseña incorrecta.';
+        return;
+      }
+
+      // Guardar sesión activa
+      localStorage.setItem('userLoggedIn', email);
+
+      alert(`Bienvenido, ${userData.firstName} ${userData.lastName}! Has iniciado sesión.`);
+
+      // Redirigir según si venía de pago o no
+      const fromPago = sessionStorage.getItem('redirectToPago');
+      if (fromPago === 'true') {
+        sessionStorage.removeItem('redirectToPago');
+        window.location.href = 'index.html';
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
   </script>
+
 </body>
 </html>

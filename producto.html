@@ -465,7 +465,49 @@ a, button, img {
   .footer-copy {
     margin-bottom: 0;
   }
+}#sizeButtons button {
+  background: none;
+  border: none;
+  padding: 10px 15px;  /* 10px arriba y abajo, 15px izquierda y derecha */
+  margin: 10px 8px;    /* 10px arriba y abajo para más espacio, 8px horizontal */
+  font-size: 1rem;
+  cursor: pointer;
+  color: #333;
+  font-weight: normal;
+  transition: color 0.3s ease;
+  line-height: 1.2;
 }
+
+
+#sizeButtons button.selected {
+  font-weight: bold;
+  color: #000;
+}
+
+#sizeButtons button:hover:not(.selected) {
+  color: #666;
+}
+#colorButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px; /* Aquí agregas más espacio arriba */
+  margin-bottom: 20px;
+}
+
+
+#colorButtons button {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px; /* Cuadrados con bordes redondeados suaves */
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+#colorButtons button.selected {
+  border-color: black;
+}
+
 
 .tab-content {
   display: none;
@@ -606,11 +648,12 @@ CESTA <span id="cartCount" style="display:none; background:rgb(0, 0, 0); color:#
       <h1 id="productName">Cargando...</h1>
       <div class="price" id="productPrice"></div>
 
-      <label for="sizeSelect">Selecciona talla:</label>
-      <select id="sizeSelect"></select>
+     <label>Selecciona talla:</label>
+<div id="sizeButtons" class="size-buttons"></div>
 
-      <label for="colorSelect">Selecciona color:</label>
-      <select id="colorSelect"></select>
+      <label>Selecciona color:</label>
+<div id="colorButtons"></div>
+
 
       <button id="addToCartBtn">Añadir a la cesta</button>
 
@@ -713,77 +756,74 @@ CESTA <span id="cartCount" style="display:none; background:rgb(0, 0, 0); color:#
 </div>
 
   <script>
- const productos = {
- prenda1: {
+  const productos = {
+  prenda1: {
     nombre: "NIGHTFLEX BAG – VogueCrest",
     imagenesPorColor: {
       Negro: ["013.png"],
     },
     imagenPrincipal: "013.png",
-    descripcion: `
-La bolsa NIGHTFLEX de VogueCrest combina la resistencia de la tela deportiva negra con un diseño moderno y funcional. Su estructura firme y flexible se adapta a cada movimiento, mientras las asas reforzadas aseguran comodidad y durabilidad. El logo de VogueCrest, presente de forma elegante, aporta un sello de identidad contemporáneo. Perfecta para el uso diario y actividades deportivas, la NIGHTFLEX BAG fusiona estilo urbano con practicidad en una pieza imprescindible.
-    `,
+    descripcion: `La bolsa NIGHTFLEX de VogueCrest combina la resistencia de la tela deportiva negra con un diseño moderno y funcional. Su estructura firme y flexible se adapta a cada movimiento, mientras las asas reforzadas aseguran comodidad y durabilidad. El logo de VogueCrest, presente de forma elegante, aporta un sello de identidad contemporáneo. Perfecta para el uso diario y actividades deportivas, la NIGHTFLEX BAG fusiona estilo urbano con practicidad en una pieza imprescindible.`,
     precio: "C$1,600",
-    tallas: ["S", "M", "L", "XL"], // Podés cambiar a medidas si querés
+    medidas: ["30x20x10 cm", "40x25x15 cm"],
     colores: ["Negro"],
+    stock: 10, // <-- STOCK DISPONIBLE
     relacionados: ["prenda1"],
   },
 
-  prenda2: {
+   prenda2: {
     nombre: "VOGUECREST ESSENTIAL LOGO CAP – ASH GREY",
     imagenesPorColor: {
       Gris: ["019.png","023.png","021.png","022.png"],
     },
     imagenPrincipal: "019.png",
-    descripcion: `
-La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
+    descripcion: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
 
 Confeccionada en ante sintético de alta calidad, ofrece un acabado suave tipo terciopelo en un tono gris ceniza, sobrio y moderno.
 
 El logo icónico de VogueCrest en TPU negro resalta al frente, aportando un contraste sofisticado y una identidad fuerte.
 
-Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.
-    `,
+Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.`,
     precio: "C$950",
-    tallas: ["Única ajustable"], // ← CORREGIDO aquí
+    tallas: ["Única ajustable"],
     circunferencia: "54-62 cm",
     colores: ["Gris"],
+    stock: 2, // <-- PRODUCTO AGOTADO
     materiales: ["Tela deportiva", "Logo bordado", "Cierre ajustable"],
     relacionados: ["prendaA", "prendaF","prenda9"]
   },
-
-  prenda3: {
+ prenda3: {
     nombre: "VOGUECREST SHORT LIGHT DENIM – EDITION 01",
     imagenesPorColor: {
       Celeste : ["014.png","112.png","113.jpeg"],
       Negro: ["011.png","115.png","117.jpeg"],
     },
     imagenPrincipal: "014.png",
-    descripcion: `
-El VOGUECREST SHORT LIGHT DENIM – EDITION 01 redefine lo esencial del denim con un enfoque moderno, fresco y versátil. Confeccionado en mezclilla de tono claro con acabado suave al tacto, este short combina funcionalidad y estilo en una silueta cómoda de corte recto.
+    descripcion: `El VOGUECREST SHORT LIGHT DENIM – EDITION 01 redefine lo esencial del denim con un enfoque moderno, fresco y versátil. Confeccionado en mezclilla de tono claro con acabado suave al tacto, este short combina funcionalidad y estilo en una silueta cómoda de corte recto.
 
 Presenta un diseño minimalista con bolsillos laterales amplios, detalles metálicos pulidos y costuras reforzadas que aseguran durabilidad sin sacrificar estilo. Su fit relajado lo convierte en una prenda ideal para el día a día, adaptable tanto a outfits casuales como a looks urbanos más elaborados.
 
-Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esencia de la moda limpia, contemporánea y auténtica.
-    `,
+Parte de la primera edición cápsula de VogueCrest, este modelo celebra la esencia de la moda limpia, contemporánea y auténtica.`,
     precio: "C$800",
     tallas: ["S", "M", "L"],
     colores: ["Celeste", "Negro"],
+    stock: 10,
     relacionados: ["prenda6"],
   },
-  prenda4: {
-        nombre: "VOGUECREST TEAM T-SHIRT – EDITION 01",
-        imagenesPorColor: {
-          Blanca: ["015.png","031.png","032.jpeg"],
-        },
-        imagenPrincipal: "015.png",
-        descripcion: "La camiseta TEAM de VogueCrest fusiona la esencia vintage del fútbol con un toque moderno y urbano. Su silueta corta y ancha ofrece un volumen cómodo, mientras que las capas de malla añaden textura y dinamismo al diseño. El gran número estampado en el frente resalta el carácter único de la prenda, y la cinta personalizada en el cuello aporta ese detalle exclusivo que distingue a VogueCrest. Ideal para quienes buscan un estilo auténtico, fresco y con personalidad propia.",
-        precio: "C$800",
-        tallas: ["M", "L", "XL"],
-        colores: ["Blanca"],
-        relacionados: ["prenda3", "prendaH"]
-      },
-     prenda5: {
+    prenda4: {
+    nombre: "VOGUECREST TEAM T-SHIRT – EDITION 01",
+    imagenesPorColor: {
+      Blanca: ["015.png","031.png","032.jpeg"],
+    },
+    imagenPrincipal: "015.png",
+    descripcion: "La camiseta TEAM de VogueCrest fusiona la esencia vintage del fútbol con un toque moderno y urbano. Su silueta corta y ancha ofrece un volumen cómodo, mientras que las capas de malla añaden textura y dinamismo al diseño. El gran número estampado en el frente resalta el carácter único de la prenda, y la cinta personalizada en el cuello aporta ese detalle exclusivo que distingue a VogueCrest. Ideal para quienes buscan un estilo auténtico, fresco y con personalidad propia.",
+    precio: "C$800",
+    tallas: ["M", "L", "XL"],
+    colores: ["Blanca"],
+    stock: 0, // AGOTADO
+    relacionados: ["prenda3", "prendaH"]
+  },
+    prenda5: {
         nombre: "CAMISETA VOGUECREST SKIN – BLACK EDITION",
         imagenesPorColor: {
           Negro: ["09.png","036.png","037.jpeg"]
@@ -960,7 +1000,9 @@ Ideal para quienes buscan una prenda audaz que combine homenaje, moda y cultura 
         precio: "C$ 2,000",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro"],
-        relacionados: ["prenda11", "prendaH"]
+        relacionados: ["prenda11", "prendaH"],
+            stock: 2, // <-- PRODUCTO AGOTADO
+
       },
       prendaF: {
         nombre: "VOGUECREST SIGNATURE CAP CREAM",
@@ -1045,285 +1087,376 @@ La VOGUECREST DOUBLE LOGO OVERSIZE TEE BLACK es una declaración de estilo y act
         colores: ["Negro"],
         relacionados: ["prenda10", "prendaB"]
       },
+ 
+}
+document.addEventListener("DOMContentLoaded", () => {
+  // Obtener parámetro producto de URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+  const productoId = getQueryParam("producto");
+  const producto = productos[productoId];
+
+  // Contador carrito en header
+  const cartCount = document.getElementById("cartCount");
+  function actualizarContadorCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+    const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
+    if (cartCount) {
+      cartCount.textContent = totalCantidad;
+      cartCount.style.display = totalCantidad > 0 ? "inline-block" : "none";
+    }
+  }
+
+  // Actualiza lista global de productos agotados en localStorage
+  function actualizarEstadoAgotadosGlobal() {
+    const stockPorProducto = {};
+    // Inicializa con stock original
+    for (const id in productos) {
+      stockPorProducto[id] = productos[id].stock;
+    }
+    const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+    carrito.forEach(item => {
+      if (stockPorProducto[item.id] !== undefined) {
+        stockPorProducto[item.id] -= item.cantidad;
+      }
+    });
+
+    // Lista agotados
+    const agotados = [];
+    for (const id in stockPorProducto) {
+      if (stockPorProducto[id] <= 0) {
+        agotados.push(id);
+      }
+    }
+    localStorage.setItem("voguecrest_agotados", JSON.stringify(agotados));
+  }
+
+  // Referencias DOM
+  const sizeButtonsContainer = document.getElementById("sizeButtons");
+  const colorButtonsContainer = document.getElementById("colorButtons");
+  const cantidadInput = document.getElementById("quantityInput");
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  const mainImage = document.getElementById("mainImage");
+  const thumbnailsContainer = document.getElementById("thumbnails");
+
+  // Modal imagen
+  const modalImagen = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+
+  // Modal detalle
+  const openModalBtn = document.getElementById("openModalBtn");
+  const modalDetalle = document.getElementById("modalDetalle");
+  const closeModalBtn = document.getElementById("closeModalBtn");
+
+  // Si no hay producto, mostrar mensaje y ocultar controles
+  if (!producto) {
+    const productName = document.getElementById("productName");
+    if (productName) productName.textContent = "Producto no encontrado";
+    if (mainImage) mainImage.style.display = "none";
+    if (sizeButtonsContainer) sizeButtonsContainer.style.display = "none";
+    if (colorButtonsContainer) colorButtonsContainer.style.display = "none";
+    if (cantidadInput) cantidadInput.style.display = "none";
+    if (addToCartBtn) addToCartBtn.style.display = "none";
+    if (openModalBtn) openModalBtn.style.display = "none";
+    return;
+  }
+
+  // Mostrar info básica producto
+  const productName = document.getElementById("productName");
+  const productPrice = document.getElementById("productPrice");
+  const productDescription = document.getElementById("productDescription");
+  if (productName) productName.textContent = producto.nombre;
+  if (productPrice) productPrice.textContent = producto.precio;
+  if (productDescription) productDescription.textContent = producto.descripcion;
+
+  // Crear botones tallas o medidas
+  function crearBotonesTallasOMedidas() {
+    if (!sizeButtonsContainer) return;
+    sizeButtonsContainer.innerHTML = "";
+
+    const opciones = producto.medidas || producto.tallas;
+    const esBolso = !!producto.medidas;
+
+    // Cambiar el label según corresponda
+    const labelTallas = document.querySelector("label[for='sizeButtons']");
+    if (labelTallas) {
+      labelTallas.textContent = esBolso ? "Selecciona medida:" : "Selecciona talla:";
     }
 
-// Obtener parámetro producto de URL
-function getQueryParam(param) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(param);
-}const productoId = getQueryParam("producto");
-const producto = productos[productoId];
-
-// —————— INICIO: Contador carrito en header ——————
-const cartCount = document.getElementById("cartCount");
-function actualizarContadorCarrito() {
-  const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-  const totalCantidad = carrito.reduce((acc, item) => acc + item.cantidad, 0);
-  if (cartCount) {
-    cartCount.textContent = totalCantidad;
-    cartCount.style.display = totalCantidad > 0 ? "inline-block" : "none";
-  }
-}
-// Actualizar contador al cargar la página
-actualizarContadorCarrito();
-// —————— FIN: Contador carrito en header ——————
-
-/* --- EL RESTO DE TU CÓDIGO EXISTENTE, SIN CAMBIOS --- */
-
-// Referencias a elementos DOM
-const mainImage = document.getElementById("mainImage");
-const thumbnailsContainer = document.getElementById("thumbnails");
-const productName = document.getElementById("productName");
-const productPrice = document.getElementById("productPrice");
-const productDescription = document.getElementById("productDescription");
-const sizeSelect = document.getElementById("sizeSelect");
-const colorSelect = document.getElementById("colorSelect");
-const addToCartBtn = document.getElementById("addToCartBtn");
-const accordionDetalle = document.getElementById("accordionDetalle");
-const panelDetalle = productDescription;
-const accordionMasDetalles = document.getElementById("accordionMasDetalles");
-const panelMasDetalles = document.getElementById("masDetalles");
-const openModalBtn = document.getElementById("openModalBtn");
-const modalDetalle = document.getElementById("modalDetalle");
-const closeModalBtn = document.getElementById("closeModalBtn");
-const modalInfoContent = document.getElementById("modalInfoContent");
-
-// Modal para imagen ampliada
-const modalImagen = document.getElementById('modal');
-const modalImg = document.getElementById('modalImg');
-
-if (!producto) {
-  productName.textContent = "Producto no encontrado";
-  mainImage.style.display = "none";
-  productPrice.textContent = "";
-  productDescription.textContent = "";
-  sizeSelect.style.display = "none";
-  colorSelect.style.display = "none";
-  addToCartBtn.style.display = "none";
-  openModalBtn.style.display = "none";
-} else {
-  productName.textContent = producto.nombre;
-  productPrice.textContent = producto.precio;
-  productDescription.textContent = producto.descripcion;
-
-  sizeSelect.innerHTML = "";
-  colorSelect.innerHTML = "";
-
-  // Tallas o medidas
-  if (productoId === "prenda1") {
-    const medidas = [
-      { label: "Ancho: 30cm, Alto: 40cm", value: "medida1" },
-      { label: "Ancho: 35cm, Alto: 45cm", value: "medida2" },
-      { label: "Ancho: 40cm, Alto: 50cm", value: "medida3" },
-    ];
-    medidas.forEach((medida) => {
-      const option = document.createElement("option");
-      option.value = medida.value;
-      option.textContent = medida.label;
-      sizeSelect.appendChild(option);
-    });
-  } else {
-    producto.tallas.forEach((talla) => {
-      const option = document.createElement("option");
-      option.value = talla;
-      option.textContent = talla;
-      sizeSelect.appendChild(option);
+    opciones.forEach((valor, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = valor;
+      btn.dataset.value = valor;
+      btn.className = "size-btn";
+      if (i === 0) btn.classList.add("selected");
+      btn.addEventListener("click", () => {
+        sizeButtonsContainer.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        actualizarEstadoBoton();
+      });
+      sizeButtonsContainer.appendChild(btn);
     });
   }
 
-  producto.colores.forEach((color) => {
-    const option = document.createElement("option");
-    option.value = color;
-    option.textContent = color;
-    colorSelect.appendChild(option);
-  });
+  // Mapear color a HEX (amplía si quieres)
+  function mapColorNameToHex(nombre) {
+    const mapa = {
+      "Negro": "#000000",
+      "Gris": "#808080",
+      "Celeste": "#87CEEB",
+      // Puedes añadir más colores aquí
+    };
+    return mapa[nombre] || "#888888";
+  }
 
+  // Crear botones colores
+  function crearBotonesColores() {
+    if (!colorButtonsContainer) return;
+    colorButtonsContainer.innerHTML = "";
+    producto.colores.forEach((color, index) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "color-btn";
+      btn.style.backgroundColor = mapColorNameToHex(color);
+      btn.title = color;
+      btn.dataset.value = color;
+      if (index === 0) btn.classList.add("selected");
+      btn.addEventListener("click", () => {
+        colorButtonsContainer.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        cargarImagenes(color);
+        actualizarEstadoBoton();
+      });
+      colorButtonsContainer.appendChild(btn);
+    });
+  }
+
+  // Obtener color seleccionado
+  function getColorSeleccionado() {
+    if (!colorButtonsContainer) return producto.colores[0];
+    const selectedBtn = colorButtonsContainer.querySelector("button.selected");
+    return selectedBtn ? selectedBtn.dataset.value : producto.colores[0];
+  }
+
+  // Cargar miniaturas por color
   function cargarImagenes(color) {
+    if (!thumbnailsContainer) return;
     thumbnailsContainer.innerHTML = "";
     const imgs = producto.imagenesPorColor[color] || [];
     imgs.forEach((src, index) => {
       const img = document.createElement("img");
       img.src = src;
-      img.alt = producto.nombre + " " + color + " " + (index + 1);
-      if (index === 0) img.classList.add("selected");
+      img.alt = `${producto.nombre} ${color} ${index + 1}`;
+      img.className = index === 0 ? "selected" : "";
       img.addEventListener("click", () => {
-        mainImage.src = src;
+        if (mainImage) mainImage.src = src;
         thumbnailsContainer.querySelectorAll("img").forEach(i => i.classList.remove("selected"));
         img.classList.add("selected");
       });
       thumbnailsContainer.appendChild(img);
     });
+    if (imgs.length > 0 && mainImage) mainImage.src = imgs[0];
   }
 
-  // Mostrar imagen principal
-  mainImage.src = producto.imagenPrincipal;
-  mainImage.alt = producto.nombre;
+  // Actualizar estado botón según stock y carrito
+  function actualizarEstadoBoton() {
+    const talla = sizeButtonsContainer?.querySelector("button.selected")?.dataset.value || "";
+    const color = getColorSeleccionado();
+    const cantidadSeleccionada = cantidadInput ? parseInt(cantidadInput.value) || 1 : 1;
 
-  // Evento abrir modal de imagen principal
-  mainImage.addEventListener("click", () => {
-    modalImg.src = mainImage.src;
-    modalImagen.style.display = "flex";
-  });
+    // Buscar cantidad actual en carrito para misma combinacion
+    let carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+    const indexExistente = carrito.findIndex(item =>
+      item.id === productoId &&
+      item.talla === talla &&
+      item.color === color
+    );
+    const cantidadEnCarrito = indexExistente !== -1 ? carrito[indexExistente].cantidad : 0;
 
-  // Cerrar modal al hacer click fuera de la imagen
-  modalImagen.addEventListener("click", (e) => {
-    if (e.target === modalImagen) {
-      modalImagen.style.display = "none";
+    const stockRestante = producto.stock - cantidadEnCarrito;
+
+    if (stockRestante <= 0) {
+      addToCartBtn.textContent = "AGOTADO";
+      addToCartBtn.disabled = true;
+      addToCartBtn.style.backgroundColor = "#ccc";
+      addToCartBtn.style.color = "#555";
+      addToCartBtn.style.cursor = "not-allowed";
+      if (cantidadInput) {
+        cantidadInput.disabled = true;
+        cantidadInput.value = 0;
+      }
+    } else {
+      addToCartBtn.textContent = "Añadir a la cesta";
+      addToCartBtn.disabled = false;
+      addToCartBtn.style.backgroundColor = "";
+      addToCartBtn.style.color = "";
+      addToCartBtn.style.cursor = "pointer";
+      if (cantidadInput) {
+        cantidadInput.disabled = false;
+        cantidadInput.min = 1;
+        cantidadInput.max = stockRestante;
+        if (cantidadSeleccionada > stockRestante) cantidadInput.value = stockRestante;
+        else if (cantidadSeleccionada <= 0) cantidadInput.value = 1;
+      }
     }
-  });
+  }
 
-  // Cerrar modal con tecla Escape
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modalImagen.style.display === "flex") {
-      modalImagen.style.display = "none";
-    }
-  });
-
+  // Inicializar UI
+  crearBotonesTallasOMedidas();
+  crearBotonesColores();
+  if (cantidadInput) {
+    cantidadInput.value = 1;
+    cantidadInput.min = 1;
+  }
+  if (mainImage) mainImage.src = producto.imagenPrincipal;
   cargarImagenes(producto.colores[0]);
-  colorSelect.value = producto.colores[0];
+  actualizarContadorCarrito();
+  actualizarEstadoBoton();
 
-  // Cambiar color (imagen principal no cambia)
-  colorSelect.addEventListener("change", (e) => {
-    cargarImagenes(e.target.value);
-    mainImage.src = producto.imagenPrincipal;
+  // Listeners para actualizar estado botón al cambiar cantidad, talla o color
+  if (cantidadInput) cantidadInput.addEventListener("input", actualizarEstadoBoton);
+  if (colorButtonsContainer) colorButtonsContainer.addEventListener("click", actualizarEstadoBoton);
+  if (sizeButtonsContainer) sizeButtonsContainer.addEventListener("click", actualizarEstadoBoton);
+
+  // Añadir producto al carrito al hacer click en botón
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener("click", () => {
+      const talla = sizeButtonsContainer.querySelector("button.selected")?.dataset.value || "";
+      const color = getColorSeleccionado();
+      const cantidad = cantidadInput ? parseInt(cantidadInput.value) || 1 : 1;
+
+      let carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+      const indexExistente = carrito.findIndex(item =>
+        item.id === productoId &&
+        item.talla === talla &&
+        item.color === color
+      );
+
+      const cantidadEnCarrito = indexExistente !== -1 ? carrito[indexExistente].cantidad : 0;
+      const stockRestante = producto.stock - cantidadEnCarrito;
+
+      if (cantidad > stockRestante) {
+        alert(`No hay suficiente stock. Solo quedan ${stockRestante} unidades disponibles.`);
+        return;
+      }
+
+      const productoCarrito = {
+        id: productoId,
+        nombre: producto.nombre,
+        talla,
+        color,
+        cantidad,
+        precio: producto.precio,
+        imagen: producto.imagenPrincipal
+      };
+
+      if (indexExistente !== -1) {
+        carrito[indexExistente].cantidad += cantidad;
+      } else {
+        carrito.push(productoCarrito);
+      }
+
+      localStorage.setItem("voguecrest_cart", JSON.stringify(carrito));
+      actualizarContadorCarrito();
+      actualizarEstadoBoton();
+      actualizarEstadoAgotadosGlobal();
+    });
+  }
+
+  // Modal imagen principal
+  if (mainImage) {
+    mainImage.alt = producto.nombre;
+    mainImage.addEventListener("click", () => {
+      if (modalImg && modalImagen) {
+        modalImg.src = mainImage.src;
+        modalImagen.style.display = "flex";
+      }
+    });
+  }
+  if (modalImagen) {
+    modalImagen.addEventListener("click", e => {
+      if (e.target === modalImagen) modalImagen.style.display = "none";
+    });
+  }
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && modalImagen && modalImagen.style.display === "flex") {
+      modalImagen.style.display = "none";
+    }
   });
 
-  // Productos relacionados
-  const relatedProductsContainer = document.querySelector(".related-products");
-  if (relatedProductsContainer) {
-    producto.relacionados.forEach((relId) => {
-      const relProd = productos[relId];
-      if (relProd) {
-        const div = document.createElement("div");
-        div.className = "related-product";
-        div.innerHTML = `
-          <a href="producto.html?producto=${relId}">
-            <img src="${relProd.imagenesPorColor[relProd.colores[0]][0]}" 
-          </a>
-        `;
-        relatedProductsContainer.appendChild(div);
+  // Abrir modal detalle
+  if (openModalBtn && modalDetalle) {
+    openModalBtn.addEventListener("click", () => {
+      modalDetalle.style.display = "block";
+    });
+  }
+
+  // Cerrar modal detalle con botón cruz
+  if (closeModalBtn && modalDetalle) {
+    closeModalBtn.addEventListener("click", () => {
+      modalDetalle.style.display = "none";
+    });
+  }
+
+  // Cerrar modal detalle haciendo click fuera contenido
+  if (modalDetalle) {
+    modalDetalle.addEventListener("click", e => {
+      if (e.target === modalDetalle) {
+        modalDetalle.style.display = "none";
       }
     });
   }
 
-  addToCartBtn.addEventListener("click", () => {
-    const talla = sizeSelect.value;
-    const color = colorSelect.value;
-
-    // Cantidad (usa input con id="quantityInput", si no existe toma 1)
-    const cantidadInput = document.getElementById("quantityInput");
-    const cantidad = cantidadInput ? parseInt(cantidadInput.value) || 1 : 1;
-
-
-    // Producto para carrito
-    const productoCarrito = {
-      id: productoId,
-      nombre: producto.nombre,
-      talla,
-      color,
-      cantidad,
-      precio: producto.precio,
-      imagen: producto.imagenPrincipal
-    };
-
-    // Leer carrito actual
-    let carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-
-    // Buscar producto existente en carrito (mismo id, talla y color)
-    const indexExistente = carrito.findIndex(item =>
-      item.id === productoCarrito.id &&
-      item.talla === productoCarrito.talla &&
-      item.color === productoCarrito.color
-    );
-
-    if (indexExistente !== -1) {
-      carrito[indexExistente].cantidad += productoCarrito.cantidad;
-    } else {
-      carrito.push(productoCarrito);
-    }
-
-    // Guardar carrito actualizado
-    localStorage.setItem("voguecrest_cart", JSON.stringify(carrito));
-
-    // ———— ACTUALIZAR CONTADOR EN HEADER ————
-    actualizarContadorCarrito();
-  });
-
-  accordionDetalle.addEventListener("click", () => {
-    accordionDetalle.classList.toggle("active");
-    if (panelDetalle.style.maxHeight) {
-      panelDetalle.style.maxHeight = null;
-      panelDetalle.style.padding = "0";
-    } else {
-      panelDetalle.style.maxHeight = panelDetalle.scrollHeight + "px";
-      panelDetalle.style.padding = "10px 0";
-    }
-  });
-
-  accordionMasDetalles.addEventListener("click", () => {
-    accordionMasDetalles.classList.toggle("active");
-    if (panelMasDetalles.style.maxHeight) {
-      panelMasDetalles.style.maxHeight = null;
-      panelMasDetalles.style.padding = "0";
-    } else {
-      panelMasDetalles.style.maxHeight = panelMasDetalles.scrollHeight + "px";
-      panelMasDetalles.style.padding = "10px 0";
-    }
-  });
-
-  openModalBtn.addEventListener("click", () => {
-    modalDetalle.style.display = "block";
-    modalInfoContent.textContent = producto.infoCompleta || "Información no disponible.";
-    modalDetalle.querySelector(".modal-content").focus();
-  });
-
-  closeModalBtn.addEventListener("click", () => {
-    modalDetalle.style.display = "none";
-    openModalBtn.focus();
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modalDetalle) {
+  // Cerrar modal detalle con tecla Escape
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && modalDetalle && modalDetalle.style.display === "block") {
       modalDetalle.style.display = "none";
-      openModalBtn.focus();
     }
   });
 
-  // Tabs navegación
-  const tabButtons = document.querySelectorAll(".tab-btn");
-  const tabContents = document.querySelectorAll(".tab-content");
+  // Pestañas internas modal detalle
+  if (modalDetalle) {
+    const tabButtons = modalDetalle.querySelectorAll(".tab-btn");
+    const tabContents = modalDetalle.querySelectorAll(".tab-content");
 
-  tabButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      tabButtons.forEach((btn) => {
-        btn.classList.remove("active");
-        btn.setAttribute("aria-selected", "false");
+    tabButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        tabButtons.forEach(btn => btn.classList.remove("active"));
+        tabContents.forEach(content => content.classList.remove("active"));
+
+        button.classList.add("active");
+        const tabId = button.getAttribute("data-tab");
+        const contentToShow = modalDetalle.querySelector(`#${tabId}`);
+        if (contentToShow) contentToShow.classList.add("active");
       });
-      tabContents.forEach((tc) => tc.classList.remove("active"));
-
-      button.classList.add("active");
-      button.setAttribute("aria-selected", "true");
-      const tabId = button.getAttribute("data-tab");
-      document.getElementById(tabId).classList.add("active");
-    });
-  });
-
-  // Menú móvil
-  const toggleBtn = document.getElementById("menu-toggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const closeMenuBtn = document.getElementById("closeMenu");
-
-  toggleBtn.addEventListener("click", () => {
-    mobileMenu.classList.toggle("show");
-  });
-
-  if (closeMenuBtn) {
-    closeMenuBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      mobileMenu.classList.remove("show");
     });
   }
-}
+
+  // Menú móvil toggle
+  const toggleBtn = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (toggleBtn && mobileMenu) {
+    toggleBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('show');
+    });
+  }
+
+  // Pausar scroll en carruseles (opcional)
+  function setupCarouselPause(carouselId) {
+    const track = document.getElementById(carouselId);
+    if (!track) return;
+
+    track.addEventListener('mouseenter', () => track.classList.add('pause'));
+    track.addEventListener('mouseleave', () => track.classList.remove('pause'));
+    track.addEventListener('touchstart', () => track.classList.add('pause'));
+    track.addEventListener('touchend', () => setTimeout(() => track.classList.remove('pause'), 3000));
+  }
+  setupCarouselPause('carousel1');
+  setupCarouselPause('carousel2');
+});
 
 
   </script>

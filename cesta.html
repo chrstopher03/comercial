@@ -5,72 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Cesta - VogueCrest</title>
 <style>
-  /* Tipografía y reset */
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
+  *, *::before, *::after { box-sizing: border-box; }
   body {
     font-family: 'Montserrat', sans-serif;
     background: #fff;
     color: #1a1a1a;
     margin: 0;
-    padding: 0 20px 80px; /* espacio para footer */
+    padding: 0 20px 80px;
     max-width: 960px;
     margin-left: auto;
     margin-right: auto;
   }
 
-  /* Header moderno */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid #ccc;
-}
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #ccc;
+  }
+  .menu-label, .cart-label {
+    cursor: pointer;
+    user-select: none;
+    font-size: 14px;
+  }
+  .logo {
+    height: 50px;
+    object-fit: contain;
+  }
 
-.menu-label, .cart-label {
-  cursor: pointer;
-  user-select: none;
-  font-size: 14px;
-}
+  .menu-mobile {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    transition: left 0.3s ease-in-out;
+    font-size: 18px;
+    z-index: 9999;
+  }
+  .menu-mobile a {
+    text-decoration: none;
+    color: black;
+    font-weight: 500;
+  }
+  .menu-mobile.show { left: 0; }
 
-.logo {
-  height: 50px;
-  object-fit: contain;
-}
-
-/* Menú móvil */
-.menu-mobile {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100vh;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  transition: left 0.3s ease-in-out;
-  font-size: 18px;
-  z-index: 9999;
-}
-
-.menu-mobile a {
-  text-decoration: none;
-  color: black;
-  font-weight: 500;
-}
-
-.menu-mobile.show {
-  left: 0;
-}
   a.back-link {
     display: inline-block;
     margin: 30px 0 40px;
@@ -79,22 +69,15 @@ header {
     text-decoration: none;
     font-size: 1rem;
   }
-  a.back-link:hover {
-    color: #000000;
-  }
 
   h1 {
     font-weight: 700;
-    margin-bottom: 50px;
+    margin: 40px 0 20px;
     letter-spacing: 0.03em;
   }
 
-  /* Lista carrito (estilo lista no tabla para flex mejor control) */
-  #cartList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+  #cartList { list-style: none; padding: 0; margin: 0; }
+
   .cart-item {
     display: flex;
     flex-wrap: wrap;
@@ -105,7 +88,6 @@ header {
     padding: 20px;
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.07);
   }
-
   .cart-item .left-block {
     display: flex;
     align-items: center;
@@ -133,10 +115,10 @@ header {
     min-width: 180px;
   }
 
-  .cart-item .price {
+  .cart-item .price, .subtotal {
     font-weight: 600;
     font-size: 1.15rem;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: #000000;
   }
   .cart-item .details {
@@ -147,14 +129,7 @@ header {
   .cart-item .quantity {
     font-size: 1rem;
     font-weight: 600;
-    margin-bottom: 12px;
-  }
-
-  .cart-item .subtotal {
-    font-weight: 700;
-    font-size: 1.1rem;
     margin-bottom: 10px;
-    color: #1a1a1a;
   }
 
   .btn-eliminar {
@@ -163,7 +138,6 @@ header {
     font-size: 1.6rem;
     color: #000000;
     cursor: pointer;
-    user-select: none;
     padding: 4px 8px;
     border-radius: 6px;
     transition: background-color 0.3s ease;
@@ -172,17 +146,14 @@ header {
     background-color: rgba(231,0,86,0.15);
   }
 
-  /* Total general */
   #totalPrice {
     font-weight: 700;
     font-size: 2rem;
     color: #1a1a1a;
     text-align: right;
-    margin-top: 40px;
-    margin-bottom: 30px;
+    margin-top: 30px;
   }
 
-  /* Botón Pagar */
   #btnPagar {
     display: block;
     width: 100%;
@@ -194,23 +165,18 @@ header {
     padding: 18px 0;
     border-radius: 12px;
     cursor: pointer;
-    letter-spacing: 0.03em;
-    transition: background-color 0.3s ease;
-  }
-  #btnPagar:hover {
-    background-color: #000000;
+    margin-top: 20px;
+    margin-bottom: 30px;
   }
 
-  /* Mensaje cesta vacía */
   .empty-msg {
     text-align: center;
     font-size: 1.3rem;
-    margin: 120px 0;
+    margin: 120px 0 20px;
     font-style: italic;
     color: #999;
   }
 
-  /* Footer simple fijo abajo */
   footer {
     position: fixed;
     bottom: 0;
@@ -224,67 +190,75 @@ header {
     color: #666;
   }
 
+  .btn-vaciar {
+    display: inline-block;
+    background: #000000;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+
   /* Responsive */
-  @media (max-width: 720px) {
+  @media (max-width: 600px) {
     body {
-      padding-bottom: 120px;
+      padding: 0 10px 80px;
+      max-width: 100%;
     }
     .cart-item {
       flex-direction: column;
       align-items: flex-start;
+      gap: 15px;
     }
     .cart-item .left-block, .cart-item .right-block {
-      flex: 1 1 100%;
-      min-width: auto;
-      margin-bottom: 10px;
+      flex: none;
+      min-width: 100%;
+      align-items: flex-start;
     }
     .cart-item .right-block {
       align-items: flex-start;
     }
-    #btnPagar {
-      bottom: 50px;
-      left: 20px;
-      right: 20px;
-      z-index: 99;
-      border-radius: 15px;
-      font-size: 1.4rem;
+    #totalPrice {
+      font-size: 1.5rem;
+      text-align: left;
     }
-    footer {
-      bottom: 0;
+    #btnPagar {
+      font-size: 1.2rem;
+      padding: 14px 0;
     }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER MODERNO -->
 <header>
   <div class="menu-label" id="menu-toggle">MENÚ</div>
   <img src="100.png" alt="VogueCrest" class="logo" />
   <div class="cart-label">CESTA</div>
 </header>
 
-<!-- MENÚ MÓVIL DESLIZANTE -->
 <nav class="menu-mobile" id="mobileMenu">
   <a href="index.html">INICIO</a>
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
   <a href="editorial.html">EDITORIAL</a>
-    <a href="looks.html">LOOKS</a>
-        <a href="contacto.html">CONTACTANOS</a>
+  <a href="looks.html">LOOKS</a>
+  <a href="contacto.html">CONTACTANOS</a>
   <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
 
 <h1>Tu Cesta de Compras</h1>
-<!-- ... (todo tu código <head> y estilos se mantiene igual) ... -->
 
-<ul id="cartList" aria-label="Lista de productos en la cesta">
-  <!-- Productos cargados aquí -->
-</ul>
+<ul id="cartList"></ul>
 
 <div id="totalPrice">Total: C$0</div>
 
-<button id="btnPagar" aria-label="Proceder al pago">Pagar</button>
+<button class="btn-vaciar" onclick="vaciarCarrito()">Vaciar cesta</button>
+<button id="btnPagar">Pagar</button>
 
 <div id="emptyOptions" style="display: none; text-align: center; margin-top: 40px;">
   <p class="empty-msg">LA CESTA ESTÁ VACÍA</p>
@@ -320,6 +294,7 @@ header {
     }
 
     document.getElementById("emptyOptions").style.display = "none";
+    document.getElementById("btnPagar").style.display = "block";
 
     let total = 0;
     carrito.forEach((item, idx) => {
@@ -339,31 +314,41 @@ header {
           <div class="quantity">Cantidad: ${item.cantidad}</div>
           <div class="price">Precio: ${formatoPrecio(precioNum)}</div>
           <div class="subtotal">Subtotal: ${formatoPrecio(subtotal)}</div>
-          <button class="btn-eliminar" aria-label="Eliminar ${item.nombre}" data-index="${idx}">&times;</button>
+          <button class="btn-eliminar" data-index="${idx}" aria-label="Eliminar ${item.nombre}">&times;</button>
         </div>
       `;
       lista.appendChild(li);
     });
 
     document.getElementById("totalPrice").textContent = `Total: ${formatoPrecio(total)}`;
-    document.getElementById("btnPagar").style.display = "block";
 
+    // Eventos para eliminar items
     document.querySelectorAll(".btn-eliminar").forEach(btn => {
       btn.addEventListener("click", (e) => {
         const idx = parseInt(e.target.getAttribute("data-index"));
-        const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-        carrito.splice(idx, 1);
-        localStorage.setItem("voguecrest_cart", JSON.stringify(carrito));
+        let carritoActual = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+        carritoActual.splice(idx, 1);
+        localStorage.setItem("voguecrest_cart", JSON.stringify(carritoActual));
         cargarCarrito();
       });
     });
   }
 
-  document.getElementById("btnPagar").addEventListener("click", () => {
-    window.location.href = "pago.html";
-  });
+  function vaciarCarrito() {
+    localStorage.removeItem("voguecrest_cart");
+    cargarCarrito();
+  }
 
-  cargarCarrito();
+  document.getElementById("btnPagar").addEventListener("click", () => {
+    const usuarioLogueado = localStorage.getItem('userLoggedIn');
+    if (!usuarioLogueado) {
+      alert('Debes iniciar sesión para continuar con el pago.');
+      sessionStorage.setItem('redirectToPago', 'true'); // Guardar para redirigir luego de login
+      window.location.href = 'sesion.html';
+    } else {
+      window.location.href = 'pago.html';
+    }
+  });
 
   function toggleMenu() {
     const menu = document.getElementById('mobileMenu');
@@ -371,6 +356,8 @@ header {
   }
 
   document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+
+  cargarCarrito();
 </script>
 
 </body>

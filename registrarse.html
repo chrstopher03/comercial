@@ -10,7 +10,6 @@
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
-
     body, html {
       height: 100%;
       font-family: 'Inter', sans-serif;
@@ -18,7 +17,6 @@
       background: #fff;
       color: #000;
     }
-
     /* HEADER FIJO ARRIBA */
     header {
       position: fixed;
@@ -33,19 +31,16 @@
       z-index: 1000;
       user-select: none;
     }
-
     .logo {
       height: 40px;
       user-select: none;
     }
-
     .menu-label, .cart-label {
       font-size: 14px;
       cursor: pointer;
       user-select: none;
       font-weight: 500;
     }
-
     /* MENU MOVIL */
     .menu-mobile {
       position: fixed;
@@ -72,7 +67,6 @@
       font-weight: 500;
       user-select: none;
     }
-
     /* CONTENEDOR FORMULARIO: CENTRADO VERTICAL Y HORIZONTAL */
     main {
       min-height: calc(100vh - 60px);
@@ -83,36 +77,32 @@
       padding: 0 20px;
       margin-top: 60px; /* para que no quede debajo del header */
     }
-
     .form-wrapper {
       max-width: 460px;
       width: 100%;
     }
-
-h1 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400; /* delgado igual que las demás letras */
-  font-size: 28px;
-  margin-bottom: 24px;
-  text-align: center;
-  letter-spacing: 0.02em;
-  user-select: none;
-}
-
-
+    h1 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 28px;
+      margin-bottom: 24px;
+      text-align: center;
+      letter-spacing: 0.02em;
+      user-select: none;
+    }
     form {
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 20px;
     }
-
     /* INPUTS con label flotante igual a GNG */
     .input-group {
       position: relative;
       padding-top: 16px;
     }
-
-    input {
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
       width: 100%;
       border: none;
       border-bottom: 1px solid #000;
@@ -124,11 +114,14 @@ h1 {
       font-weight: 400;
       letter-spacing: 0.01em;
     }
-
+    input[type="file"] {
+      padding: 6px 0;
+      font-size: 14px;
+      cursor: pointer;
+    }
     input::placeholder {
       color: transparent;
     }
-
     label {
       position: absolute;
       top: 20px;
@@ -140,7 +133,6 @@ h1 {
       transition: 0.2s ease all;
       user-select: none;
     }
-
     input:focus + label,
     input:not(:placeholder-shown) + label {
       top: 0;
@@ -148,7 +140,6 @@ h1 {
       color: #000;
       font-weight: 600;
     }
-
     /* CHECKBOX */
     .checkbox-wrapper {
       display: flex;
@@ -158,14 +149,12 @@ h1 {
       line-height: 1.3;
       user-select: none;
     }
-
     .checkbox-wrapper input[type="checkbox"] {
       cursor: pointer;
       width: 16px;
       height: 16px;
       margin: 0;
     }
-
     .checkbox-wrapper label {
       position: static;
       top: auto;
@@ -176,13 +165,11 @@ h1 {
       user-select: none;
       font-size: 12px;
     }
-
     .checkbox-wrapper a {
       color: #000;
       text-decoration: underline;
       cursor: pointer;
     }
-
     /* BOTÓN */
     button {
       background-color: #000;
@@ -198,11 +185,9 @@ h1 {
       transition: background-color 0.3s ease;
       width: 100%;
     }
-
     button:hover {
       background-color: #222;
     }
-
     /* TEXTO INFERIOR */
     .already {
       text-align: center;
@@ -215,7 +200,6 @@ h1 {
       text-decoration: underline;
       cursor: pointer;
     }
-
     /* Responsive */
     @media (max-height: 600px) {
       main {
@@ -233,24 +217,24 @@ h1 {
     <div class="cart-label" id="cartLabel"></div>
   </header>
 
-  <nav class="menu-mobile" id="mobileMenu">
+<nav class="menu-mobile" id="mobileMenu">
   <a href="index.html">INICIO</a>
   <a href="colecciones.html">COLECCIONES</a>
   <a href="acerca.html">ACERCA DE</a>
-  <a href="editorial.html">EDITORIAL</a>
+  <a href="editorial.html">OUT & ABOUT</a>
   <a href="looks.html">LOOKS</a>
   <a href="contacto.html">CONTACTANOS</a>
   <a href="sesion.html">INICIAR SESION</a>
-    <a href="asistente.html">INICIAR SESION</a>
+  <a href="cuenta.html">CUENTA</a>
+    <a href="asistente.html">ASISTENTE</a>
   <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
-
 
   <!-- FORMULARIO -->
   <main>
     <div class="form-wrapper">
       <h1>REGISTRO</h1>
-      <form action="index.html" method="POST" autocomplete="off" novalidate>
+      <form id="registerForm" autocomplete="off" novalidate>
         <div class="input-group">
           <input type="text" id="firstName" name="firstName" placeholder=" " required />
           <label for="firstName">Nombre</label>
@@ -271,6 +255,11 @@ h1 {
           <label for="password">Contraseña</label>
         </div>
 
+        <div class="input-group">
+          <input type="file" id="profilePic" accept="image/*" />
+          <label for="profilePic" style="position:static; top:auto; left:auto; font-size:14px; font-weight:400; cursor:pointer; user-select:none;">Foto de perfil (opcional)</label>
+        </div>
+
         <div class="checkbox-wrapper">
           <input type="checkbox" id="terms" required />
           <label for="terms">
@@ -288,6 +277,65 @@ h1 {
   </main>
 
   <script>
+    const form = document.getElementById('registerForm');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const firstName = form.firstName.value.trim();
+      const lastName = form.lastName.value.trim();
+      const email = form.email.value.trim().toLowerCase();
+      const password = form.password.value;
+      const termsChecked = form.terms.checked;
+
+      if (!firstName || !lastName || !email || !password) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
+      if (!termsChecked) {
+        alert('Debes aceptar los Términos y condiciones.');
+        return;
+      }
+
+      const existingUser = localStorage.getItem(`user_${email}`);
+      if (existingUser) {
+        alert('Este correo ya está registrado. Por favor inicia sesión o usa otro correo.');
+        return;
+      }
+
+      // Procesar imagen de perfil si hay archivo
+      let profilePicBase64 = '';
+      const fileInput = document.getElementById('profilePic');
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        profilePicBase64 = await toBase64(file);
+      }
+
+      const userData = {
+        firstName,
+        lastName,
+        email,
+        password, // OJO: en producción nunca guardar contraseña en texto plano
+        profilePicBase64
+      };
+
+      localStorage.setItem(`user_${email}`, JSON.stringify(userData));
+      alert('Cuenta creada con éxito. Ahora puedes iniciar sesión.');
+
+      window.location.href = 'sesion.html';
+    });
+
+    // Función para convertir archivo a base64
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // Código menú mobile
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobileMenu');
 
