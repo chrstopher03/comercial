@@ -4,14 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Detalle del producto - VogueCrest</title>
+  <!-- Link a tipografía Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* Reset box sizing para todo */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', Arial, sans-serif;
       margin: 0;
-      padding: 20px;
       background: #fff;
       color: #222;
-      box-sizing: border-box;
+      padding: 0 15px 40px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     header {
@@ -30,17 +38,47 @@
       display: block;
     }
 
+    /* Contenedor principal centrado y max ancho */
     .container {
       max-width: 600px;
       margin: 0 auto;
     }
 
-    h1 {
+    /* Scroll fijo arriba con fondo blanco y sombra sutil */
+    #stickyHeader {
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 100;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
       font-weight: 700;
-      font-size: 1.6rem;
-      margin-bottom: 10px;
+      font-size: 1.5rem;
       color: #d6336c;
+      box-shadow: 0 2px 8px rgb(214 51 108 / 0.12);
+      transition: background-color 0.3s ease;
+    }
+
+    #stickyPrice {
+      font-weight: 600;
+      color: #333;
+      font-size: 1.4rem;
+    }
+
+    /* Título principal ahora oculto (pero mantenido para SEO) */
+    h1#productName {
+      margin: 5px 0 15px;
       text-align: center;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #d6336c;
+      user-select: none;
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
     }
 
     .price {
@@ -49,127 +87,173 @@
       margin-bottom: 20px;
       color: #333;
       text-align: center;
+      user-select: none;
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
     }
 
+    /* Imagen principal - cursor pointer para abrir lightbox */
     .main-image {
       width: 100%;
       max-height: 400px;
       object-fit: contain;
-      border-radius: 8px;
+      border-radius: 12px;
       margin-bottom: 15px;
       display: block;
       margin-left: auto;
       margin-right: auto;
+      cursor: zoom-in;
+      transition: box-shadow 0.3s ease;
     }
 
+    .main-image:hover {
+      box-shadow: 0 10px 20px rgba(214, 51, 108, 0.25);
+    }
+
+    /* Carrusel */
     .carousel {
       display: flex;
       overflow-x: auto;
-      gap: 10px;
-      margin-bottom: 25px;
+      gap: 12px;
+      margin-bottom: 30px;
       padding-bottom: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: #d6336c #f0f0f0;
+    }
+
+    .carousel::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .carousel::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-radius: 3px;
+    }
+
+    .carousel::-webkit-scrollbar-thumb {
+      background-color: #d6336c;
+      border-radius: 3px;
     }
 
     .carousel img {
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 12px;
       flex-shrink: 0;
       cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.2s, border-color 0.2s;
+      border: 3px solid transparent;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+      user-select: none;
     }
 
     .carousel img.active {
       border-color: #d6336c;
-      transform: scale(1.05);
+      transform: scale(1.1);
+      box-shadow: 0 6px 10px rgba(214, 51, 108, 0.3);
     }
 
     .carousel img:hover {
-      transform: scale(1.05);
+      transform: scale(1.1);
+      border-color: #d6336c;
     }
 
+    /* Descripción */
     .description {
       white-space: pre-wrap;
       font-size: 1rem;
-      line-height: 1.5;
-      margin-bottom: 20px;
+      line-height: 1.6;
+      margin-bottom: 25px;
       color: #444;
+      user-select: text;
     }
 
+    /* Sección título */
     .section-title {
       font-weight: 700;
-      margin-top: 20px;
-      margin-bottom: 12px;
-      font-size: 1.2rem;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
       border-bottom: 2px solid #d6336c;
-      padding-bottom: 4px;
+      padding-bottom: 6px;
       color: #222;
+      user-select: none;
     }
 
-    /* Botones para tallas */
+    /* Botones tallas */
     .opciones-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 25px;
+      gap: 12px;
+      margin-bottom: 30px;
     }
 
     .talla-btn {
-      padding: 8px 16px;
-      background-color: #eee;
-      border: 2px solid #ccc;
-      border-radius: 25px;
+      padding: 10px 20px;
+      background-color: #f5f5f5;
+      border: 2px solid #ddd;
+      border-radius: 30px;
       cursor: pointer;
       font-weight: 600;
-      color: #444;
-      transition: background-color 0.3s, border-color 0.3s;
+      color: #555;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
       user-select: none;
+      flex: 0 0 auto;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
     }
 
     .talla-btn:hover {
       background-color: #d6336c;
       color: white;
-      border-color: #d6336c;
+      border-color: #b22a55;
+      box-shadow: 0 4px 12px rgba(214,51,108,0.4);
+      transform: translateY(-2px);
     }
 
     .talla-btn.active {
       background-color: #d6336c;
       color: white;
       border-color: #a32b54;
+      box-shadow: 0 6px 15px rgba(214,51,108,0.55);
     }
 
-    /* Círculos para colores */
+    /* Colores circulares */
     .color-circle {
-      width: 30px;
-      height: 30px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      border: 2px solid transparent;
+      border: 3px solid transparent;
       cursor: pointer;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s ease;
       position: relative;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
     }
 
     .color-circle.active {
       border-color: #d6336c;
+      box-shadow: 0 0 10px rgba(214,51,108,0.5);
     }
 
     .color-circle:hover {
       border-color: #d6336c;
+      box-shadow: 0 0 10px rgba(214,51,108,0.35);
     }
 
     /* Tooltip simple */
     .color-circle[data-tooltip]:hover::after {
       content: attr(data-tooltip);
       position: absolute;
-      bottom: 130%;
+      bottom: 140%;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
       color: #fff;
-      padding: 3px 7px;
-      border-radius: 4px;
+      padding: 5px 9px;
+      border-radius: 5px;
       white-space: nowrap;
       font-size: 0.75rem;
       pointer-events: none;
@@ -181,56 +265,132 @@
     /* Lista info extra */
     #infoExtraList {
       margin-top: 10px;
-      padding-left: 20px;
+      padding-left: 22px;
       color: #555;
       font-size: 1rem;
-      line-height: 1.4;
+      line-height: 1.5;
       list-style-type: disc;
+      user-select: text;
     }
 
     #infoExtraList li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* Botón compartir */
+    #shareButton {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background-color: #d6336c;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 6px 12px rgba(214, 51, 108, 0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 5px;
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 260px;
+    }
+
+    #shareButton:hover {
+      background-color: #b22a55;
+      box-shadow: 0 8px 18px rgba(178, 42, 85, 0.7);
+    }
+
+    /* Icono compartir SVG */
+    #shareButton svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+      stroke: white;
+      stroke-width: 1.5;
+    }
+
+    /* Sección historia */
+    #historiaPrenda {
+      font-size: 1rem;
+      color: #444;
+      line-height: 1.6;
+      background: #fff0f6;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgb(214 51 108 / 0.1);
+      margin-bottom: 35px;
+      user-select: text;
+    }
+
+    /* Lightbox overlay */
+    #lightboxOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      cursor: zoom-out;
+      padding: 15px;
+    }
+
+    #lightboxOverlay img {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      user-select: none;
+    }
+
+    /* Contador escaneos */
+    #scanCount {
+      font-size: 0.9rem;
+      color: #999;
+      text-align: center;
+      margin-bottom: 20px;
+      user-select: none;
+      font-style: italic;
     }
 
     /* Responsive */
     @media (max-width: 480px) {
       body {
-        padding: 10px;
+        padding: 0 12px 30px;
       }
 
-      header {
-        padding: 10px 0;
-        margin-bottom: 15px;
-      }
-
-      header img {
-        max-height: 45px;
-      }
-
-      h1 {
+      #stickyHeader {
         font-size: 1.3rem;
+        gap: 12px;
+        padding: 10px 0;
       }
 
-      .price {
-        font-size: 1.2rem;
+      .main-image {
+        max-height: 320px;
       }
 
-      .description {
-        font-size: 0.95rem;
-      }
-
-      .section-title {
-        font-size: 1.1rem;
+      .carousel img {
+        width: 90px;
+        height: 90px;
       }
 
       .talla-btn {
-        padding: 6px 12px;
+        padding: 8px 14px;
         font-size: 0.9rem;
+        min-width: 40px;
       }
 
       .color-circle {
-        width: 26px;
-        height: 26px;
+        width: 28px;
+        height: 28px;
+      }
+
+      #shareButton {
+        max-width: 100%;
       }
     }
   </style>
@@ -242,36 +402,79 @@
   </header>
 
   <div class="container">
+    <!-- Scroll fijo -->
+    <div id="stickyHeader" aria-live="polite" aria-atomic="true">
+      <div id="stickyName">Cargando...</div>
+      <div id="stickyPrice"></div>
+    </div>
+
+    <!-- Título SEO oculto -->
     <h1 id="productName">Cargando...</h1>
     <div class="price" id="productPrice"></div>
-    <img id="mainImage" class="main-image" src="" alt="Imagen del producto" loading="lazy" />
 
-    <div class="carousel" id="carouselImages" aria-label="Imágenes del producto"></div>
+    <!-- Imagen principal con lightbox -->
+    <img id="mainImage" class="main-image" src="" alt="Imagen del producto" loading="lazy" tabindex="0" role="button" aria-label="Ampliar imagen del producto" />
 
+    <!-- Carrusel imágenes -->
+    <div class="carousel" id="carouselImages" aria-label="Imágenes del producto" role="list"></div>
+
+    <!-- Contador escaneos -->
+    <div id="scanCount" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Descripción general -->
     <div class="description" id="productDescription"></div>
 
+    <!-- Nueva sección: Historia de esta prenda -->
+    <div>
+      <div class="section-title">Historia de esta prenda</div>
+      <div id="historiaPrenda">Cargando...</div>
+    </div>
+
+    <!-- Tallas -->
     <div>
       <div class="section-title">Tallas disponibles:</div>
       <div id="tallasContainer" class="opciones-container"></div>
     </div>
 
+    <!-- Colores -->
     <div>
       <div class="section-title">Colores disponibles:</div>
       <div id="coloresContainer" class="opciones-container"></div>
     </div>
 
+    <!-- Información adicional -->
     <div>
       <div class="section-title">Información adicional:</div>
       <ul id="infoExtraList"></ul>
     </div>
+
+    <!-- Botón compartir -->
+    <button id="shareButton" type="button" aria-label="Compartir producto">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M18 8a3 3 0 1 0-2.83-4H9a3 3 0 1 0 0 2h6.17A3 3 0 0 0 18 8zm-8 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm11-3a3 3 0 1 0-3 3h.5a3 3 0 0 0 2.5-3z"></path>
+      </svg>
+      Compartir
+    </button>
+  </div>
+
+  <!-- Lightbox overlay -->
+  <div id="lightboxOverlay" role="dialog" aria-modal="true" aria-label="Imagen ampliada del producto" tabindex="-1">
+    <img src="" alt="Imagen ampliada del producto" />
   </div>
 
   <script>
+    // Datos productos con nueva info solicitada
     const productos = {
       prenda1: {
         nombre: "NIGHTFLEX BAG – VogueCrest",
         imagenPrincipal: "013.png",
-        descripcion: `La bolsa NIGHTFLEX de VogueCrest combina la resistencia de la tela deportiva negra con un diseño moderno y funcional. Su estructura firme y flexible se adapta a cada movimiento, mientras las asas reforzadas aseguran comodidad y durabilidad. El logo de VogueCrest, presente de forma elegante, aporta un sello de identidad contemporáneo. Perfecta para el uso diario y actividades deportivas, la NIGHTFLEX BAG fusiona estilo urbano con practicidad en una pieza imprescindible.`,
+        imagenesExtra: ["013.png"],
+        descripcion: `La bolsa NIGHTFLEX de VogueCrest combina la resistencia de la tela deportiva negra con un diseño moderno y funcional.`,
+        estilo: "Regular Fit",
+        historia: `Inspirada en la vida urbana activa, NIGHTFLEX fue creada para acompañarte en cada movimiento, fusionando estilo y funcionalidad en un solo accesorio.`,
+        composicion: "Material: 100% algodón premium.",
+        instruccionesLavado: "Lavar a mano. No usar blanqueador.",
+        contenidoExclusivo: "Acceso exclusivo a tutoriales de cuidado y estilos VogueCrest.",
         precio: "C$1,600",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro"],
@@ -285,37 +488,31 @@
         nombre: "VOGUECREST ESSENTIAL LOGO CAP – ASH GREY",
         imagenPrincipal: "019.png",
         imagenesExtra: ["019.png", "023.png", "021.png", "022.png"],
-        descripcion: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
-
-Confeccionada en ante sintético de alta calidad, ofrece un acabado suave tipo terciopelo en un tono gris ceniza, sobrio y moderno.
-
-El logo icónico de VogueCrest en TPU negro resalta al frente, aportando un contraste sofisticado y una identidad fuerte.
-
-Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.`,
+        descripcion: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.`,
+        estilo: "Ajustable Única",
+        historia: `Confeccionada para quienes buscan elegancia y comodidad, esta gorra aporta un toque sofisticado a cualquier outfit urbano.`,
+        composicion: "Ante sintético de alta calidad, tipo terciopelo.",
+        instruccionesLavado: "Limpieza en seco recomendada.",
+        contenidoExclusivo: "Invitación a eventos VogueCrest exclusivos.",
         precio: "C$950",
         tallas: ["Única ajustable"],
         colores: ["Gris"],
-        detalleExtra: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.
-
-Confeccionada en ante sintético de alta calidad, ofrece un acabado suave tipo terciopelo en un tono gris ceniza, sobrio y moderno.
-
-El logo icónico de VogueCrest en TPU negro resalta al frente, aportando un contraste sofisticado y una identidad fuerte.
-
-Diseñada con visera precurvada, costuras tonales y correa ajustable posterior, combina comodidad y estilo para acompañarte en cualquier ocasión.`,
+        detalleExtra: `La gorra Essential Logo de VogueCrest redefine la elegancia urbana con un diseño minimalista y una construcción premium.`,
         esOriginal: true,
         creador: "VogueCrest",
         lugarCreacion: "Somoto, Madriz , Nicaragua",
-        tipoTela:  `La gorra está confeccionada en ante sintético de alta calidad, un material innovador que imita la textura suave y elegante del terciopelo natural, ofreciendo al mismo tiempo mayor durabilidad y resistencia al uso diario. Su superficie afelpada brinda una sensación premium al tacto, mientras que su estructura liviana permite una comodidad prolongada sin sacrificar estilo.
-
-Este tejido fue seleccionado por su capacidad de mantener la forma de la gorra, resistir manchas leves y conservar el color gris ceniza con intensidad, incluso tras múltiples usos.
-
-`,
+        tipoTela:  `Ante sintético de alta calidad con textura suave y elegante.`
       },
       prenda3: {
         nombre: "VOGUECREST T-SHIRT BLACK VARIANTE 3",
         imagenPrincipal: "018.png",
         imagenesExtra: ["018_1.png"],
         descripcion: `Otra variante de la camiseta VOGUECREST en color negro, con un diseño especial que resalta la identidad urbana y elegante de la marca.`,
+        estilo: "Oversized",
+        historia: `Diseñada para reflejar confianza y estilo, esta camiseta es el alma de la colección urbana de VogueCrest.`,
+        composicion: "100% algodón premium.",
+        instruccionesLavado: "Lavar a mano. No usar blanqueador.",
+        contenidoExclusivo: "Acceso a playlist exclusiva VogueCrest.",
         precio: "C$800",
         tallas: ["S", "M", "L", "XL"],
         colores: ["Negro"],
@@ -328,8 +525,13 @@ Este tejido fue seleccionado por su capacidad de mantener la forma de la gorra, 
       prenda4: {
         nombre: "VOGUECREST LIGHT DENIM SHORTS",
         imagenPrincipal: "015.png",
-        imagenesExtra: ["018_1.png"],
-        descripcion: "El short de mezclilla clara de VogueCrest fusiona lo clásico con el estilo contemporáneo. Confeccionado en denim suave y resistente, presenta un corte relajado por encima de la rodilla que brinda libertad de movimiento y frescura. Los detalles desgastados estratégicos y el logo VogueCrest en la parte trasera elevan su diseño urbano. Perfecto para un look casual con identidad propia.",
+        imagenesExtra: ["015.png", "018_1.png"],
+        descripcion: "El short de mezclilla clara de VogueCrest fusiona lo clásico con el estilo contemporáneo.",
+        estilo: "Regular Fit",
+        historia: "Un básico reinventado para quienes valoran comodidad y tendencia, creado para todos los días con actitud.",
+        composicion: "100% algodón denim suave y resistente.",
+        instruccionesLavado: "Lavar a mano. No usar blanqueador.",
+        contenidoExclusivo: "Guía de combinaciones VogueCrest exclusiva para ti.",
         precio: "C$800",
         tallas: ["M", "L", "XL"],
         colores: ["Celeste"],
@@ -349,59 +551,137 @@ Este tejido fue seleccionado por su capacidad de mantener la forma de la gorra, 
       "Gris": "#999999"
     };
 
+    // Obtener parámetro de URL
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
 
+    // Contador escaneos con localStorage simple (por producto)
+    function incrementarContador(productoId) {
+      if (!productoId) return 0;
+      let count = localStorage.getItem("scanCount_" + productoId);
+      count = count ? parseInt(count) + 1 : 1;
+      localStorage.setItem("scanCount_" + productoId, count);
+      return count;
+    }
+
+    // Compartir producto (usa Web Share API o fallback copiar link)
+    async function compartirProducto() {
+      const shareData = {
+        title: producto.nombre,
+        text: `Mira este producto VogueCrest: ${producto.nombre}`,
+        url: window.location.href
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+          alert("Producto compartido correctamente.");
+        } catch (err) {
+          // Cancelado o error
+        }
+      } else {
+        // Fallback: copiar link
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          alert("Enlace copiado al portapapeles.");
+        } catch {
+          alert("No se pudo copiar el enlace. Por favor, compártelo manualmente.");
+        }
+      }
+    }
+
+    // Variables globales
     const productoId = getQueryParam("producto");
     const producto = productos[productoId];
 
+    // Elementos
+    const stickyName = document.getElementById("stickyName");
+    const stickyPrice = document.getElementById("stickyPrice");
+    const mainImage = document.getElementById("mainImage");
+    const carousel = document.getElementById("carouselImages");
+    const productDescription = document.getElementById("productDescription");
+    const tallasContainer = document.getElementById("tallasContainer");
+    const coloresContainer = document.getElementById("coloresContainer");
+    const infoExtraList = document.getElementById("infoExtraList");
+    const historiaPrenda = document.getElementById("historiaPrenda");
+    const shareButton = document.getElementById("shareButton");
+    const scanCountDiv = document.getElementById("scanCount");
+
+    // Lightbox
+    const lightboxOverlay = document.getElementById("lightboxOverlay");
+    const lightboxImg = lightboxOverlay.querySelector("img");
+
     if (!producto) {
-      document.getElementById("productName").textContent = "Producto no encontrado";
-      document.getElementById("productPrice").textContent = "";
-      document.getElementById("mainImage").src = "";
-      document.getElementById("productDescription").textContent = "";
-      document.getElementById("carouselImages").innerHTML = "";
-      document.getElementById("tallasContainer").innerHTML = "";
-      document.getElementById("coloresContainer").innerHTML = "";
-      document.getElementById("infoExtraList").innerHTML = "";
+      stickyName.textContent = "Producto no encontrado";
+      stickyPrice.textContent = "";
+      mainImage.src = "";
+      mainImage.alt = "";
+      productDescription.textContent = "";
+      carousel.innerHTML = "";
+      tallasContainer.innerHTML = "";
+      coloresContainer.innerHTML = "";
+      infoExtraList.innerHTML = "";
+      historiaPrenda.textContent = "";
+      scanCountDiv.textContent = "";
+      shareButton.style.display = "none";
     } else {
+      // Scroll fijo nombre y precio
+      stickyName.textContent = producto.nombre;
+      stickyPrice.textContent = producto.precio;
+
+      // SEO título y precio (ocultos visualmente pero accesibles)
       document.getElementById("productName").textContent = producto.nombre;
       document.getElementById("productPrice").textContent = producto.precio;
-      const mainImage = document.getElementById("mainImage");
+
+      // Imagen principal
       mainImage.src = producto.imagenPrincipal;
       mainImage.alt = producto.nombre;
 
-      document.getElementById("productDescription").textContent =
-        producto.descripcion + (producto.detalleExtra ? "\n\n" + producto.detalleExtra : "");
+      // Descripción principal + composicion + lavado + contenido exclusivo
+      let descripcionCompleta = producto.descripcion || "";
+      if(producto.composicion) descripcionCompleta += "\n\n" + producto.composicion;
+      if(producto.instruccionesLavado) descripcionCompleta += "\n\nInstrucciones de lavado: " + producto.instruccionesLavado;
+      if(producto.contenidoExclusivo) descripcionCompleta += "\n\nContenido exclusivo: " + producto.contenidoExclusivo;
+
+      productDescription.textContent = descripcionCompleta;
+
+      // Historia prenda
+      historiaPrenda.textContent = producto.historia || "No hay historia disponible para esta prenda.";
 
       // Carrusel imágenes
-      const carousel = document.getElementById("carouselImages");
       carousel.innerHTML = "";
       if (producto.imagenesExtra && producto.imagenesExtra.length > 0) {
-        producto.imagenesExtra.forEach((img) => {
+        producto.imagenesExtra.forEach((img, i) => {
           const image = document.createElement("img");
           image.src = img;
-          image.alt = producto.nombre + " imagen";
+          image.alt = producto.nombre + " imagen " + (i + 1);
           image.loading = "lazy";
-
           if (img === producto.imagenPrincipal) {
             image.classList.add("active");
           }
+          image.tabIndex = 0;
+          image.setAttribute("role", "listitem");
 
           image.addEventListener("click", () => {
             mainImage.src = img;
-
             carousel.querySelectorAll("img").forEach(i => i.classList.remove("active"));
             image.classList.add("active");
           });
+
+          image.addEventListener("keydown", e => {
+            if(e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              image.click();
+            }
+          });
+
           carousel.appendChild(image);
         });
       }
 
-      // Tallas como botones
-      const tallasContainer = document.getElementById("tallasContainer");
+      // Tallas
       tallasContainer.innerHTML = "";
       producto.tallas.forEach(talla => {
         const btn = document.createElement("button");
@@ -417,8 +697,7 @@ Este tejido fue seleccionado por su capacidad de mantener la forma de la gorra, 
         tallasContainer.appendChild(btn);
       });
 
-      // Colores como círculos
-      const coloresContainer = document.getElementById("coloresContainer");
+      // Colores
       coloresContainer.innerHTML = "";
       producto.colores.forEach(color => {
         const div = document.createElement("div");
@@ -434,34 +713,72 @@ Este tejido fue seleccionado por su capacidad de mantener la forma de la gorra, 
         coloresContainer.appendChild(div);
       });
 
-      // Información adicional
-      const infoExtraList = document.getElementById("infoExtraList");
+      // Información extra
       infoExtraList.innerHTML = "";
-
       if (producto.esOriginal !== undefined) {
         const li = document.createElement("li");
         li.textContent = "Producto original: " + (producto.esOriginal ? "Sí" : "No");
         infoExtraList.appendChild(li);
       }
-
       if (producto.creador) {
         const li = document.createElement("li");
         li.textContent = "Creado por: " + producto.creador;
         infoExtraList.appendChild(li);
       }
-
       if (producto.lugarCreacion) {
         const li = document.createElement("li");
         li.textContent = "Lugar de creación: " + producto.lugarCreacion;
         infoExtraList.appendChild(li);
       }
-
       if (producto.tipoTela) {
         const li = document.createElement("li");
         li.textContent = "Tipo de tela: " + producto.tipoTela;
         infoExtraList.appendChild(li);
       }
+      if(producto.estilo){
+        const li = document.createElement("li");
+        li.textContent = "Estilo: " + producto.estilo;
+        infoExtraList.appendChild(li);
+      }
+
+      // Contador de escaneos
+      const scans = incrementarContador(productoId);
+      scanCountDiv.textContent = `Esta prenda ha sido visualizada ${scans} ${scans === 1 ? "vez" : "veces"}.`;
+
+      // Mostrar botón compartir
+      shareButton.style.display = "inline-flex";
     }
+
+    // Funcionalidad lightbox para imagen principal
+    function abrirLightbox() {
+      lightboxImg.src = mainImage.src;
+      lightboxImg.alt = mainImage.alt;
+      lightboxOverlay.style.display = "flex";
+      lightboxOverlay.focus();
+    }
+
+    function cerrarLightbox() {
+      lightboxOverlay.style.display = "none";
+      mainImage.focus();
+    }
+
+    mainImage.addEventListener("click", abrirLightbox);
+    mainImage.addEventListener("keydown", e => {
+      if(e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        abrirLightbox();
+      }
+    });
+
+    lightboxOverlay.addEventListener("click", cerrarLightbox);
+    lightboxOverlay.addEventListener("keydown", e => {
+      if(e.key === "Escape") {
+        cerrarLightbox();
+      }
+    });
+
+    // Botón compartir
+    shareButton.addEventListener("click", compartirProducto);
   </script>
 </body>
 </html>
