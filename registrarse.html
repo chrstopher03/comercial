@@ -206,6 +206,32 @@
         align-items: flex-start;
       }
     }
+
+    /* Toast styling */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #000;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease, bottom 0.4s ease;
+      z-index: 9999;
+    }
+    #toast.show {
+      opacity: 1;
+      bottom: 50px;
+      pointer-events: auto;
+    }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -226,7 +252,7 @@
   <a href="contacto.html">CONTACTANOS</a>
   <a href="sesion.html">INICIAR SESION</a>
   <a href="cuenta.html">CUENTA</a>
-    <a href="asistente.html">ASISTENTE</a>
+  <a href="asistente.html">ASISTENTE</a>
   <a href="#" onclick="toggleMenu()">CERRAR</a>
 </nav>
 
@@ -276,6 +302,9 @@
     </div>
   </main>
 
+  <!-- Toast container -->
+  <div id="toast" class="toast hidden"></div>
+
   <script>
     const form = document.getElementById('registerForm');
 
@@ -289,17 +318,17 @@
       const termsChecked = form.terms.checked;
 
       if (!firstName || !lastName || !email || !password) {
-        alert('Por favor, completa todos los campos.');
+        showToast('Por favor, completa todos los campos.');
         return;
       }
       if (!termsChecked) {
-        alert('Debes aceptar los Términos y condiciones.');
+        showToast('Debes aceptar los Términos y condiciones.');
         return;
       }
 
       const existingUser = localStorage.getItem(`user_${email}`);
       if (existingUser) {
-        alert('Este correo ya está registrado. Por favor inicia sesión o usa otro correo.');
+        showToast('Este correo ya está registrado. Por favor inicia sesión o usa otro correo.');
         return;
       }
 
@@ -320,9 +349,11 @@
       };
 
       localStorage.setItem(`user_${email}`, JSON.stringify(userData));
-      alert('Cuenta creada con éxito. Ahora puedes iniciar sesión.');
+      showToast('Cuenta creada con éxito. Ahora puedes iniciar sesión.');
 
-      window.location.href = 'sesion.html';
+      setTimeout(() => {
+        window.location.href = 'sesion.html';
+      }, 2000);
     });
 
     // Función para convertir archivo a base64
@@ -345,6 +376,21 @@
 
     function toggleMenu() {
       mobileMenu.classList.remove('open');
+    }
+
+    // Función toast
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 400);
+      }, 3000);
     }
   </script>
 </body>

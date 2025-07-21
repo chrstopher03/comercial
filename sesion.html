@@ -119,6 +119,33 @@
       color: red;
       margin-top: 10px;
       text-align: center;
+      display: none;
+    }
+
+    /* TOAST ESTILOS */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: #000000;
+      color: white;
+      text-align: center;
+      border-radius: 6px;
+      padding: 16px;
+      position: fixed;
+      z-index: 1200;
+      left: 50%;
+      bottom: 30px;
+      font-weight: 600;
+      transform: translateX(-50%);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      font-family: 'Inter', sans-serif;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      user-select: none;
+    }
+    #toast.show {
+      visibility: visible;
+      opacity: 1;
     }
   </style>
 </head>
@@ -132,18 +159,19 @@
   </header>
 
   <!-- MENÚ MÓVIL -->
-<nav class="menu-mobile" id="mobileMenu">
-  <a href="index.html">INICIO</a>
-  <a href="colecciones.html">COLECCIONES</a>
-  <a href="acerca.html">ACERCA DE</a>
-  <a href="editorial.html">OUT & ABOUT</a>
-  <a href="looks.html">LOOKS</a>
-  <a href="contacto.html">CONTACTANOS</a>
-  <a href="sesion.html">INICIAR SESION</a>
-  <a href="cuenta.html">CUENTA</a>
+  <nav class="menu-mobile" id="mobileMenu">
+    <a href="index.html">INICIO</a>
+    <a href="colecciones.html">COLECCIONES</a>
+    <a href="acerca.html">ACERCA DE</a>
+    <a href="editorial.html">OUT & ABOUT</a>
+    <a href="looks.html">LOOKS</a>
+    <a href="contacto.html">CONTACTANOS</a>
+    <a href="sesion.html">INICIAR SESION</a>
+    <a href="cuenta.html">CUENTA</a>
     <a href="asistente.html">ASISTENTE</a>
-  <a href="#" onclick="toggleMenu()">CERRAR</a>
-</nav>
+    <a href="#" onclick="toggleMenu()">CERRAR</a>
+  </nav>
+
   <!-- FORMULARIO -->
   <div class="wrapper">
     <h1>Iniciar sesión</h1>
@@ -154,20 +182,34 @@
     </form>
     <div id="errorMsg"></div>
     <div class="extras">
-<p><a href="contraseña.html">¿Olvidaste tu contraseña?</a></p>
+      <p><a href="contraseña.html">¿Olvidaste tu contraseña?</a></p>
       <p>¿Aún no tienes una cuenta? <a href="registrarse.html">Registrarse</a></p>
     </div>
   </div>
 
+  <!-- TOAST -->
+  <div id="toast"></div>
+
   <script>
     const loginForm = document.getElementById('loginForm');
     const errorMsg = document.getElementById('errorMsg');
+    const toast = document.getElementById('toast');
 
     function toggleMenu() {
       const menu = document.getElementById('mobileMenu');
       menu.classList.toggle('open');
     }
     document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+
+    // Función para mostrar toast
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
 
     loginForm.addEventListener('submit', e => {
       e.preventDefault();
@@ -177,32 +219,39 @@
 
       const userJSON = localStorage.getItem(`user_${email}`);
 
+      errorMsg.style.display = 'none';
       errorMsg.textContent = '';
 
       if (!userJSON) {
-        errorMsg.textContent = 'Usuario no encontrado. Por favor regístrate.';
+        //errorMsg.textContent = 'Usuario no encontrado. Por favor regístrate.';
+        showToast('Usuario no encontrado. Por favor regístrate.');
         return;
       }
 
       const userData = JSON.parse(userJSON);
 
       if (userData.password !== password) {
-        errorMsg.textContent = 'Contraseña incorrecta.';
+        //errorMsg.textContent = 'Contraseña incorrecta.';
+        showToast('Contraseña incorrecta.');
         return;
       }
 
       // Guardar sesión activa
       localStorage.setItem('userLoggedIn', email);
 
-      alert(`Bienvenido, ${userData.firstName} ${userData.lastName}! Has iniciado sesión.`);
+      showToast(`Bienvenido, ${userData.firstName} ${userData.lastName}! Has iniciado sesión.`);
 
       // Redirigir según si venía de pago o no
       const fromPago = sessionStorage.getItem('redirectToPago');
       if (fromPago === 'true') {
         sessionStorage.removeItem('redirectToPago');
-        window.location.href = 'index.html';
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
       } else {
-        window.location.href = 'index.html';
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
       }
     });
   </script>
