@@ -276,21 +276,22 @@
   <a href="asistente.html">ASISTENTE</a>
   <a href="#" id="closeMenu">CERRAR</a>
 </nav>
-
 <div class="filter-text" id="filterText">
-  <main>
-    <div class="active" id="openFilterModal">FILTRAR</div>
+  <span class="filter-btn active" data-filter="disponibles">Disponibles</span>
+  <span class="filter-btn" data-filter="proximamente">Próximamente</span>
+  <span class="filter-btn" data-filter="todos">Todos</span>
 </div>
+
 
 <section class="carousel-section">
   <div class="carousel-container">
     <div class="carousel-track" id="carousel1">
-      <div class="carousel-item" data-category="">
+      <div class="carousel-item" data-category="proximamente">
         <a href="producto.html?producto=prenda1" class="carousel-link">
           <img src="013.png" alt="Prenda 1" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Gorras">
+      <div class="carousel-item" data-filter="proximamente">
         <a href="producto.html?producto=prenda2" class="carousel-link">
           <img src="019.png" alt="Prenda 2" />
         </a>
@@ -437,8 +438,8 @@
     }
   }
 
-  // MARCAR PRODUCTOS AGOTADOS CON ETIQUETA Y BLOQUEAR CLIC
-  function marcarAgotados() {
+  // MARCAR PRODUCTOS COMO "PRÓXIMAMENTE" Y BLOQUEAR CLIC
+  function marcarProximamente() {
     const agotados = JSON.parse(localStorage.getItem('voguecrest_agotados')) || [];
     const items = document.querySelectorAll('.carousel-item');
 
@@ -452,20 +453,21 @@
       if (agotados.includes(productoId)) {
         if (!item.querySelector('.agotado-label')) {
           const label = document.createElement('div');
-          label.textContent = 'AGOTADO';
+          label.textContent = 'PRÓXIMAMENTE';
           label.className = 'agotado-label';
           Object.assign(label.style, {
             position: 'absolute',
             top: '10px',
             left: '10px',
-            backgroundColor: 'rgba(255, 0, 0, 0.8)',
+            backgroundColor: 'rgba(255, 165, 0, 0.85)', // naranja
             color: 'white',
-            padding: '4px 8px',
-            fontWeight: 'bold',
-            borderRadius: '5px',
-            zIndex: '10',
+            padding: '6px 12px',
+            fontWeight: '700',
+            borderRadius: '6px',
             fontSize: '14px',
             pointerEvents: 'none',
+            zIndex: '10',
+            userSelect: 'none',
           });
           item.style.position = 'relative';
           item.appendChild(label);
@@ -502,34 +504,60 @@
   function eliminarProductoDelCarrito(productoId, talla, color) {
     let carrito = JSON.parse(localStorage.getItem('voguecrest_cart')) || [];
 
-    // Filtrar para eliminar ese producto concreto (id+talla+color)
     carrito = carrito.filter(item => !(item.id === productoId && item.talla === talla && item.color === color));
 
-    // Guardar carrito actualizado
     localStorage.setItem('voguecrest_cart', JSON.stringify(carrito));
 
-    // Sincronizar agotados con carrito actual
     sincronizarAgotados();
 
-    // Actualizar UI
     actualizarContadorCesta();
-    marcarAgotados();
+    marcarProximamente();
   }
 
-  // Ejecutar sincronización y marcado al cargar la página
+  // FILTRAR PRODUCTOS SEGÚN DISPONIBILIDAD
+  const filtros = document.querySelectorAll('.filter-btn');
+
+  function filtrarProductos(filtro) {
+    const agotados = JSON.parse(localStorage.getItem('voguecrest_agotados')) || [];
+    const items = document.querySelectorAll('.carousel-item');
+
+    items.forEach(item => {
+      const link = item.querySelector('a.carousel-link');
+      if (!link) return;
+
+      const productoId = obtenerProductoDesdeHref(link.href);
+      if (!productoId) return;
+
+      const estaAgotado = agotados.includes(productoId);
+
+      if (filtro === 'disponibles') {
+        item.style.display = estaAgotado ? 'none' : 'block';
+      } else if (filtro === 'proximamente') {
+        item.style.display = estaAgotado ? 'block' : 'none';
+      } else {
+        item.style.display = 'block';
+      }
+    });
+  }
+
+  if (filtros.length) {
+    filtros.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filtros.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filtro = btn.getAttribute('data-filter');
+        filtrarProductos(filtro);
+      });
+    });
+  }
+
+  // Ejecutar sincronización, marcado y filtro inicial
   sincronizarAgotados();
   actualizarContadorCesta();
-  marcarAgotados();
+  marcarProximamente();
 
-  // Aquí conecta eliminarProductoDelCarrito con tus botones eliminar:
-  // document.querySelectorAll('.btn-eliminar').forEach(btn => {
-  //   btn.addEventListener('click', () => {
-  //     const productoId = btn.dataset.productoId;
-  //     const talla = btn.dataset.talla;
-  //     const color = btn.dataset.color;
-  //     eliminarProductoDelCarrito(productoId, talla, color);
-  //   });
-  // });
+  // Por defecto filtro "disponibles" si hay botones
+  if (filtros.length) filtrarProductos('disponibles');
 
   // MENU MOVIL TOGGLE
   const toggleBtn = document.getElementById('menu-toggle');
@@ -569,7 +597,6 @@
   setupCarouselPause('carousel2');
 
 });
-
 
 </script>
 
