@@ -380,12 +380,13 @@
 
       mensaje += `🔢 *Total:* C$${total.toLocaleString('es-NI')}\n\n📦 *Por favor, confírmame disponibilidad y detalles de entrega.*`;
 
-      const telefono = "505 5824 4805"; // Cambia por tu número real sin espacios ni signos si quieres
+      const telefono = "505 58244805"; // Cambia por tu número real
 
-      const urlWhatsapp = `https://wa.me/${telefono.replace(/\s+/g, '')}?text=${encodeURIComponent(mensaje)}`;
+      const urlWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
 
       window.open(urlWhatsapp, "_blank");
 
+      // Vaciar carrito y actualizar UI
       localStorage.removeItem("voguecrest_cart");
       cargarCarrito();
     });
