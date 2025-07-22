@@ -267,7 +267,7 @@
   </footer>
 
   <script>
-    function parsePrecio(precioStr) {
+     function parsePrecio(precioStr) {
       return Number(precioStr.replace(/[^0-9.-]+/g,""));
     }
 
@@ -372,12 +372,15 @@
         const precioNum = parsePrecio(item.precio);
         const subtotal = precioNum * item.cantidad;
         total += subtotal;
-        mensaje += `🛍️ *${item.nombre}*\nTalla: ${item.talla} | Color: ${item.color}\nCantidad: ${item.cantidad}\nSubtotal: C$${subtotal.toLocaleString('es-NI')}\n\n`;
+        mensaje += `🛍️ *${item.nombre}*\n`;
+        mensaje += `Imagen: ${item.imagen}\n`;
+        mensaje += `Talla: ${item.talla} | Color: ${item.color}\n`;
+        mensaje += `Cantidad: ${item.cantidad}\nSubtotal: C$${subtotal.toLocaleString('es-NI')}\n\n`;
       });
 
       mensaje += `🔢 *Total:* C$${total.toLocaleString('es-NI')}\n\n📦 *Por favor, confírmame disponibilidad y detalles de entrega.*`;
 
-      const telefono = "505 58244805"; // Cambia por tu número real
+      const telefono = "505XXXXXXXX"; // Cambia por tu número real
 
       const urlWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
 
