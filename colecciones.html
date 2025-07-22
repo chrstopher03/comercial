@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Colecciones - VogueCrest</title>
   <style>
+    /* --- Estilos previos --- */
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -123,21 +124,16 @@
       position: relative;
       color: #000;
       transition: color 0.3s;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      user-select: none;
     }
     .filter-text span.active,
     .filter-text span:hover {
       color: #000;
-    }
-    .filter-text span.active::after,
-    .filter-text span:hover::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      height: 2px;
-      width: 100%;
-      background: #000;
-      border-radius: 2px;
+      border-color: #000;
+      background: #f0f0f0;
     }
 
     .carousel-section {
@@ -174,7 +170,7 @@
       cursor: pointer;
       transition: transform 0.3s;
       scroll-snap-align: start;
-      position: relative; /* para posicionar la etiqueta agotado */
+      position: relative; /* para posicionar etiquetas */
     }
 
     .carousel-item img {
@@ -202,6 +198,29 @@
       pointer-events: none;
       z-index: 10;
       user-select: none;
+    }
+
+    /* Nueva etiqueta PROXIMAMENTE */
+    .proximamente-label {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: rgba(255, 165, 0, 0.9); /* naranja */
+      color: white;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      pointer-events: none;
+      z-index: 10;
+      user-select: none;
+    }
+
+    /* Estilo deshabilitado para proximamente */
+    .proximamente-disabled {
+      opacity: 0.5;
+      cursor: default;
+      pointer-events: none;
     }
 
     @keyframes scroll {
@@ -276,75 +295,75 @@
   <a href="asistente.html">ASISTENTE</a>
   <a href="#" id="closeMenu">CERRAR</a>
 </nav>
-<div class="filter-text" id="filterText">
-  <span class="filter-btn active" data-filter="disponibles">Disponibles</span>
-  <span class="filter-btn" data-filter="proximamente">Próximamente</span>
-  <span class="filter-btn" data-filter="todos">Todos</span>
-</div>
 
+<!-- FILTROS DISPONIBLES / PROXIMAMENTE -->
+<div class="filter-text" id="filterText">
+  <span data-filter="todos" class="active">TODOS</span>
+  <span data-filter="disponible">DISPONIBLES</span>
+  <span data-filter="proximamente">PRÓXIMAMENTE</span>
+</div>
 
 <section class="carousel-section">
   <div class="carousel-container">
     <div class="carousel-track" id="carousel1">
-      <div class="carousel-item" data-category="proximamente">
+      <div class="carousel-item" data-category="" data-status="proximamente">
         <a href="producto.html?producto=prenda1" class="carousel-link">
           <img src="013.png" alt="Prenda 1" />
         </a>
       </div>
-      <div class="carousel-item" data-filter="proximamente">
+      <div class="carousel-item" data-category="Gorras" data-status="proximamente">
         <a href="producto.html?producto=prenda2" class="carousel-link">
           <img src="019.png" alt="Prenda 2" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Shorts">
+      <div class="carousel-item" data-category="Shorts" data-status="disponible">
         <a href="producto.html?producto=prenda3" class="carousel-link">
           <img src="014.png" alt="Prenda 3" />
         </a>
       </div>
-      <div class="carousel-item" data-category="camisetas">
+      <div class="carousel-item" data-category="camisetas" data-status="disponible">
         <a href="producto.html?producto=prenda4" class="carousel-link">
           <img src="015.png" alt="Prenda 4" />
         </a>
       </div>
-      <div class="carousel-item" data-category="camisetas">
+      <div class="carousel-item" data-category="camisetas" data-status="proximamente">
         <a href="producto.html?producto=prenda5" class="carousel-link">
           <img src="016.png" alt="Prenda 5" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Shorts">
+      <div class="carousel-item" data-category="Shorts" data-status="disponible">
         <a href="producto.html?producto=prenda6" class="carousel-link">
           <img src="018.png" alt="Prenda 6" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Camisetas">
+      <div class="carousel-item" data-category="Camisetas" data-status="disponible">
         <a href="producto.html?producto=prenda7" class="carousel-link">
           <img src="258.png" alt="Prenda 7" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Camisetas">
+      <div class="carousel-item" data-category="Camisetas" data-status="disponible">
         <a href="producto.html?producto=prenda8" class="carousel-link">
           <img src="8.png" alt="Prenda 8" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Gorras">
+      <div class="carousel-item" data-category="Gorras" data-status="disponible">
         <a href="producto.html?producto=prenda9" class="carousel-link">
           <img src="15.png" alt="Prenda 9" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Shorts">
+      <div class="carousel-item" data-category="Shorts" data-status="proximamente">
         <a href="producto.html?producto=prenda10" class="carousel-link">
           <img src="19.png" alt="Prenda 10" />
         </a>
       </div>
-      <div class="carousel-item" data-category="Sueteres">
+      <div class="carousel-item" data-category="Sueteres" data-status="disponible">
         <a href="producto.html?producto=prenda11" class="carousel-link">
           <img src="20.png" alt="Prenda 11" />
         </a>
       </div>
+
       <!-- Duplicado para animacion -->
-     
-     
-      <div class="carousel-item" data-category="">
+      <div class="carousel-item" data-category="" data-status="disponible">
         <a href="producto.html?producto=prenda13" class="carousel-link">
           <img src="011.png" alt="Prenda 13" />
         </a>
@@ -356,49 +375,49 @@
 <section class="carousel-section">
   <div class="carousel-container">
     <div class="carousel-track" id="carousel2">
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaA" class="carousel-link">
           <img src="42.png" alt="Prenda A" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaB" class="carousel-link">
           <img src="43.jpg" alt="Prenda B" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="proximamente">
         <a href="producto.html?producto=prendaC" class="carousel-link">
           <img src="341.png" alt="Prenda C" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaD" class="carousel-link">
           <img src="012.png" alt="Prenda D" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaE" class="carousel-link">
           <img src="106.png" alt="Prenda E" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaF" class="carousel-link">
           <img src="330.png" alt="Prenda F" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaG" class="carousel-link">
           <img src="10.png" alt="Prenda G" />
         </a>
       </div>
-      <div class="carousel-item">
+      <div class="carousel-item" data-status="disponible">
         <a href="producto.html?producto=prendaH" class="carousel-link">
           <img src="11.jpg" alt="Prenda H" />
         </a>
       </div>
 
       <!-- Duplicado -->
-      <div class="carousel-item" data-category="camisetas">
+      <div class="carousel-item" data-category="camisetas" data-status="disponible">
         <a href="producto.html?producto=prendaI" class="carousel-link">
           <img src="12.png" alt="Prenda I" />
         </a>
@@ -412,7 +431,8 @@
   &copy; 2025 VogueCrest. Todos los derechos reservados.
 </footer>
 
-<script>document.addEventListener('DOMContentLoaded', () => {
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
   // ACTUALIZAR CONTADOR CARRITO
   function actualizarContadorCesta() {
@@ -438,8 +458,8 @@
     }
   }
 
-  // MARCAR PRODUCTOS COMO "PRÓXIMAMENTE" Y BLOQUEAR CLIC
-  function marcarProximamente() {
+  // MARCAR PRODUCTOS AGOTADOS CON ETIQUETA Y BLOQUEAR CLIC
+  function marcarAgotados() {
     const agotados = JSON.parse(localStorage.getItem('voguecrest_agotados')) || [];
     const items = document.querySelectorAll('.carousel-item');
 
@@ -453,21 +473,20 @@
       if (agotados.includes(productoId)) {
         if (!item.querySelector('.agotado-label')) {
           const label = document.createElement('div');
-          label.textContent = 'PRÓXIMAMENTE';
+          label.textContent = 'AGOTADO';
           label.className = 'agotado-label';
           Object.assign(label.style, {
             position: 'absolute',
             top: '10px',
             left: '10px',
-            backgroundColor: 'rgba(255, 165, 0, 0.85)', // naranja
+            backgroundColor: 'rgba(255, 0, 0, 0.8)',
             color: 'white',
-            padding: '6px 12px',
-            fontWeight: '700',
-            borderRadius: '6px',
+            padding: '4px 8px',
+            fontWeight: 'bold',
+            borderRadius: '5px',
+            zIndex: '10',
             fontSize: '14px',
             pointerEvents: 'none',
-            zIndex: '10',
-            userSelect: 'none',
           });
           item.style.position = 'relative';
           item.appendChild(label);
@@ -480,6 +499,51 @@
         if (etiqueta) etiqueta.remove();
         link.style.pointerEvents = 'auto';
         link.style.opacity = '1';
+        item.style.cursor = 'pointer';
+      }
+    });
+  }
+
+  // MARCAR PRODUCTOS PROXIMAMENTE Y BLOQUEAR CLIC
+  function marcarProximamente() {
+    const items = document.querySelectorAll('.carousel-item');
+
+    items.forEach(item => {
+      const status = item.getAttribute('data-status');
+      const link = item.querySelector('a.carousel-link');
+      if (!link) return;
+
+      if(status === 'proximamente') {
+        if (!item.querySelector('.proximamente-label')) {
+          const label = document.createElement('div');
+          label.textContent = 'PRÓXIMAMENTE';
+          label.className = 'proximamente-label';
+          Object.assign(label.style, {
+            position: 'absolute',
+            top: '10px',
+            left: '10px',
+            backgroundColor: 'rgba(255, 165, 0, 0.9)', // naranja
+            color: 'white',
+            padding: '4px 8px',
+            fontWeight: 'bold',
+            borderRadius: '5px',
+            zIndex: '10',
+            fontSize: '14px',
+            pointerEvents: 'none',
+          });
+          item.style.position = 'relative';
+          item.appendChild(label);
+        }
+        link.style.pointerEvents = 'none';
+        link.style.opacity = '0.5';
+        item.classList.add('proximamente-disabled');
+        item.style.cursor = 'default';
+      } else {
+        const etiqueta = item.querySelector('.proximamente-label');
+        if (etiqueta) etiqueta.remove();
+        link.style.pointerEvents = 'auto';
+        link.style.opacity = '1';
+        item.classList.remove('proximamente-disabled');
         item.style.cursor = 'pointer';
       }
     });
@@ -504,60 +568,55 @@
   function eliminarProductoDelCarrito(productoId, talla, color) {
     let carrito = JSON.parse(localStorage.getItem('voguecrest_cart')) || [];
 
+    // Filtrar para eliminar ese producto concreto (id+talla+color)
     carrito = carrito.filter(item => !(item.id === productoId && item.talla === talla && item.color === color));
 
+    // Guardar carrito actualizado
     localStorage.setItem('voguecrest_cart', JSON.stringify(carrito));
 
+    // Sincronizar agotados con carrito actual
     sincronizarAgotados();
 
+    // Actualizar UI
     actualizarContadorCesta();
-    marcarProximamente();
+    marcarAgotados();
   }
 
-  // FILTRAR PRODUCTOS SEGÚN DISPONIBILIDAD
-  const filtros = document.querySelectorAll('.filter-btn');
-
-  function filtrarProductos(filtro) {
-    const agotados = JSON.parse(localStorage.getItem('voguecrest_agotados')) || [];
+  // FILTRO POR STATUS (TODOS, DISPONIBLES, PROXIMAMENTE)
+  function filtrarPorStatus(status) {
     const items = document.querySelectorAll('.carousel-item');
-
     items.forEach(item => {
-      const link = item.querySelector('a.carousel-link');
-      if (!link) return;
-
-      const productoId = obtenerProductoDesdeHref(link.href);
-      if (!productoId) return;
-
-      const estaAgotado = agotados.includes(productoId);
-
-      if (filtro === 'disponibles') {
-        item.style.display = estaAgotado ? 'none' : 'block';
-      } else if (filtro === 'proximamente') {
-        item.style.display = estaAgotado ? 'block' : 'none';
-      } else {
+      const itemStatus = item.getAttribute('data-status') || 'disponible';
+      if (status === 'todos' || itemStatus === status) {
         item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
       }
     });
   }
 
-  if (filtros.length) {
-    filtros.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filtros.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filtro = btn.getAttribute('data-filter');
-        filtrarProductos(filtro);
-      });
-    });
+  // Actualizar botones de filtro activos
+  function actualizarFiltroActivo(clickedSpan) {
+    const spans = document.querySelectorAll('.filter-text span');
+    spans.forEach(span => span.classList.remove('active'));
+    clickedSpan.classList.add('active');
   }
 
-  // Ejecutar sincronización, marcado y filtro inicial
+  // Ejecutar sincronización y marcado al cargar la página
   sincronizarAgotados();
   actualizarContadorCesta();
+  marcarAgotados();
   marcarProximamente();
 
-  // Por defecto filtro "disponibles" si hay botones
-  if (filtros.length) filtrarProductos('disponibles');
+  // Eventos filtro
+  const filterSpans = document.querySelectorAll('.filter-text span');
+  filterSpans.forEach(span => {
+    span.addEventListener('click', () => {
+      const filtro = span.getAttribute('data-filter');
+      filtrarPorStatus(filtro);
+      actualizarFiltroActivo(span);
+    });
+  });
 
   // MENU MOVIL TOGGLE
   const toggleBtn = document.getElementById('menu-toggle');
@@ -576,14 +635,6 @@
     });
   }
 
-  // Vaciar carrito y agotados juntos
-  function vaciarCarritoYAgotados() {
-    localStorage.removeItem('voguecrest_cart');
-    localStorage.removeItem('voguecrest_agotados');
-    alert('Carrito y productos agotados limpiados.');
-    location.reload();
-  }
-
   // PAUSAR CARRUSELES AL HACER HOVER O TOCAR
   function setupCarouselPause(carouselId) {
     const track = document.getElementById(carouselId);
@@ -597,7 +648,6 @@
   setupCarouselPause('carousel2');
 
 });
-
 </script>
 
 </body>
