@@ -267,138 +267,147 @@
   </footer>
 
   <script>
-     function parsePrecio(precioStr) {
-      return Number(precioStr.replace(/[^0-9.-]+/g,""));
-    }
+   function parsePrecio(precioStr) {
+  return Number(precioStr.replace(/[^0-9.-]+/g,""));
+}
 
-    function formatoPrecio(valor) {
-      return "C$" + valor.toLocaleString('es-NI');
-    }
+function formatoPrecio(valor) {
+  return "C$" + valor.toLocaleString('es-NI');
+}
 
-    function cargarCarrito() {
-      const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-      const lista = document.getElementById("cartList");
-      lista.innerHTML = "";
+function cargarCarrito() {
+  const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+  const lista = document.getElementById("cartList");
+  lista.innerHTML = "";
 
-      if (carrito.length === 0) {
-        document.getElementById("totalPrice").textContent = "Total: C$0";
-        document.getElementById("btnPagar").style.display = "none";
-        document.getElementById("emptyOptions").style.display = "block";
-        return;
-      }
+  if (carrito.length === 0) {
+    document.getElementById("totalPrice").textContent = "Total: C$0";
+    document.getElementById("btnPagar").style.display = "none";
+    document.getElementById("emptyOptions").style.display = "block";
+    return;
+  }
 
-      document.getElementById("emptyOptions").style.display = "none";
-      document.getElementById("btnPagar").style.display = "block";
+  document.getElementById("emptyOptions").style.display = "none";
+  document.getElementById("btnPagar").style.display = "block";
 
-      let total = 0;
-      carrito.forEach((item, idx) => {
-        const precioNum = parsePrecio(item.precio);
-        const subtotal = precioNum * item.cantidad;
-        total += subtotal;
+  let total = 0;
+  carrito.forEach((item, idx) => {
+    const precioNum = parsePrecio(item.precio);
+    const subtotal = precioNum * item.cantidad;
+    total += subtotal;
 
-        const li = document.createElement("li");
-        li.className = "cart-item";
-        li.innerHTML = `
-          <div class="left-block">
-            <img src="${item.imagen}" alt="${item.nombre}" />
-            <div class="product-info">${item.nombre}</div>
-          </div>
-          <div class="right-block">
-            <div class="details">Talla: ${item.talla} | Color: ${item.color}</div>
-            <div class="quantity">Cantidad: ${item.cantidad}</div>
-            <div class="price">Precio: ${formatoPrecio(precioNum)}</div>
-            <div class="subtotal">Subtotal: ${formatoPrecio(subtotal)}</div>
-            <button class="btn-eliminar" data-index="${idx}" aria-label="Eliminar ${item.nombre}">&times;</button>
-          </div>
-        `;
-        lista.appendChild(li);
-      });
+    const li = document.createElement("li");
+    li.className = "cart-item";
+    li.innerHTML = `
+      <div class="left-block">
+        <img src="${item.imagen}" alt="${item.nombre}" />
+        <div class="product-info">${item.nombre}</div>
+      </div>
+      <div class="right-block">
+        <div class="details">Talla: ${item.talla} | Color: ${item.color}</div>
+        <div class="quantity">Cantidad: ${item.cantidad}</div>
+        <div class="price">Precio: ${formatoPrecio(precioNum)}</div>
+        <div class="subtotal">Subtotal: ${formatoPrecio(subtotal)}</div>
+        <button class="btn-eliminar" data-index="${idx}" aria-label="Eliminar ${item.nombre}">&times;</button>
+      </div>
+    `;
+    lista.appendChild(li);
+  });
 
-      document.getElementById("totalPrice").textContent = `Total: ${formatoPrecio(total)}`;
+  document.getElementById("totalPrice").textContent = `Total: ${formatoPrecio(total)}`;
 
-      // Eventos para eliminar items
-      document.querySelectorAll(".btn-eliminar").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          const idx = parseInt(e.target.getAttribute("data-index"));
-          let carritoActual = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-          carritoActual.splice(idx, 1);
-          localStorage.setItem("voguecrest_cart", JSON.stringify(carritoActual));
-          cargarCarrito();
-        });
-      });
-    }
-
-    function vaciarCarrito() {
-      localStorage.removeItem("voguecrest_cart");
-      cargarCarrito();
-    }
-
-    document.getElementById("btnPagar").addEventListener("click", () => {
-      const usuarioLogueado = localStorage.getItem('userLoggedIn');
-
-      if (!usuarioLogueado) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Atención',
-          text: 'Debes iniciar sesión para continuar con el pago.',
-          confirmButtonColor: '#000',
-          confirmButtonText: 'Iniciar sesión'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            sessionStorage.setItem('redirectToPago', 'true');
-            window.location.href = 'sesion.html';
-          }
-        });
-        return; // Muy importante para que no siga ejecutando el código
-      }
-
-      // Aquí ya sabemos que usuario está logueado
-      const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-
-      if (carrito.length === 0) {
-        Swal.fire({
-          icon: 'info',
-          title: 'Cesta vacía',
-          text: 'Agrega productos antes de realizar el pedido.',
-          confirmButtonColor: '#000'
-        });
-        return; // Importante para no seguir ejecutando
-      }
-
-      let mensaje = "*Hola! Quiero realizar esta compra desde VogueCrest:*\n\n";
-      let total = 0;
-
-      carrito.forEach((item) => {
-        const precioNum = parsePrecio(item.precio);
-        const subtotal = precioNum * item.cantidad;
-        total += subtotal;
-        mensaje += `🛍️ *${item.nombre}*\n`;
-        mensaje += `Imagen: ${item.imagen}\n`;
-        mensaje += `Talla: ${item.talla} | Color: ${item.color}\n`;
-        mensaje += `Cantidad: ${item.cantidad}\nSubtotal: C$${subtotal.toLocaleString('es-NI')}\n\n`;
-      });
-
-      mensaje += `🔢 *Total:* C$${total.toLocaleString('es-NI')}\n\n📦 *Por favor, confírmame disponibilidad y detalles de entrega.*`;
-
-      const telefono = "505 58244805"; // Cambia por tu número real
-
-      const urlWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-
-      window.open(urlWhatsapp, "_blank");
-
-      // Vaciar carrito y actualizar UI
-      localStorage.removeItem("voguecrest_cart");
+  // Eventos para eliminar items
+  document.querySelectorAll(".btn-eliminar").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const idx = parseInt(e.target.getAttribute("data-index"));
+      let carritoActual = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+      carritoActual.splice(idx, 1);
+      localStorage.setItem("voguecrest_cart", JSON.stringify(carritoActual));
       cargarCarrito();
     });
+  });
+}
 
-    function toggleMenu() {
-      const menu = document.getElementById('mobileMenu');
-      menu.classList.toggle('show');
+function vaciarCarrito() {
+  localStorage.removeItem("voguecrest_cart");
+  cargarCarrito();
+}
+
+document.getElementById("btnPagar").addEventListener("click", () => {
+  const usuarioLogueado = localStorage.getItem('userLoggedIn');
+
+  if (!usuarioLogueado) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Atención',
+      text: 'Debes iniciar sesión para continuar con el pago.',
+      confirmButtonColor: '#000',
+      confirmButtonText: 'Iniciar sesión'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        sessionStorage.setItem('redirectToPago', 'true');
+        window.location.href = 'sesion.html';
+      }
+    });
+    return; // Muy importante para que no siga ejecutando el código
+  }
+
+  // Aquí ya sabemos que usuario está logueado
+  const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
+
+  if (carrito.length === 0) {
+    Swal.fire({
+      icon: 'info',
+      title: 'Cesta vacía',
+      text: 'Agrega productos antes de realizar el pedido.',
+      confirmButtonColor: '#000'
+    });
+    return; // Importante para no seguir ejecutando
+  }
+
+  let mensaje = "*Hola! Quiero realizar esta compra desde VogueCrest:*\n\n";
+  let total = 0;
+  const baseUrl = window.location.origin; // <-- aquí se obtiene el dominio
+
+  carrito.forEach((item) => {
+    const precioNum = parsePrecio(item.precio);
+    const subtotal = precioNum * item.cantidad;
+    total += subtotal;
+
+    // Convertimos imagen a URL absoluta si no lo es
+    let imagenUrl = item.imagen;
+    if (!/^https?:\/\//i.test(imagenUrl)) {
+      imagenUrl = baseUrl + '/' + imagenUrl.replace(/^\/+/, '');
     }
 
-    document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+    mensaje += `🛍️ *${item.nombre}*\n`;
+    mensaje += `Imagen: ${imagenUrl}\n`;
+    mensaje += `Talla: ${item.talla} | Color: ${item.color}\n`;
+    mensaje += `Cantidad: ${item.cantidad}\nSubtotal: C$${subtotal.toLocaleString('es-NI')}\n\n`;
+  });
 
-    cargarCarrito();
+  mensaje += `🔢 *Total:* C$${total.toLocaleString('es-NI')}\n\n📦 *Por favor, confírmame disponibilidad y detalles de entrega.*`;
+
+  const telefono = "50558244805"; // Cambia por tu número real, sin espacios ni símbolos
+
+  const urlWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+
+  window.open(urlWhatsapp, "_blank");
+
+  // Vaciar carrito y actualizar UI
+  localStorage.removeItem("voguecrest_cart");
+  cargarCarrito();
+});
+
+function toggleMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.classList.toggle('show');
+}
+
+document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+
+cargarCarrito();
+
   </script>
 </body>
 </html>
