@@ -335,7 +335,6 @@
 
     document.getElementById("btnPagar").addEventListener("click", () => {
       const usuarioLogueado = localStorage.getItem('userLoggedIn');
-
       if (!usuarioLogueado) {
         Swal.fire({
           icon: 'warning',
@@ -345,47 +344,13 @@
           confirmButtonText: 'Iniciar sesión'
         }).then((result) => {
           if (result.isConfirmed) {
-            sessionStorage.setItem('redirectToPago', 'true');
+            sessionStorage.setItem('redirectToPago', 'true'); // Guardar para redirigir luego de login
             window.location.href = 'sesion.html';
           }
         });
-        return; // Muy importante para que no siga ejecutando el código
+      } else {
+        window.location.href = 'pago.html';
       }
-
-      // Aquí ya sabemos que usuario está logueado
-      const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
-
-      if (carrito.length === 0) {
-        Swal.fire({
-          icon: 'info',
-          title: 'Cesta vacía',
-          text: 'Agrega productos antes de realizar el pedido.',
-          confirmButtonColor: '#000'
-        });
-        return; // Importante para no seguir ejecutando
-      }
-
-      let mensaje = "*Hola! Quiero realizar esta compra desde VogueCrest:*\n\n";
-      let total = 0;
-
-      carrito.forEach((item) => {
-        const precioNum = parsePrecio(item.precio);
-        const subtotal = precioNum * item.cantidad;
-        total += subtotal;
-        mensaje += `🛍️ *${item.nombre}*\nTalla: ${item.talla} | Color: ${item.color}\nCantidad: ${item.cantidad}\nSubtotal: C$${subtotal.toLocaleString('es-NI')}\n\n`;
-      });
-
-      mensaje += `🔢 *Total:* C$${total.toLocaleString('es-NI')}\n\n📦 *Por favor, confírmame disponibilidad y detalles de entrega.*`;
-
-      const telefono = "505 58244805"; // Cambia por tu número real
-
-      const urlWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-
-      window.open(urlWhatsapp, "_blank");
-
-      // Vaciar carrito y actualizar UI
-      localStorage.removeItem("voguecrest_cart");
-      cargarCarrito();
     });
 
     function toggleMenu() {
