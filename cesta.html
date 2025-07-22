@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cesta - VogueCrest</title>
   <style>
-    /* (Aquí va todo tu CSS igual que antes) */
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -197,6 +196,7 @@
       cursor: pointer;
       margin-bottom: 20px;
     }
+    /* Responsive */
     @media (max-width: 600px) {
       body {
         padding: 0 10px 80px;
@@ -267,14 +267,7 @@
   </footer>
 
   <script>
-    // Mapea nombre local de imagen a URL pública absoluta
-    const imagenesPublicas = {
-      "100.png": "https://i.imgur.com/ejemplo1.jpg",
-      "producto1.jpg": "https://i.imgur.com/ejemplo2.jpg",
-      // Agrega aquí todas tus imágenes reales públicas
-    };
-
-    function parsePrecio(precioStr) {
+     function parsePrecio(precioStr) {
       return Number(precioStr.replace(/[^0-9.-]+/g,""));
     }
 
@@ -307,7 +300,7 @@
         li.className = "cart-item";
         li.innerHTML = `
           <div class="left-block">
-            <img src="${imagenesPublicas[item.imagen] || item.imagen}" alt="${item.nombre}" />
+            <img src="${item.imagen}" alt="${item.nombre}" />
             <div class="product-info">${item.nombre}</div>
           </div>
           <div class="right-block">
@@ -356,9 +349,10 @@
             window.location.href = 'sesion.html';
           }
         });
-        return;
+        return; // Muy importante para que no siga ejecutando el código
       }
 
+      // Aquí ya sabemos que usuario está logueado
       const carrito = JSON.parse(localStorage.getItem("voguecrest_cart")) || [];
 
       if (carrito.length === 0) {
@@ -368,7 +362,7 @@
           text: 'Agrega productos antes de realizar el pedido.',
           confirmButtonColor: '#000'
         });
-        return;
+        return; // Importante para no seguir ejecutando
       }
 
       let mensaje = "*Hola! Quiero realizar esta compra desde VogueCrest:*\n\n";
@@ -378,21 +372,17 @@
         const precioNum = parsePrecio(item.precio);
         const subtotal = precioNum * item.cantidad;
         total += subtotal;
-
-        // URL pública de la imagen para WhatsApp
-        let imagenUrl = imagenesPublicas[item.imagen] || item.imagen;
-
         mensaje += `🛍️ *${item.nombre}*\n`;
-        mensaje += `Imagen: ${imagenUrl}\n`;
+        mensaje += `Imagen: ${item.imagen}\n`;
         mensaje += `Talla: ${item.talla} | Color: ${item.color}\n`;
         mensaje += `Cantidad: ${item.cantidad}\nSubtotal: C$${subtotal.toLocaleString('es-NI')}\n\n`;
       });
 
       mensaje += `🔢 *Total:* C$${total.toLocaleString('es-NI')}\n\n📦 *Por favor, confírmame disponibilidad y detalles de entrega.*`;
 
-      const telefono = "50558244805"; // tu número real
+      const telefono = "505 5824 4805"; // Cambia por tu número real sin espacios ni signos si quieres
 
-      const urlWhatsapp = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+      const urlWhatsapp = `https://wa.me/${telefono.replace(/\s+/g, '')}?text=${encodeURIComponent(mensaje)}`;
 
       window.open(urlWhatsapp, "_blank");
 
