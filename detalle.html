@@ -356,7 +356,52 @@
       user-select: none;
       font-style: italic;
     }
+ /* Contenedor del video */
+  #videoContainer {
+    width: 100%;
+    max-width: 600px;       /* Máximo ancho en pantallas grandes */
+    margin: 0 auto 35px;    /* Centrado horizontal y margen inferior */
+    padding: 0 10px;        /* Espacio a los lados en móvil */
+    box-sizing: border-box;
+  }
 
+  /* Título sección */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #222;
+  }
+
+  /* Contenedor para iframe - mantiene proporción 16:9 */
+  #videoContent {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  /* iframe ocupa todo el contenedor */
+  #videoContent iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Ajustes para pantallas muy pequeñas */
+  @media (max-width: 400px) {
+    #videoContainer {
+      padding: 0 5px;
+    }
+    .section-title {
+      font-size: 1.2rem;
+    }
+  }
     /* Responsive */
     @media (max-width: 480px) {
       body {
@@ -442,11 +487,10 @@
       <div id="coloresContainer" class="opciones-container"></div>
     </div>
 <!-- Video del producto -->
- <div id="videoContainer" style="margin-bottom: 35px;">
-      <div class="section-title">Video del producto</div>
-      <div id="videoContent"></div>
-    </div>
-
+<div id="videoContainer" style="margin-bottom: 35px;">
+  <div class="section-title">Video del producto</div>
+  <div id="videoContent"></div>
+</div>
     <!-- Información adicional -->
     <div>
       <div class="section-title">Información adicional:</div>
