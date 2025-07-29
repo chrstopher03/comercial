@@ -441,6 +441,11 @@
       <div class="section-title">Colores disponibles:</div>
       <div id="coloresContainer" class="opciones-container"></div>
     </div>
+<!-- Video del producto -->
+ <div id="videoContainer" style="margin-bottom: 35px;">
+      <div class="section-title">Video del producto</div>
+      <div id="videoContent"></div>
+    </div>
 
     <!-- Información adicional -->
     <div>
@@ -488,6 +493,8 @@
       nombre: "SKIN TANK TOP GREY – VOGUECREST",
       imagenPrincipal: "400.png",
         imagenesExtra:  ["400.png","401.png","402.jpeg"],
+                video: "video-producto.mp4", // puede ser también YouTube: "https://www.youtube.com/embed/ID"
+
         descripcion: `La SKIN TANK TOP GREY de VogueCrest eleva lo esencial con una estética sobria, limpia y con carácter. Confeccionada en algodón 100% acanalado, esta camiseta de tirantes ajustada envuelve el cuerpo con una silueta precisa que se adapta cómodamente, brindando frescura y libertad de movimiento.
 
 El tono gris neutro añade versatilidad al diseño, convirtiéndola en una prenda indispensable para un look minimalista y contemporáneo. El acabado acanalado aporta textura sutil, mientras que el estampado limpio en el pecho —o su variante con camuflaje integral— suma ese detalle gráfico que distingue a VogueCrest sin romper con su esencia elegante.`,
@@ -756,7 +763,28 @@ Diseño exclusivo de VogueCrest en edición limitada.`,
       // Mostrar botón compartir
       shareButton.style.display = "inline-flex";
     }
+  // Mostrar video del producto
+      const videoContent = document.getElementById("videoContent");
+      const videoContainer = document.getElementById("videoContainer");
 
+      if (producto.video) {
+        if (producto.video.endsWith(".mp4")) {
+          videoContent.innerHTML = `
+            <video controls>
+              <source src="${producto.video}" type="video/mp4">
+              Tu navegador no soporta la reproducción de video.
+            </video>
+          `;
+        } else if (producto.video.includes("youtube.com") || producto.video.includes("youtu.be")) {
+          videoContent.innerHTML = `
+            <iframe height="315" src="${producto.video}" 
+              frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen></iframe>
+          `;
+        }
+      } else {
+        videoContainer.style.display = "none";
+      }
     // Funcionalidad lightbox para imagen principal
     function abrirLightbox() {
       lightboxImg.src = mainImage.src;
