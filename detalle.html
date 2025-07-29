@@ -356,52 +356,12 @@
       user-select: none;
       font-style: italic;
     }
- /* Contenedor del video */
-  #videoContainer {
-    width: 100%;
-    max-width: 600px;       /* Máximo ancho en pantallas grandes */
-    margin: 0 auto 35px;    /* Centrado horizontal y margen inferior */
-    padding: 0 10px;        /* Espacio a los lados en móvil */
-    box-sizing: border-box;
-  }
 
-  /* Título sección */
-  .section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #222;
-  }
 
-  /* Contenedor para iframe - mantiene proporción 16:9 */
-  #videoContent {
-    position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; /* 16:9 */
-    height: 0;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-
-  /* iframe ocupa todo el contenedor */
-  #videoContent iframe {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-
-  /* Ajustes para pantallas muy pequeñas */
-  @media (max-width: 400px) {
-    #videoContainer {
-      padding: 0 5px;
-    }
     .section-title {
       font-size: 1.2rem;
     }
-  }
+  
     /* Responsive */
     @media (max-width: 480px) {
       body {
@@ -474,6 +434,9 @@
       <div class="section-title">Historia de esta prenda</div>
       <div id="historiaPrenda">Cargando...</div>
     </div>
+<div id="videoContainer" style="margin-bottom: 35px;">
+  <div id="videoContent"></div>
+</div>
 
     <!-- Tallas -->
     <div>
@@ -739,6 +702,51 @@ Diseño exclusivo de VogueCrest en edición limitada.`,
           carousel.appendChild(image);
         });
       }
+// Mostrar video si existe
+const videoContainer = document.getElementById("videoContent");
+videoContainer.innerHTML = "";
+
+if (producto.video) {
+  const sectionTitle = document.createElement("div");
+  sectionTitle.className = "section-title";
+  sectionTitle.textContent = "Video del producto";
+  videoContainer.appendChild(sectionTitle);
+
+  const videoWrapper = document.createElement("div");
+  videoWrapper.style.position = "relative";
+  videoWrapper.style.paddingBottom = "56.25%"; // 16:9 ratio
+  videoWrapper.style.height = "0";
+  videoWrapper.style.overflow = "hidden";
+  videoWrapper.style.borderRadius = "12px";
+  videoWrapper.style.marginTop = "10px";
+
+  if (producto.video.includes("youtube.com") || producto.video.includes("youtu.be")) {
+    const iframe = document.createElement("iframe");
+    iframe.src = producto.video.replace("watch?v=", "embed/");
+    iframe.style.position = "absolute";
+    iframe.style.top = "0";
+    iframe.style.left = "0";
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.frameBorder = "0";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+    iframe.allowFullscreen = true;
+    videoWrapper.appendChild(iframe);
+  } else {
+    const video = document.createElement("video");
+    video.src = producto.video;
+    video.controls = true;
+    video.style.position = "absolute";
+    video.style.top = "0";
+    video.style.left = "0";
+    video.style.width = "100%";
+    video.style.height = "100%";
+    video.style.borderRadius = "12px";
+    videoWrapper.appendChild(video);
+  }
+
+  videoContainer.appendChild(videoWrapper);
+}
 
       // Tallas
       tallasContainer.innerHTML = "";
@@ -807,28 +815,7 @@ Diseño exclusivo de VogueCrest en edición limitada.`,
       // Mostrar botón compartir
       shareButton.style.display = "inline-flex";
     }
-  // Mostrar video del producto
-      const videoContent = document.getElementById("videoContent");
-      const videoContainer = document.getElementById("videoContainer");
 
-      if (producto.video) {
-        if (producto.video.endsWith(".mp4")) {
-          videoContent.innerHTML = `
-            <video controls>
-              <source src="${producto.video}" type="video/mp4">
-              Tu navegador no soporta la reproducción de video.
-            </video>
-          `;
-        } else if (producto.video.includes("youtube.com") || producto.video.includes("youtu.be")) {
-          videoContent.innerHTML = `
-            <iframe height="315" src="${producto.video}" 
-              frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen></iframe>
-          `;
-        }
-      } else {
-        videoContainer.style.display = "none";
-      }
     // Funcionalidad lightbox para imagen principal
     function abrirLightbox() {
       lightboxImg.src = mainImage.src;
